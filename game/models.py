@@ -2,6 +2,7 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 class Alliance(models.Model):
@@ -14,11 +15,7 @@ class Alliance(models.Model):
 
 
 class Account(models.Model):
-    username = models.CharField(max_length=50)
-    email = models.CharField(max_length=100)
-    password = models.CharField(max_length=100)
-    first_name = models.CharField(max_length=50)
-    surname = models.CharField(max_length=50)
+    user = models.OneToOneField(User, default=None)
     picture = models.ImageField(upload_to="pic_folder/", default="pic_folder/None/no-img.jpg")
     last_login_date = models.DateTimeField('date login')
     last_attacked = models.DateTimeField('date attacked')
