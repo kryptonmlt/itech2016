@@ -16,14 +16,14 @@ class Alliance(models.Model):
 
 class Account(models.Model):
     user = models.OneToOneField(User, default=None)
-    picture = models.ImageField(upload_to="pic_folder/", default="pic_folder/None/no-img.jpg")
-    last_login_date = models.DateTimeField('date login')
-    last_attacked = models.DateTimeField('date attacked')
-    last_received_gold = models.DateTimeField('date received gold')
+    picture = models.ImageField(upload_to='media', blank=True)
+    last_login_date = models.DateTimeField('date login', default=None, null=True, blank=True)
+    last_attacked = models.DateTimeField('date attacked', default=None, null=True, blank=True)
+    last_received_gold = models.DateTimeField('date received gold', default=None, null=True, blank=True)
     wins = models.IntegerField(default=0)
     defeats = models.IntegerField(default=0)
     alliance_owner = models.BooleanField(default=False)
-    alliance = models.ForeignKey(Alliance)
+    alliance = models.ForeignKey(Alliance, default=None, null=True, blank=True)
 
     def __str__(self):
         return self.email
