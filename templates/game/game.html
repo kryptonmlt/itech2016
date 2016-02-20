@@ -82,7 +82,7 @@
     	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Opponents <span class="caret"></span></button>
     	<ul class="dropdown-menu scrollable-menu" role="menu">
              {% for acc in userlist %}
-             <li>{{acc.user.username}}</li>
+             <li><a href="game/battle/{{acc.user.username}}">{{acc.user.username}} </a></li>
              {% endfor %}
         </ul>
     </div>
