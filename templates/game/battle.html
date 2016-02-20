@@ -17,11 +17,15 @@
 <h1>{{account.user.username}}</h1>
 <img src="{{account.picture}}" alt="Profile picture" /> <br>
 
+suply: {{city.supply}}<br>
+
+walls level: {{city.walls_level}}<br>
+
+
 <button type="button">Attack</button>
 
-<div class="row">
+
 <a href="/game/logout/">Logout</a><br/>
-</div>
 
 {% else %}
 <a href="/game/register/">Register Here</a><br/>
