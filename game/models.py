@@ -88,7 +88,7 @@ class Log(models.Model):
     date_occurred = models.DateTimeField('date occurred')
 
     def __str__(self):
-        return str(self.date_occurred) + " " + self.text
+        return str(self.date_occurred) + ": " + self.text+"0$$0"
 
 
 class Cost(models.Model):

@@ -115,11 +115,12 @@ def user_login(request):
 
 @login_required()
 def index(request):
-	cost=Cost.objects.get(pk=1)
-	userlist = Account.objects.exclude(user=request.user)
-	context_dict = {'userlist': userlist,'cost':cost}
-	print "game page loaded!"
-	return render(request, 'game/game.html', context_dict)
+    cost = Cost.objects.get(pk=1)
+    userlist = Account.objects.exclude(user=request.user)
+    context_dict = {'userlist': userlist, 'cost': cost}
+    print "game page loaded!"
+    return render(request, 'game/game.html', context_dict)
+
 
 @login_required
 def user_logout(request):
@@ -132,8 +133,8 @@ def user_logout(request):
 @login_required
 def get_logs(request):
     acc = Account.objects.get(pk=request.user.pk);
-    cities = City.objects.get(account=acc)
-    logs = Log.objects.objects(city=cities).orderby('-date_occurred')
+    cities = City.objects.all().filter(account=acc)
+    logs = Log.objects.all().filter(city=cities).order_by('-date_occurred')[:10]
     return HttpResponse(logs)
 
 
