@@ -58,6 +58,7 @@ def add_user(name, email, password):
     u = User.objects.get_or_create(username=name)[0]
     u.set_password(password)
     u.email = email
+    u.save()
     return u
 
 def add_account(user, wins, defeats, alliance_owner, alliance):
@@ -68,12 +69,14 @@ def add_account(user, wins, defeats, alliance_owner, alliance):
     a.defeats=defeats
     a.alliance_owner=alliance_owner
     a.alliance=alliance
+    a.save()
     return a
 
 def add_alliance(name, description, all_time_score):
     a = Alliance.objects.get_or_create(name=name)[0]
     a.description=description
-    all_time_score=all_time_score
+    a.all_time_score=all_time_score
+    a.save()
     return a
 
 def add_city(account, name, gold, supply, walls_level, footmen, bowmen, knights, war_machines):
@@ -86,23 +89,27 @@ def add_city(account, name, gold, supply, walls_level, footmen, bowmen, knights,
     c.bowmen = bowmen
     c.knights = knights
     c.war_machines = war_machines
+    c.save()
     return c
 
 def add_log(city, text):
     l = Log.objects.get_or_create(city=city,date_occurred=datetime.now())[0]
     l.text = text
     l.date_occurred = datetime.now()
+    l.save()
     return l
 
 def add_badge(account, name):
     b = Badge.objects.get_or_create(account=account)[0]
     b.name = name
+    b.save()
     return b
 
 def add_message(from_account, to_account, text):
     m = Message.objects.get_or_create(from_account=from_account, to_account=to_account,date_occurred=datetime.now())[0]
     m.text = text
     m.date_occurred = datetime.now()
+    m.save()
     return m
 
 # Start execution here!
