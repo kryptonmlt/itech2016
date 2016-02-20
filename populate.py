@@ -19,10 +19,10 @@ def populate():
     al1 = add_alliance('Rubens alliance','this is rubens alliance',100)
     al2 = add_alliance('Kurtman rules','this is kurts alliance',300)
 
-    a1 = add_account(u1,7,15,True,al1)
-    a2 = add_account(u2,40,10,False,al1)
-    a3 = add_account(u3,20,1,True,al2)
-    a4 = add_account(u4,10,10,False,al1)
+    a1 = add_account(u1,7,15,True,al1,'Ruben')
+    a2 = add_account(u2,40,10,False,al1,'Florian')
+    a3 = add_account(u3,20,1,True,al2,'Kurt')
+    a4 = add_account(u4,10,10,False,al1,'Pedro')
 
     c1 = add_city(a1, 'Rubens Kindom', 40, 100, 2, 10, 10, 10, 10)
     c2 = add_city(a2, 'Florians Kindom', 1000, 200, 2, 20, 40, 10, 10)
@@ -53,6 +53,8 @@ def populate():
     add_message(a3,a2,'what was that')
     add_message(a1,a4,'you are good')
 
+    add_costs()
+
 
 def add_user(name, email, password):
     u = User.objects.get_or_create(username=name)[0]
@@ -61,7 +63,7 @@ def add_user(name, email, password):
     u.save()
     return u
 
-def add_account(user, wins, defeats, alliance_owner, alliance):
+def add_account(user, wins, defeats, alliance_owner, alliance, picture):
     a = Account.objects.get_or_create(user=user)[0]
     a.last_attacked=datetime.now()
     a.last_received_gold=datetime.now()
@@ -69,6 +71,7 @@ def add_account(user, wins, defeats, alliance_owner, alliance):
     a.defeats=defeats
     a.alliance_owner=alliance_owner
     a.alliance=alliance
+    a.picture='media/'+picture
     a.save()
     return a
 
@@ -111,6 +114,10 @@ def add_message(from_account, to_account, text):
     m.date_occurred = datetime.now()
     m.save()
     return m
+
+def add_costs():
+   c = Cost.objects.get_or_create()[0]
+   return c
 
 # Start execution here!
 if __name__ == '__main__':
