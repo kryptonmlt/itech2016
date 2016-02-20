@@ -7,6 +7,7 @@ from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import F
 from game.models import Account, Alliance, AllianceRequest, City, Badge, Log, Message, Cost
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -137,6 +138,14 @@ def get_logs(request):
     cities = City.objects.get(account=acc)
     logs = Log.objects.objects(city=cities).orderby('-date_occurred')
     return HttpResponse(logs)
+
+@login_required
+def battle(request, user_name):
+    user=User.objects.get(username=user_name)
+    account = Account.objects.get(user=user)
+    city = City.objects.get(account=account)
+    context_dict = {'account': account, 'city' : city}
+    return render(request, 'game/battle.html', context_dict)
 
 
 def top_stats(request):

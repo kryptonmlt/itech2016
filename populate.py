@@ -53,6 +53,8 @@ def populate():
     add_message(a3,a2,'what was that')
     add_message(a1,a4,'you are good')
 
+    add_costs()
+
 
 def add_user(name, email, password):
     u = User.objects.get_or_create(username=name)[0]
@@ -111,6 +113,10 @@ def add_message(from_account, to_account, text):
     m.date_occurred = datetime.now()
     m.save()
     return m
+
+def add_costs():
+   c = Cost.objects.get_or_create()[0]
+   return c
 
 # Start execution here!
 if __name__ == '__main__':
