@@ -115,9 +115,11 @@ def user_login(request):
 
 @login_required()
 def index(request):
-    print "game page loaded!"
-    return render(request, 'game/game.html')
-
+	cost=Cost.objects.get(pk=1)
+	userlist = Account.objects.exclude(user=request.user)
+	context_dict = {'userlist': userlist,'cost':cost}
+	print "game page loaded!"
+	return render(request, 'game/game.html', context_dict)
 
 @login_required
 def user_logout(request):
