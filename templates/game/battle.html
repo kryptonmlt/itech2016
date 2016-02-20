@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load staticfiles %} 
 <html lang="en">
 <head>
 	<title>Rulers of The Kingdom</title>
@@ -15,7 +16,7 @@
 {% if user.is_authenticated %}
 
 <h1>{{account.user.username}}</h1>
-<img src="{{account.picture}}" alt="Profile picture" /> <br>
+<img src="{{account.picture}}" alt="Profile picture" %}"  /><br>
 
 suply: {{city.supply}}<br>
 
