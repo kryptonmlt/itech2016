@@ -17,7 +17,6 @@ class Alliance(models.Model):
 class Account(models.Model):
     user = models.OneToOneField(User, default=None)
     picture = models.ImageField(upload_to='media', blank=True)
-    last_login_date = models.DateTimeField('date login', default=None, null=True, blank=True)
     last_attacked = models.DateTimeField('date attacked', default=None, null=True, blank=True)
     last_received_gold = models.DateTimeField('date received gold', default=None, null=True, blank=True)
     wins = models.IntegerField(default=0)
@@ -26,11 +25,14 @@ class Account(models.Model):
     alliance = models.ForeignKey(Alliance, default=None, null=True, blank=True)
 
     def __str__(self):
-        return self.email
+        return self.user.username
 
     def was_attacked_recently(self):
         now = timezone.now()
         return now - datetime.timedelta(hours=12) <= now - self.last_attacked
+
+    def get_win_percentage(self):
+        return (self.wins / self.defeats) * 100
 
     was_attacked_recently.admin_order_field = 'last_attacked'
     was_attacked_recently.boolean = True
@@ -69,7 +71,7 @@ class Message(models.Model):
     date_occurred = models.DateTimeField('date occurred')
 
     def __str__(self):
-        return self.date_occurred + ", from " + self.from_account.username + " to " + self.to_account.username
+        return str(self.date_occurred) + ": " + self.text + ", from " + self.from_account.user.username + " to " + self.to_account.user.username
 
 
 class Badge(models.Model):
@@ -77,7 +79,7 @@ class Badge(models.Model):
     name = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.account.username + " " + self.name
+        return self.account.user.username + " " + self.name
 
 
 class Log(models.Model):
@@ -86,7 +88,7 @@ class Log(models.Model):
     date_occurred = models.DateTimeField('date occurred')
 
     def __str__(self):
-        return self.date_occurred + " " + self.text
+        return str(self.date_occurred) + " " + self.text
 
 
 class Cost(models.Model):

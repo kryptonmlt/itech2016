@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from game.forms import UserForm, AccountForm
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
+from django.db.models import F
+from game.models import Account, Alliance, AllianceRequest, City, Badge, Log, Message, Cost
 
 
 # Create your views here.
@@ -65,9 +67,9 @@ def register(request):
 
     # Render the template depending on the context.
     return render_to_response(
-            'game/register.html',
-            {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},
-            context)
+        'game/register.html',
+        {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},
+        context)
 
 
 def user_login(request):
@@ -113,9 +115,11 @@ def user_login(request):
 
 @login_required()
 def index(request):
-    print "game page loaded!"
-    return render(request, 'game/game.html')
-
+	cost=Cost.objects.get(pk=1)
+	userlist = Account.objects.exclude(user=request.user)
+	context_dict = {'userlist': userlist,'cost':cost}
+	print "game page loaded!"
+	return render(request, 'game/game.html', context_dict)
 
 @login_required
 def user_logout(request):
@@ -123,3 +127,24 @@ def user_logout(request):
     logout(request)
     # Take the user back to the homepage.
     return HttpResponseRedirect('/')
+
+
+@login_required
+def get_logs(request):
+    acc = Account.objects.get(pk=request.user.pk);
+    cities = City.objects.get(account=acc)
+    logs = Log.objects.objects(city=cities).orderby('-date_occurred')
+    return HttpResponse(logs)
+
+
+def top_stats(request):
+    print "loading top stats"
+
+    account_highest_wins = Account.objects.order_by('-wins')[:10]
+    account_highest_wins_percentage = Account.objects.order_by((F('wins') / F('defeats')))[:10]
+    alliance_score = Alliance.objects.order_by('-all_time_score')[:10]
+    context_dict = {'account_highest_wins': account_highest_wins,
+                    'account_highest_wins_percentage': account_highest_wins_percentage,
+                    'alliance_score': alliance_score}
+
+    return render(request, 'game/top_stats.html', context_dict)
