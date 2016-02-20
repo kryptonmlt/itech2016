@@ -25,7 +25,7 @@ class Account(models.Model):
     alliance = models.ForeignKey(Alliance, default=None, null=True, blank=True)
 
     def __str__(self):
-        return self.user.email
+        return self.user.username
 
     def was_attacked_recently(self):
         now = timezone.now()
@@ -71,7 +71,7 @@ class Message(models.Model):
     date_occurred = models.DateTimeField('date occurred')
 
     def __str__(self):
-        return self.date_occurred + ", from " + self.from_account.username + " to " + self.to_account.username
+        return str(self.date_occurred) + ": " + self.text + ", from " + self.from_account.user.username + " to " + self.to_account.user.username
 
 
 class Badge(models.Model):
@@ -79,7 +79,7 @@ class Badge(models.Model):
     name = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.account.username + " " + self.name
+        return self.account.user.username + " " + self.name
 
 
 class Log(models.Model):
@@ -88,7 +88,7 @@ class Log(models.Model):
     date_occurred = models.DateTimeField('date occurred')
 
     def __str__(self):
-        return self.date_occurred + " " + self.text
+        return str(self.date_occurred) + " " + self.text
 
 
 class Cost(models.Model):
