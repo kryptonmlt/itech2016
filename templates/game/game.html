@@ -1,122 +1,108 @@
 <!DOCTYPE html>
+{% load staticfiles %} 
+
 <html lang="en">
 <head>
-    <title>Rulers of The Kingdom</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<title>Rulers of The Kingdom</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-    <script>
-
-        //polling that gets the logs
-        setInterval(function(){
-            $.get('/game/get_logs/', function(data){
-                console.log(data);
-                var re = new RegExp('0$$0', 'g');
-                $('#logs_text').html(data.replace(re,'<br />'));
-            });
-        }, 1000);
-
-    </script>
 </head>
 <body>
 
+<img src="{% static "/images/rulersofthekingdom.png" %}" />
 
 {% if user.is_authenticated %}
 
 <div class="row">
 
-    <div class="container">
-        <h2></h2>
-        <div class="col-sm-4">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>Structures</th>
-                    <th>Level</th>
-                    <th>Upgrade Cost</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td style="width:5%">Supply</td>
-                    <td style="width:5%"></td>
-                    <td style="width:5%"></td>
-                </tr>
-                <tr>
-                    <td style="width:5%">Walls Level</td>
-                    <td style="width:5%"></td>
-                    <td style="width:5%"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-sm-4">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>Troop Type</th>
-                    <th>Amount</th>
-                    <th>Hiring Cost</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td style="width:5%">Footmen</td>
-                    <td style="width:5%"></td>
-                    <td style="width:5%">{{cost.footmen_price}}</td>
-                </tr>
-                <tr>
-                    <td style="width:5%">Knights</td>
-                    <td style="width:5%"></td>
-                    <td style="width:5%">{{cost.knights_price}}</td>
-                </tr>
-                <tr>
-                    <td style="width:5%">Bowmen</td>
-                    <td style="width:5%"></td>
-                    <td style="width:5%">{{cost.bowmen_price}}</td>
-                </tr>
-                <tr>
-                    <td style="width:5%">WarMachines</td>
-                    <td style="width:5%"></td>
-                    <td style="width:5%">{{cost.war_machines_price}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div>
+<div class="container">
+  <h2></h2>
+  <div class="col-md-4">          
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Structures</th>
+        <th>Level</th>
+        <th>Upgrade Cost</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="width:5%">Supply</td>
+        <td style="width:5%">{{city.walls_level}}</td>
+        <td style="width:5%">{{cost.house_price}}</td>
+      </tr>
+      <tr>
+        <td style="width:5%">Walls Level</td>
+        <td style="width:5%">{{city.supply}}</td>
+        <td style="width:5%">{{cost.wall_price}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="col-md-4">          
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Troop Type</th>
+        <th>Amount</th>
+        <th>Hiring Cost</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="width:5%">Footmen</td>
+        <td style="width:5%">{{city.footmen}}</td>
+        <td style="width:5%">{{cost.footmen_price}}</td>
+      </tr>
+      <tr>
+        <td style="width:5%">Knights</td>
+        <td style="width:5%">{{city.knights}}</td>
+        <td style="width:5%">{{cost.knights_price}}</td>
+      </tr>
+      <tr>
+        <td style="width:5%">Bowmen</td>
+        <td style="width:5%">{{city.bowmen}}</td>
+        <td style="width:5%">{{cost.bowmen_price}}</td>
+      </tr>
+      <tr>
+        <td style="width:5%">WarMachines</td>
+        <td style="width:5%">{{city.war_machines}}</td>
+        <td style="width:5%">{{cost.war_machines_price}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div >
 
 
-            <div class="col-lg-4">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Opponents <span
-                            class="caret"></span></button>
-                    <ul class="dropdown-menu scrollable-menu" role="menu">
-                        {% for acc in userlist %}
-                        <li>{{acc.user.username}}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </div>
+<div class="col-md-4">
+    <div class="btn-group">
+    	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Opponents <span class="caret"></span></button>
+    	<ul class="dropdown-menu scrollable-menu" role="menu">
+             {% for acc in userlist %}
+             <li><a href="/game/battle/{{acc.user.username}}">{{acc.user.username}} </a></li>
+             {% endfor %}
+        </ul>
     </div>
+</div>
+</div>
+</div>
 
-    <div class="row">
-        <span id="logs_text"></span>
-    </div>
+<div class="row">
+<div class= col-md-offset-1>
+<a href="/game/logout/">Logout</a><br/>
+</div>
+</div>
 
-    <div class="row">
-        <div offset=>
-            <a href="/game/logout/">Logout</a><br/>
-        </div>
-    </div>
-
-    {% else %}
-    <a href="/game/register/">Register Here</a><br/>
-    <a href="/game/login/">Login</a><br/>
-    {% endif %}
+{% else %}
+<a href="/game/register/">Register Here</a><br/>
+<a href="/game/login/">Login</a><br/>
+{% endif %}
 
 </body>
 </html>

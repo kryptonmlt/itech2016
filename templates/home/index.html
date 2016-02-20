@@ -2,12 +2,98 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  	<script src="static/home.js"></script>
+  	<link rel="stylesheet" type="text/css" href="static/home.css">
     <title>Rulers of the Kingdom</title>
-    <a href="/game/">Go to Game</a>
-    <a href="/game/register/">Register Here</a>
-    <a href="/game/stats/">Stats</a>
 </head>
 <body>
+	<!-- NAV BAR MUST BE PLACED IN A SEPARATE TEMPLATE FILE -->
+	<nav class="navbar navbar-default navbar-fixed-top">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <a class="navbar-brand nav-brand-container" href="#">
+	        <img class="nav-brand-icon" alt="Brand" src="static/rotkicon.png">
+	      </a>
+	      <h5 class="nav-title">Rulers of the Kingdom</h5>
+	    </div>
+	  </div>
+	</nav>
 
+	<!-- Body of the Home page -->
+	<div class="container">
+    	<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<div class="panel panel-login">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-6">
+								<a href="" class="active" id="login-form-link">Login</a>
+							</div>
+							<div class="col-xs-6">
+								<a href="" id="user-form-link">Register</a>
+							</div>
+						</div>
+						<hr>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-lg-12">
+								
+								<form id="login-form" method="post" action="/login/">
+								    {% csrf_token %}
+								    <div class="form-group">
+								    	Username: <input type="text" name="username" value="" size="50"/>
+								    </div>
+								    <br/>
+								    <div class="form-group">
+								    	Password: <input type="password" name="password" value="" size="50"/>
+								    </div>
+								    <br/>
+
+								    <!-- Provide a button to click to submit the form. -->
+							        <div class="form-group">
+										<div class="row">
+											<div class="col-sm-6 col-sm-offset-3">
+												<input type="submit" name="submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Login">
+											</div>
+										</div>
+									</div>
+								</form>
+								
+								{% if registered %}
+							    	Rulers of the Kingdom says: <strong>thank you for registering!</strong>
+							        <br />
+							    {% else %}
+							        <br />
+
+							    	<form id="user_form" class="form register-form" method="post" action="/" enctype="multipart/form-data">
+							            {% csrf_token %}
+
+							            <!-- Display each form. The as_p method wraps each element in a paragraph
+								                 (<p>) element. This ensures each element appears on a new line,
+								                 making everything look neater. -->
+							            {{ user_form.as_p }}
+							            {{ profile_form.as_p }}
+
+								            <!-- Provide a button to click to submit the form. -->
+							            <div class="form-group">
+											<div class="row">
+												<div class="col-sm-6 col-sm-offset-3">
+													<input type="submit" name="submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register">
+												</div>
+											</div>
+										</div>
+						        	</form>
+						        {% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Rulers of The Kingdom</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+
+{% if user.is_authenticated %}
+
+<h1>{{account.user.username}}</h1>
+<img src="{{account.picture}}" alt="Profile picture" /> <br>
+
+suply: {{city.supply}}<br>
+
+walls level: {{city.walls_level}}<br>
+
+
+<button type="button">Attack</button>
+
+
+<a href="/game/logout/">Logout</a><br/>
+
+{% else %}
+<a href="/game/register/">Register Here</a><br/>
+<a href="/game/login/">Login</a><br/>
+{% endif %}
+
+</body>
+</html>

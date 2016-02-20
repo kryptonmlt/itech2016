@@ -16,7 +16,10 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^$', 'home.views.index'),
+    url(r'^$', 'home.views.register'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^game/', include('game.urls', namespace="game")),
+    url(r'^register/$', 'home.views.register'),
+    url(r'^login/$', 'home.views.user_login'),
+	url(r'^stats/$', 'home.views.top_stats'),
 ]
