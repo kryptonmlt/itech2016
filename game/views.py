@@ -127,6 +127,14 @@ def user_logout(request):
     return HttpResponseRedirect('/')
 
 
+@login_required
+def get_logs(request):
+    acc = Account.objects.get(pk=request.user.pk);
+    cities = City.objects.get(account=acc)
+    logs = Log.objects.objects(city=cities).orderby('-date_occurred')
+    return HttpResponse(logs)
+
+
 def top_stats(request):
     print "loading top stats"
 
