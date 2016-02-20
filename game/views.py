@@ -33,10 +33,6 @@ def get_logs(request):
     acc = Account.objects.get(pk=request.user.pk);
     cities = City.objects.get(account=acc)
     logs = Log.objects.objects(city=cities).orderby('-date_occurred')
-<<<<<<< HEAD
-    return HttpResponse(logs)
-=======
-    return HttpResponse(logs)
 
 @login_required
 def battle(request, user_name):
@@ -45,17 +41,3 @@ def battle(request, user_name):
     city = City.objects.get(account=account)
     context_dict = {'account': account, 'city' : city}
     return render(request, 'game/battle.html', context_dict)
-
-
-def top_stats(request):
-    print "loading top stats"
-
-    account_highest_wins = Account.objects.order_by('-wins')[:10]
-    account_highest_wins_percentage = Account.objects.order_by((F('wins') / F('defeats')))[:10]
-    alliance_score = Alliance.objects.order_by('-all_time_score')[:10]
-    context_dict = {'account_highest_wins': account_highest_wins,
-                    'account_highest_wins_percentage': account_highest_wins_percentage,
-                    'alliance_score': alliance_score}
-
-    return render(request, 'game/top_stats.html', context_dict)
->>>>>>> 54f6000914e30d17a9dd2fc14c39c2d07d311952
