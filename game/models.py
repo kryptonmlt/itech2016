@@ -2,6 +2,7 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
+from django.utils import formats
 from django.contrib.auth.models import User
 
 
@@ -32,7 +33,7 @@ class Account(models.Model):
         return now - datetime.timedelta(hours=12) <= now - self.last_attacked
 
     def get_win_percentage(self):
-        return (self.wins / self.defeats) * 100
+        return int((self.wins / float((self.defeats + self.wins))) * 100)
 
     was_attacked_recently.admin_order_field = 'last_attacked'
     was_attacked_recently.boolean = True
@@ -71,7 +72,8 @@ class Message(models.Model):
     date_occurred = models.DateTimeField('date occurred')
 
     def __str__(self):
-        return str(self.date_occurred) + ": " + self.text + ", from " + self.from_account.user.username + " to " + self.to_account.user.username
+        return str(
+            self.date_occurred) + ": " + self.text + ", from " + self.from_account.user.username + " to " + self.to_account.user.username
 
 
 class Badge(models.Model):
@@ -88,7 +90,7 @@ class Log(models.Model):
     date_occurred = models.DateTimeField('date occurred')
 
     def __str__(self):
-        return str(self.date_occurred) + ": " + self.text+"$$"
+        return formats.date_format(self.date_occurred, "SHORT_DATETIME_FORMAT") + ": " + self.text + "$$"
 
 
 class Cost(models.Model):

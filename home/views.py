@@ -3,6 +3,9 @@ from django.contrib.auth import authenticate, login
 from django.template import RequestContext
 from game.forms import UserForm, AccountForm
 from django.http import HttpResponse, HttpResponseRedirect
+from game.models import Account,Alliance
+from django.db.models import F
+
 
 def register(request):
     # Like before, get the request's context.
@@ -65,7 +68,6 @@ def register(request):
         context)
 
 
-
 def user_login(request):
     # Like before, obtain the context for the user's request.
     context = RequestContext(request)
@@ -105,6 +107,7 @@ def user_login(request):
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
         return render_to_response('/home/index.html', {}, context)
+
 
 def top_stats(request):
     print "loading top stats"

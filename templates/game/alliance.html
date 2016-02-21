@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{account.alliance.name}}</title>
+</head>
+<body>
+    <h1>Alliance {{ leader.alliance.name}}</a></h1>
+    <h2>Leader <a href="/game/battle/{{leader.user.username}}">{{leader.user.username}}</a></h2>
+    <strong>Alliance score:</strong> {{ leader.alliance.all_time_score}}<br />
+    <strong>Description:</strong> {{ leader.alliance.description}}
+
+    <h3>Members ({{ allies | length }} / 50)</h3>
+    <ol>
+    {% for acc in allies %}
+        <li><a href="/game/battle/{{acc.user.username}}">{{acc.user.username}}</a> {{ acc.wins }}</li>
+    {% endfor %}
+    </ol>
+
+</body>
+</html>

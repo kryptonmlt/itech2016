@@ -17,7 +17,7 @@ def index(request):
     acc = Account.objects.get(user=request.user)
     city = City.objects.get(account=acc)
     userlist = Account.objects.exclude(user=request.user)
-    context_dict = {'userlist': userlist, 'cost': cost, 'city': city}
+    context_dict = {'userlist': userlist, 'cost': cost, 'city': city, 'acc': acc}
     print "game page loaded!"
     return render(request, 'game/game.html', context_dict)
 
@@ -45,3 +45,13 @@ def battle(request, user_name):
     city = City.objects.get(account=account)
     context_dict = {'account': account, 'city': city}
     return render(request, 'game/battle.html', context_dict)
+
+
+@login_required
+def alliance(request, alliance_name):
+    alli = Alliance.objects.get(name=alliance_name)
+    allies = Account.objects.all().filter(alliance=alli).order_by('-wins')
+    owner = Account.objects.get(alliance=alli, alliance_owner=True)
+    print owner
+    context_dict = {'allies': allies, 'leader': owner}
+    return render(request, 'game/alliance.html', context_dict)

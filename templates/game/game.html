@@ -12,12 +12,17 @@
 
     <script>
         //polling that gets the logs
-        setInterval(function(){
+        populateLogBox();
+        setInterval(populateLogBox(), 5000);
+
+        function populateLogBox(){
             $.get('/game/get_logs/', function(data){
                 console.log(data);
                 $('#logs_text').html(data.replace(/\$\$/g,'<br />'));
             });
-        }, 5000);
+        }
+
+
     </script>
 
 </head>
@@ -26,11 +31,8 @@
 <img src="{% static "images/rulersofthekingdom.png" %}" width=50% class= col-md-offset-2 />
 
 {% if user.is_authenticated %}
-
-<div class="row">
-
-    <div class="container">
-        <h2></h2>
+<div class="container">
+    <div class="row">
         <div class="col-md-4">
             <table class="table table-bordered">
                 <thead>
@@ -87,40 +89,42 @@
                 </tbody>
             </table>
         </div>
-        <div>
-
-
-            <div class="col-md-4">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Opponents <span
-                            class="caret"></span></button>
-                    <ul class="dropdown-menu scrollable-menu" role="menu">
-                        {% for acc in userlist %}
-                        <li><a href="/game/battle/{{acc.user.username}}">{{acc.user.username}} </a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
+        <div class="col-md-4">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Opponents <span
+                        class="caret"></span></button>
+                <ul class="dropdown-menu scrollable-menu" role="menu">
+                    {% for acc in userlist %}
+                    <li><a href="/game/battle/{{acc.user.username}}">{{acc.user.username}} </a></li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>
 
+    {% if acc.alliance %}
     <div class="row">
-        <div class=col-md-offset-1>
-                <span id="logs_text">
-                    </span>
-        </div>
+        <strong>Alliance: </strong><a
+            href="/game/alliance/{{acc.alliance.name}}">{{acc.alliance.name}}</a><br/>
     </div>
-
-    <div class="row">
-        <div class=col-md-offset-1>
-            <a href="/game/logout/">Logout</a><br/>
-        </div>
-    </div>
-
-    {% else %}
-    <a href="/game/register/">Register Here</a><br/>
-    <a href="/game/login/">Login</a><br/>
     {% endif %}
+
+    <div class="row">
+        <div class="panel panel-default col-md-4">
+            <div class="panel-heading">Account Logs</div>
+            <div id="logs_text" class="panel-body"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <a href="/game/logout/">Logout</a><br/>
+    </div>
+</div>
+
+{% else %}
+<a href="/game/register/">Register Here</a><br/>
+<a href="/game/login/">Login</a><br/>
+{% endif %}
 
 </body>
 </html>
