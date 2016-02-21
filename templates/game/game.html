@@ -19,11 +19,22 @@
         }
 
 		$(document).ready(function(){
-            $('#footmenButton,#knightsButton,#bowmenButton,#war_machinesButton').click(function(){
-                tt = $(this).attr("troop_type");
-                $.get('/game/buy', {troop_type: tt}, function(data){
+            $('#houseButton,#wallButton,#footmenButton,#knightsButton,#bowmenButton,#war_machinesButton').click(function(){
+                et = $(this).attr("element_type");
+                $.get('/game/buy', {element_type: et}, function(data){
                    //increments stuff
-                   switch(tt){
+                   switch(et){
+                   	   case "supply":
+                            $('#supplyLevel').html(data[0]);
+                            $('#supplyCost').html(data[1]);
+                            break;
+                       case "wall":
+                            $('#wallLevel').html(data[0]);
+                            $('#wallCost').html(data[1]);
+                            break;
+                       case "knights":
+                            $('#knights').html(data);
+                            break;
                        case "footmen":
                             $('#footmen').html(data);
                             break;
@@ -67,13 +78,13 @@
                 <tbody>
                 <tr>
                     <td style="width:5%">Supply</td>
-                    <td style="width:5%">{{city.walls_level}}</td>
-                    <td style="width:5%">{{cost.house_price}} <button id="buyhouse" type="button">+</button> </td>
+                    <td style="width:5%"><span id="supplyLevel">{{city.supply}}</span></td>
+                    <td style="width:5%"><span id="supplyCost">{{cost.house_price}}</span> <button id="houseButton" element_type="supply" type="button">+</button> </td>
                 </tr>
                 <tr>
                     <td style="width:5%">Walls Level</td>
-                    <td style="width:5%">{{city.supply}}</td>
-                    <td style="width:5%">{{cost.wall_price}} <button id="buywall" type="button">+</button> </td>
+                    <td style="width:5%"><span id="wallLevel">{{city.walls_level}}</span></td>
+                    <td style="width:5%"><span id="wallCost">{{cost.wall_price}}</span> <button id="wallButton" element_type="wall" type="button">+</button> </td>
                 </tr>
                 </tbody>
             </table>
@@ -91,22 +102,22 @@
                 <tr>
                     <td style="width:5%">Footmen</td>
                     <td style="width:5%"><span id="footmen">{{city.footmen}}</span></td>
-                    <td style="width:5%">{{cost.footmen_price}} <button id="footmenButton" troop_type="footmen" type="button">+</button> </td>
+                    <td style="width:5%">{{cost.footmen_price}} <button id="footmenButton" element_type="footmen" type="button">+</button> </td>
                 </tr>
                 <tr>
                     <td style="width:5%">Knights</td>
                     <td style="width:5%"><span id="knights">{{city.knights}}</span></td>
-                    <td style="width:5%">{{cost.knights_price}} <button id="knightsButton" troop_type="knights" type="button">+</button> </td>
+                    <td style="width:5%">{{cost.knights_price}} <button id="knightsButton" element_type="knights" type="button">+</button> </td>
                 </tr>
                 <tr>
                     <td style="width:5%">Bowmen</td>
                     <td style="width:5%"><span id="bowmen">{{city.bowmen}}</span></td>
-                    <td style="width:5%">{{cost.bowmen_price}} <button id="bowmenButton" troop_type="bowmen" type="button">+</button> </td>
+                    <td style="width:5%">{{cost.bowmen_price}} <button id="bowmenButton" element_type="bowmen" type="button">+</button> </td>
                 </tr>
                 <tr>
                     <td style="width:5%">WarMachines</td>
                     <td style="width:5%"><span id="war_machines">{{city.war_machines}}</span></td>
-                    <td style="width:5%">{{cost.war_machines_price}} <button id="war_machinesButton" troop_type="war_machines" type="button">+</button> </td>
+                    <td style="width:5%">{{cost.war_machines_price}} <button id="war_machinesButton" element_type="war_machines" type="button">+</button> </td>
                 </tr>
                 </tbody>
 

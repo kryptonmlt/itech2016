@@ -141,30 +141,49 @@ def decline_alliance(request, from_account_username):
 
 def buy(request):
     if request.method == 'GET':
-        troop_type = request.GET['troop_type']
+        element_type = request.GET['element_type']
 
     acc = Account.objects.get(pk=request.user.pk)
     city = City.objects.all().get(account=acc)
-
-    if troop_type == 'footmen':
+    cost= Cost.objects.all().get()
+    
+    print element_type
+    
+    if element_type == 'supply':
+    	if city.gold >= cost.house_price:
+        	city.gold -= cost.house_price
+        	cost.house_price*=2
+        	city.supply += 50
+        	city.save()
+        	cost.save()
+        	return HttpResponse(city.supply,cost.house_price)
+    if element_type == 'wall':
+    	if city.gold >= cost.wall_price:
+        	city.gold -= cost.wall_price
+        	cost.wall_price*=2
+        	city.walls_level += 1
+        	city.save()
+        	cost.save()
+        	return HttpResponse(city.level,cost.walls_level)
+    if element_type == 'footmen':
     	if city.gold >= 10:
         	city.gold -= 10
         	city.footmen += 1
         	city.save()
         	return HttpResponse(city.footmen)
-    if troop_type == 'bowmen':
+    if element_type == 'bowmen':
     	if city.gold >= 15:
         	city.gold -= 15
         	city.bowmen += 1
         	city.save()
         	return HttpResponse(city.bowmen)
-    if troop_type == 'knights':
+    if element_type == 'knights':
     	if city.gold >= 25:
         	city.gold -= 25
         	city.knights += 1
         	city.save()
         	return HttpResponse(city.knights)
-    if troop_type == 'war_machines':
+    if element_type == 'war_machines':
    		if city.gold >= 50:
 			city.gold -= 50
 			city.war_machines += 1
