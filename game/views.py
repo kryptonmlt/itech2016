@@ -51,7 +51,9 @@ def alliance(request, alliance_name):
     alli = Alliance.objects.get(name=alliance_name)
     allies = Account.objects.all().filter(alliance=alli).order_by('-wins')
     owner = Account.objects.get(alliance=alli, alliance_owner=True)
-    context_dict = {'allies': allies, 'leader': owner, 'acc': acc}
+    requests = AllianceRequest.objects.filter(alliance_owner=acc)
+
+    context_dict = {'allies': allies, 'leader': owner, 'acc': acc, 'requests': requests}
     return render(request, 'game/alliance.html', context_dict)
 
 
@@ -81,15 +83,15 @@ def alliance_request(request, alliance_name):
 def leave_alliance(request):
     acc = Account.objects.get(pk=request.user.pk);
     if acc.alliance:
-        reply=""
+        reply = ""
         if acc.alliance_owner:
             next_in_line = \
                 Account.objects.all().filter(alliance=acc.alliance).exclude(user=request.user).order_by('-wins')
-            if next_in_line.count() > 0:  # appoint next in line as king
+            if next_in_line.count() > 0:  # appoint next in line as leader
                 next_leader = next_in_line[0]
                 next_leader.alliance_owner = True
                 next_leader.save()
-                reply = "Next in line ("+next_leader.user.username+") now leader of alliance, "
+                reply = "Next in line (" + next_leader.user.username + ") now leader of alliance, "
             else:  # delete alliance since no one left to take it
                 acc.alliance.delete()
                 reply = "No one next in line, alliance collapsed, "
@@ -101,3 +103,34 @@ def leave_alliance(request):
         reply = "Not in an alliance"
 
     return HttpResponse(reply)
+
+
+@login_required
+def accept_alliance(request, from_account_username):
+    acc = Account.objects.get(pk=request.user.pk);
+    other_user = User.objects.get(username=from_account_username);
+    recruit = Account.objects.get(user=other_user);
+    try:
+        req = AllianceRequest.objects.get(from_account=recruit, alliance_owner=acc)
+        req.delete()
+        if recruit.alliance:  # check whether he is already in an alliance
+            return HttpResponse(recruit.user.username + " already in an alliance!")
+        else:
+            recruit.alliance = acc.alliance
+            recruit.save()
+            return HttpResponse(recruit.user.username + " is now a member of your alliance!")
+    except AllianceRequest.DoesNotExist:
+        return HttpResponse("Request not found for " + recruit.user.username)
+
+
+@login_required
+def decline_alliance(request, from_account_username):
+    acc = Account.objects.get(pk=request.user.pk);
+    other_user = User.objects.get(username=from_account_username);
+    recruit = Account.objects.get(user=other_user);
+    try:
+        req = AllianceRequest.objects.get(from_account=recruit, alliance_owner=acc)
+        req.delete()
+        return HttpResponse("You declined " + recruit.user.username + " from becoming a member of your alliance!")
+    except AllianceRequest.DoesNotExist:
+        return HttpResponse("Request not found for " + recruit.user.username)

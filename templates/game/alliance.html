@@ -45,6 +45,17 @@
     </div>
 
     <div class="row">
+        {% if acc == leader %}
+        <h3>Alliance Requests ({{ requests | length }})</h3>
+        <ol>
+            {% for req in requests %}
+            <li>{{req.from_account.user.username}} - {{req.date_occurred}}, Request: {{req.text}} , Wins: {{ req.from_account.wins }}</li>
+            {% endfor %}
+        </ol>
+        {% endif %}
+    </div>
+
+    <div class="row">
         <h3>Members ({{ allies | length }} / 50)</h3>
         <ol>
             {% for acc in allies %}
