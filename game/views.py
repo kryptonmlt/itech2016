@@ -134,3 +134,30 @@ def decline_alliance(request, from_account_username):
         return HttpResponse("You declined " + recruit.user.username + " from becoming a member of your alliance!")
     except AllianceRequest.DoesNotExist:
         return HttpResponse("Request not found for " + recruit.user.username)
+        
+
+def buyfootmen(request):
+	troopid=None
+	if request.method == 'GET':
+		troop_type = request.GET['troop_type']
+		
+	acc = Account.objects.get(pk=request.user.pk);
+	city = City.objects.all().filter(account=acc)
+	
+	if troop_type='footmen'
+		city.footmen+=1
+		city.save()
+		return HttpResponse(city.footmen)
+	if troop_type='bowmen'
+		city.bowmen+=1
+		city.save()
+		return HttpResponse(city.bowmen)
+	if troop_type='knights'
+		city.knights+=1
+		city.save()
+		return HttpResponse(city.knights)
+	if troop_type='war_machines'
+		city.war_machines+=1
+		city.save()
+		return HttpResponse(city.war_machines)
+		

@@ -21,6 +21,18 @@
                 $('#logs_text').html(data.replace(/\$\$/g,'<br />'));
             });
         }
+        $('#buyhouse').click(function(){
+        	var catid;
+    		tt = $(this).attr("troop_type");
+    		$.get('/game/buy', {troop_type: tt}, function(data){
+               //increments stuff
+                $('#').html(data);
+   			 }, functionerror(data){
+   			 		//error happened for not enough gold
+   			 });
+		});
+
+
 
 
     </script>
@@ -46,12 +58,12 @@
                 <tr>
                     <td style="width:5%">Supply</td>
                     <td style="width:5%">{{city.walls_level}}</td>
-                    <td style="width:5%">{{cost.house_price}}</td>
+                    <td style="width:5%">{{cost.house_price}} <button id="buyhouse" type="button">+</button> </td>
                 </tr>
                 <tr>
                     <td style="width:5%">Walls Level</td>
                     <td style="width:5%">{{city.supply}}</td>
-                    <td style="width:5%">{{cost.wall_price}}</td>
+                    <td style="width:5%">{{cost.wall_price}} <button id="buywall" type="button">+</button> </td>
                 </tr>
                 </tbody>
             </table>
@@ -69,24 +81,25 @@
                 <tr>
                     <td style="width:5%">Footmen</td>
                     <td style="width:5%">{{city.footmen}}</td>
-                    <td style="width:5%">{{cost.footmen_price}}</td>
+                    <td style="width:5%"><span id="footmen">{{cost.footmen_price}}</span> <button id="buy" troop_type="footmen" type="button">+</button> </td>
                 </tr>
                 <tr>
                     <td style="width:5%">Knights</td>
                     <td style="width:5%">{{city.knights}}</td>
-                    <td style="width:5%">{{cost.knights_price}}</td>
+                    <td style="width:5%"><span id="knigts">{{cost.knights_price}}</span> <button id="buy" troop_type="knights" type="button">+</button> </td>
                 </tr>
                 <tr>
                     <td style="width:5%">Bowmen</td>
                     <td style="width:5%">{{city.bowmen}}</td>
-                    <td style="width:5%">{{cost.bowmen_price}}</td>
+                    <td style="width:5%"><span id="bowmen">{{cost.bowmen_price}}</span> <button id="buy" troop_type="bowmen" type="button">+</button> </td>
                 </tr>
                 <tr>
                     <td style="width:5%">WarMachines</td>
                     <td style="width:5%">{{city.war_machines}}</td>
-                    <td style="width:5%">{{cost.war_machines_price}}</td>
+                    <td style="width:5%"><span id="war_machines">{{cost.war_machines_price}}</span> <button id="buy" troop_type="war_machines" type="button">+</button> </td>
                 </tr>
                 </tbody>
+
             </table>
         </div>
         <div class="col-md-4">
