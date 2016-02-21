@@ -6,12 +6,12 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <title>{{leader.alliance.name}}</title>
+    <title>{{alliance.name}}</title>
 
     <script>
         function sendAllianceRequest() {
             var x = document.getElementById("msg").value;
-            $.get('/game/alliance_request/{{ leader.alliance.name}}', {msg: x}, function(data){
+            $.get('/game/alliance_request/{{ alliance.name}}', {msg: x}, function(data){
                 $('#requestResult').html(data);
             });
             document.getElementById("msg").value="";
@@ -42,12 +42,12 @@
 <body>
 <div class="container">
     <div class="row">
-        <h1>Alliance {{ leader.alliance.name}}</a></h1>
-        <h2>Leader <a href="/game/battle/{{leader.user.username}}">{{leader.user.username}}</a></h2>
+        <h1>Alliance {{ alliance.name}}</a></h1>
+        <h2>Leader <a href="/game/battle/{{leader}}">{{leader}}</a></h2>
     </div>
     <div class="row">
-        <strong>Alliance score:</strong> {{ leader.alliance.all_time_score}}
-        <strong>Description:</strong> {{ leader.alliance.description}}
+        <strong>Alliance score:</strong> {{ alliance.all_time_score}}
+        <strong>Description:</strong> {{ alliance.description}}
     </div>
     <div class="row">
         <strong>Message:</strong><input type="text" id="msg">
@@ -55,14 +55,14 @@
             Request
         </button>
         <span id="requestResult"></span>
-        {% if acc.alliance == leader.alliance %}
+        {% if acc.alliance == alliance %}
         <button onclick="leaveAlliance();" id="leave_button" class="btn btn-primary" type="button">Leave</button>
         <span id="leaveResult"></span>
         {% endif %}
     </div>
 
     <div class="row">
-        {% if acc == leader %}
+        {% if acc.user.username == leader %}
         <h3>Alliance Requests ({{ requests | length }})</h3>
         <ol>
             {% for req in requests %}

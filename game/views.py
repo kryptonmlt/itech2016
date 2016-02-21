@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -30,7 +29,7 @@ def user_logout(request):
 
 @login_required
 def get_logs(request):
-    acc = Account.objects.get(pk=request.user.pk);
+    acc = Account.objects.get(pk=request.user.pk)
     cities = City.objects.all().filter(account=acc)
     logs = Log.objects.all().filter(city=cities).order_by('-date_occurred')[:10]
     return HttpResponse(logs)
@@ -47,19 +46,23 @@ def battle(request, user_name):
 
 @login_required
 def alliance(request, alliance_name):
-    acc = Account.objects.get(pk=request.user.pk);
+    acc = Account.objects.get(pk=request.user.pk)
     alli = Alliance.objects.get(name=alliance_name)
     allies = Account.objects.all().filter(alliance=alli).order_by('-wins')
-    owner = Account.objects.get(alliance=alli, alliance_owner=True)
+    try:
+        owner = Account.objects.get(alliance=alli, alliance_owner=True)
+        owner_username = owner.user.username
+    except Account.DoesNotExist:
+        owner_username = "N/A"
     requests = AllianceRequest.objects.filter(alliance_owner=acc)
 
-    context_dict = {'allies': allies, 'leader': owner, 'acc': acc, 'requests': requests}
+    context_dict = {'allies': allies, 'leader': owner_username, 'acc': acc, 'requests': requests, 'alliance': alli}
     return render(request, 'game/alliance.html', context_dict)
 
 
 @login_required
 def alliance_request(request, alliance_name):
-    acc = Account.objects.get(pk=request.user.pk);
+    acc = Account.objects.get(pk=request.user.pk)
     if acc.alliance:
         return HttpResponse("Leave alliance first!")
 
@@ -81,7 +84,7 @@ def alliance_request(request, alliance_name):
 
 @login_required
 def leave_alliance(request):
-    acc = Account.objects.get(pk=request.user.pk);
+    acc = Account.objects.get(pk=request.user.pk)
     if acc.alliance:
         reply = ""
         if acc.alliance_owner:
@@ -107,9 +110,9 @@ def leave_alliance(request):
 
 @login_required
 def accept_alliance(request, from_account_username):
-    acc = Account.objects.get(pk=request.user.pk);
-    other_user = User.objects.get(username=from_account_username);
-    recruit = Account.objects.get(user=other_user);
+    acc = Account.objects.get(pk=request.user.pk)
+    other_user = User.objects.get(username=from_account_username)
+    recruit = Account.objects.get(user=other_user)
     try:
         req = AllianceRequest.objects.get(from_account=recruit, alliance_owner=acc)
         req.delete()
@@ -125,9 +128,9 @@ def accept_alliance(request, from_account_username):
 
 @login_required
 def decline_alliance(request, from_account_username):
-    acc = Account.objects.get(pk=request.user.pk);
-    other_user = User.objects.get(username=from_account_username);
-    recruit = Account.objects.get(user=other_user);
+    acc = Account.objects.get(pk=request.user.pk)
+    other_user = User.objects.get(username=from_account_username)
+    recruit = Account.objects.get(user=other_user)
     try:
         req = AllianceRequest.objects.get(from_account=recruit, alliance_owner=acc)
         req.delete()
@@ -140,7 +143,7 @@ def buy(request):
     if request.method == 'GET':
         troop_type = request.GET['troop_type']
 
-    acc = Account.objects.get(pk=request.user.pk);
+    acc = Account.objects.get(pk=request.user.pk)
     city = City.objects.all().get(account=acc)
 
     if troop_type == 'footmen':
