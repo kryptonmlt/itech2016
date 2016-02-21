@@ -21,7 +21,16 @@
                 $('#logs_text').html(data.replace(/\$\$/g,'<br />'));
             });
         }
-
+	    $('#buy').click(function(){
+        	var catid;
+    		tt = $(this).attr("troop_type");
+    		$.get('/game/buy', {troop_type: tt}, function(data){
+               //increments stuff
+                $('#footmen').html(data);
+   			 }, functionerror(data){
+   			 		//error happened for not enough gold
+   			 });
+		});
 
     </script>
 
