@@ -152,6 +152,8 @@ def get_gold(request):
 def buy(request):
     if request.method == 'GET':
         element_type = request.GET['element_type']
+    else:
+        return HttpResponse("-2")
 
     acc = Account.objects.get(pk=request.user.pk)
     city = City.objects.all().get(account=acc)
@@ -203,4 +205,26 @@ def calc_house_price(base, supply):
 
 
 def calc_wall_price(base, level):
-    return base * (level + 1);
+    return base * (level + 1)
+
+
+@login_required
+def create_alliance(request):
+    if request.method == 'GET':
+        name = request.GET['name']
+        desc = request.GET['desc']
+    else:
+        # missing data exit
+        return HttpResponse("-2")
+
+    acc = Account.objects.get(pk=request.user.pk)
+    try:
+        # create alliance
+        created_alliance = Alliance.objects.create(name=name, description=desc)
+        created_alliance.save()
+    except Alliance.IntegrityError:
+        return HttpResponse("Name Exists")
+    # alliance successfully created
+    acc.alliance = created_alliance
+    acc.alliance_owner = True
+    return HttpResponse("1")
