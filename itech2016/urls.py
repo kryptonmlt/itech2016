@@ -23,12 +23,12 @@ urlpatterns = [
     url(r'^game/', include('game.urls', namespace="game")),
     url(r'^register/$', 'home.views.register'),
     url(r'^login/$', 'home.views.user_login'),
-	url(r'^stats/$', 'home.views.top_stats'),
+    url(r'^stats/$', 'home.views.top_stats'),
 ]
 
 if settings.DEBUG:
     urlpatterns += patterns(
         'django.views.static',
         (r'^media/(?P<path>.*)',
-        'serve',
-        {'document_root': settings.MEDIA_ROOT}), )
+         'serve',
+         {'document_root': settings.MEDIA_ROOT}), )

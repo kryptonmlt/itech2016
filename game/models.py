@@ -33,7 +33,10 @@ class Account(models.Model):
         return now - datetime.timedelta(hours=12) <= now - self.last_attacked
 
     def get_win_percentage(self):
-        return int((self.wins / float((self.defeats + self.wins))) * 100)
+        if self.defeats == 0 & self.wins == 0:
+            return 0
+        else:
+            return int((self.wins / float((self.defeats + self.wins))) * 100)
 
     was_attacked_recently.admin_order_field = 'last_attacked'
     was_attacked_recently.boolean = True

@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.template import RequestContext
 from game.forms import UserForm, AccountForm
 from django.http import HttpResponse, HttpResponseRedirect
-from game.models import Account,Alliance
+from game.models import Account, Alliance
 from django.db.models import F
 
 
@@ -106,7 +106,7 @@ def user_login(request):
     else:
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
-        return render_to_response('/home/index.html', {}, context)
+        return render_to_response('home/index.html', {}, context)
 
 
 def top_stats(request):
@@ -114,9 +114,10 @@ def top_stats(request):
 
     account_highest_wins = Account.objects.order_by('-wins')[:10]
     account_highest_wins_percentage = Account.objects.order_by((F('wins') / F('defeats')))[:10]
+    account_highest_wins_percentage = account_highest_wins_percentage.reverse()
     alliance_score = Alliance.objects.order_by('-all_time_score')[:10]
     context_dict = {'account_highest_wins': account_highest_wins,
                     'account_highest_wins_percentage': account_highest_wins_percentage,
                     'alliance_score': alliance_score}
-
-    return render(request, '/home/top_stats.html', context_dict)
+    print "loaded top stats"
+    return render(request, 'home/top_stats.html', context_dict)
