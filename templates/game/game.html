@@ -30,7 +30,7 @@
                 $.get('/game/buy', {element_type: et}, function(data){
                     if(data == "-1"){
                         //show alert
-
+                        $("#alertNoGold").show();
                     }else{
                        //increments stuff
                        switch(et){
@@ -63,6 +63,11 @@
                        updateGold();
                    }
                  });
+            });
+
+            // when alert close
+            $('.alert .close').on('click', function(e) {
+                $(this).parent().hide();
             });
 
             //polling that gets the logs
@@ -150,6 +155,10 @@
         </div>
     </div>
 
+    <div class="alert fade in alert-danger" id="alertNoGold" style="display:none;">
+        <button type="button" class="close">×</button>
+        <strong>Not enough gold!</strong>
+    </div>
     <div class="row">
         <strong>Gold: </strong><span id="goldSpan">{{city.gold}}</span>
     </div>
