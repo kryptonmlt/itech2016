@@ -26,7 +26,18 @@
     		tt = $(this).attr("troop_type");
     		$.get('/game/buy', {troop_type: tt}, function(data){
                //increments stuff
-                $('#footmen').html(data);
+               {% if tt == "footmen" %}
+               $('#footmen').html(data);
+               {% endif %}
+               {% if tt == "bowmen" %}
+               $('#bowmen').html(data);
+               {% endif %}
+               {% if tt == "knights" %}
+               $('#knights').html(data);
+               {% endif %}
+               {% if tt == "war_machine" %}
+               $('#war_machine').html(data);
+               {% endif %}
    			 }, functionerror(data){
    			 		//error happened for not enough gold
    			 });
