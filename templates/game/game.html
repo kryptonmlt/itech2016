@@ -11,13 +11,9 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
     <script>
-        //polling that gets the logs
-        populateLogBox();
-        setInterval(populateLogBox(), 5000);
 
         function populateLogBox(){
             $.get('/game/get_logs/', function(data){
-                console.log(data);
                 $('#logs_text').html(data.replace(/\$\$/g,'<br />'));
             });
         }
@@ -43,6 +39,10 @@
                    }
                  });
             });
+
+            //polling that gets the logs
+            populateLogBox()
+            setInterval(function() {populateLogBox()}, 5000);
         });
 
     </script>
@@ -130,6 +130,8 @@
         <strong>Alliance: </strong><a
             href="/game/alliance/{{acc.alliance.name}}">{{acc.alliance.name}}</a><br/>
     </div>
+    {% else %}
+        <strong>Create or Join an alliance</strong>
     {% endif %}
 
     <div class="row">
