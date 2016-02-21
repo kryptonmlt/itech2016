@@ -14,8 +14,8 @@ def index(request):
     acc = Account.objects.get(user=request.user)
     city = City.objects.get(account=acc)
     userlist = Account.objects.exclude(user=request.user)
-    cost.wall_price = cost.wall_price + (cost.wall_price * city.walls_level)
-    cost.house_price = cost.house_price + city.supply
+    cost.wall_price = calc_wall_price(cost.wall_price, city.walls_level)
+    cost.house_price = calc_house_price(cost.house_price, city.supply)
     context_dict = {'userlist': userlist, 'cost': cost, 'city': city, 'acc': acc}
     print "game page loaded!"
     return render(request, 'game/game.html', context_dict)
@@ -149,22 +149,20 @@ def buy(request):
     city = City.objects.all().get(account=acc)
     cost = Cost.objects.all().get()
 
-    print element_type
-
     if element_type == 'supply':
-        temp_cost = cost.house_price + city.supply + 50
+        temp_cost = calc_house_price(cost.house_price, city.supply)
         if city.gold >= temp_cost:
             city.gold -= temp_cost
             city.supply += 50
             city.save()
-            return HttpResponse(str(city.supply) + "," + str(temp_cost))
+            return HttpResponse(str(city.supply) + "," + str(calc_house_price(cost.house_price, city.supply)))
     if element_type == 'wall':
-        temp_cost = cost.wall_price + (cost.wall_price * (city.walls_level+1))
+        temp_cost = calc_wall_price(cost.wall_price, city.walls_level)
         if city.gold >= temp_cost:
             city.gold -= temp_cost
             city.walls_level += 1
             city.save()
-            return HttpResponse(str(city.walls_level) + "," + str(temp_cost))
+            return HttpResponse(str(city.walls_level) + "," + str(calc_wall_price(cost.wall_price, city.walls_level)))
     if element_type == 'footmen':
         if city.gold >= 10:
             city.gold -= 10
@@ -190,3 +188,11 @@ def buy(request):
             city.save()
             return HttpResponse(city.war_machines)
     return HttpResponse("-1")
+
+
+def calc_house_price(base, supply):
+    return base + supply
+
+
+def calc_wall_price(base, level):
+    return base * (level + 1);
