@@ -62,10 +62,10 @@ class AllianceRequest(models.Model):
     from_account = models.ForeignKey(Account, related_name="from_account_alliance_request")
     alliance_owner = models.ForeignKey(Account, related_name="alliance_owner_account")
     text = models.CharField(max_length=200)
-    date_occurred = models.DateTimeField('date occurred')
+    date_occurred = models.DateTimeField('date occurred', default=datetime.datetime.now)
 
     def __str__(self):
-        return self.from_account.username + " asking " + self.alliance_owner.username
+        return self.from_account.user.username + " asking " + self.alliance_owner.user.username
 
 
 class Message(models.Model):

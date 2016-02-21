@@ -2,20 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{account.alliance.name}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <title>{{leader.alliance.name}}</title>
+
+    <script>
+        function sendAllianceRequest() {
+            var x = document.getElementById("msg").value;
+            $.get('/game/alliance_request/{{ leader.alliance.name}}', {msg: x}, function(data){
+                $('#requestResult').html(data);
+            });
+            document.getElementById("msg").value="";
+        }
+
+        function leaveAlliance() {
+            $.get('/game/leave_alliance/', function(data){
+                $('#leaveResult').html(data);
+            });
+        }
+    </script>
 </head>
 <body>
-    <h1>Alliance {{ leader.alliance.name}}</a></h1>
-    <h2>Leader <a href="/game/battle/{{leader.user.username}}">{{leader.user.username}}</a></h2>
-    <strong>Alliance score:</strong> {{ leader.alliance.all_time_score}}<br />
-    <strong>Description:</strong> {{ leader.alliance.description}}
+<div class="container">
+    <div class="row">
+        <h1>Alliance {{ leader.alliance.name}}</a></h1>
+        <h2>Leader <a href="/game/battle/{{leader.user.username}}">{{leader.user.username}}</a></h2>
+    </div>
+    <div class="row">
+        <strong>Alliance score:</strong> {{ leader.alliance.all_time_score}}
+        <strong>Description:</strong> {{ leader.alliance.description}}
+    </div>
+    <div class="row">
+        <strong>Message:</strong><input type="text" id="msg">
+        <button onclick="sendAllianceRequest();" id="alliance_request_button" class="btn btn-primary" type="button">Request</button>
+        <span id="requestResult"></span>
+        {% if acc.alliance == leader.alliance %}
+        <button onclick="leaveAlliance();" id="leave_button" class="btn btn-primary" type="button">Leave</button>
+        <span id="leaveResult"></span>
+        {% endif %}
+    </div>
 
-    <h3>Members ({{ allies | length }} / 50)</h3>
-    <ol>
-    {% for acc in allies %}
-        <li><a href="/game/battle/{{acc.user.username}}">{{acc.user.username}}</a> {{ acc.wins }}</li>
-    {% endfor %}
-    </ol>
-
+    <div class="row">
+        <h3>Members ({{ allies | length }} / 50)</h3>
+        <ol>
+            {% for acc in allies %}
+            <li><a href="/game/battle/{{acc.user.username}}">{{acc.user.username}}</a> {{ acc.wins }}</li>
+            {% endfor %}
+        </ol>
+    </div>
+</div>
 </body>
 </html>
