@@ -22,6 +22,21 @@
                 $('#leaveResult').html(data);
             });
         }
+
+		$(document).ready(function(){
+            $('.acceptButton').click(function() {
+                reqAcc = $(this).attr("reqAcc");
+                $.get('/game/accept_alliance/'+reqAcc, function(data){
+                    location.reload();
+                });
+            });
+            $('.declineButton').click(function() {
+                reqAcc = $(this).attr("reqAcc");
+                $.get('/game/decline_alliance/'+reqAcc, function(data){
+                    location.reload();
+                });
+            });
+        });
     </script>
 </head>
 <body>
@@ -36,7 +51,9 @@
     </div>
     <div class="row">
         <strong>Message:</strong><input type="text" id="msg">
-        <button onclick="sendAllianceRequest();" id="alliance_request_button" class="btn btn-primary" type="button">Request</button>
+        <button onclick="sendAllianceRequest();" id="alliance_request_button" class="btn btn-primary" type="button">
+            Request
+        </button>
         <span id="requestResult"></span>
         {% if acc.alliance == leader.alliance %}
         <button onclick="leaveAlliance();" id="leave_button" class="btn btn-primary" type="button">Leave</button>
@@ -49,7 +66,15 @@
         <h3>Alliance Requests ({{ requests | length }})</h3>
         <ol>
             {% for req in requests %}
-            <li>{{req.from_account.user.username}} - {{req.date_occurred}}, Request: {{req.text}} , Wins: {{ req.from_account.wins }}</li>
+            <li>{{req.from_account.user.username}} - {{req.date_occurred}}, Message: {{req.text}} , Wins:
+                {{ req.from_account.wins }}
+                <button reqAcc="{{req.from_account.user.username}}" type="button"
+                        class="btn btn-success btn-xs acceptButton">Y
+                </button>
+                <button reqAcc="{{req.from_account.user.username}}" type="button"
+                        class="btn btn-danger btn-xs declineButton">N
+                </button>
+            </li>
             {% endfor %}
         </ol>
         {% endif %}
