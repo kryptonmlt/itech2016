@@ -22,31 +22,38 @@
             $('#houseButton,#wallButton,#footmenButton,#knightsButton,#bowmenButton,#war_machinesButton').click(function(){
                 et = $(this).attr("element_type");
                 $.get('/game/buy', {element_type: et}, function(data){
-                   //increments stuff
-                   switch(et){
-                   	   case "supply":
-                            $('#supplyLevel').html(data[0]);
-                            $('#supplyCost').html(data[1]);
-                            break;
-                       case "wall":
-                            $('#wallLevel').html(data[0]);
-                            $('#wallCost').html(data[1]);
-                            break;
-                       case "knights":
-                            $('#knights').html(data);
-                            break;
-                       case "footmen":
-                            $('#footmen').html(data);
-                            break;
-                       case "bowmen":
-                            $('#bowmen').html(data);
-                            break;
-                       case "knights":
-                            $('#knights').html(data);
-                            break;
-                       case "war_machines":
-                            $('#war_machines').html(data);
-                            break;
+                    if(data == "-1"){
+                        //show alert
+
+                    }else{
+                       //increments stuff
+                       switch(et){
+                           case "supply":
+                                var res = data.split(",");
+                                $('#supplyLevel').html(res[0]);
+                                $('#supplyCost').html(res[1]);
+                                break;
+                           case "wall":
+                                var res = data.split(",");
+                                $('#wallLevel').html(res[0]);
+                                $('#wallCost').html(res[1]);
+                                break;
+                           case "knights":
+                                $('#knights').html(data);
+                                break;
+                           case "footmen":
+                                $('#footmen').html(data);
+                                break;
+                           case "bowmen":
+                                $('#bowmen').html(data);
+                                break;
+                           case "knights":
+                                $('#knights').html(data);
+                                break;
+                           case "war_machines":
+                                $('#war_machines').html(data);
+                                break;
+                       }
                    }
                  });
             });
@@ -134,6 +141,10 @@
                 </ul>
             </div>
         </div>
+    </div>
+
+    <div class="row">
+        <strong>Gold: </strong>{{city.gold}}
     </div>
 
     {% if acc.alliance %}
