@@ -147,18 +147,22 @@ def buy(request):
 	print troop_type
 	
 	if troop_type=='footmen':
+		city.gold+=10
 		city.footmen+=1
 		city.save()
 		return HttpResponse(city.footmen)
 	if troop_type=='bowmen':
+		city.gold+=15
 		city.bowmen+=1
 		city.save()
 		return HttpResponse(city.bowmen)
 	if troop_type=='knights':
+		city.gold+=25
 		city.knights+=1
 		city.save()
 		return HttpResponse(city.knights)
 	if troop_type=='war_machines':
+		city.gold+=50
 		city.war_machines+=1
 		city.save()
 		return HttpResponse(city.war_machines)
