@@ -141,6 +141,14 @@ def decline_alliance(request, from_account_username):
         return HttpResponse("Request not found for " + recruit.user.username)
 
 
+@login_required
+def get_gold(request):
+    acc = Account.objects.get(pk=request.user.pk)
+    city = City.objects.all().get(account=acc)
+    return HttpResponse(city.gold)
+
+
+@login_required
 def buy(request):
     if request.method == 'GET':
         element_type = request.GET['element_type']

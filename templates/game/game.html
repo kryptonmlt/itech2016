@@ -18,6 +18,12 @@
             });
         }
 
+        function updateGold(){
+            $.get('/game/get_gold/', function(data){
+                $('#goldSpan').html(data);
+            });
+        }
+
 		$(document).ready(function(){
             $('#houseButton,#wallButton,#footmenButton,#knightsButton,#bowmenButton,#war_machinesButton').click(function(){
                 et = $(this).attr("element_type");
@@ -54,6 +60,7 @@
                                 $('#war_machines').html(data);
                                 break;
                        }
+                       updateGold();
                    }
                  });
             });
@@ -144,7 +151,7 @@
     </div>
 
     <div class="row">
-        <strong>Gold: </strong>{{city.gold}}
+        <strong>Gold: </strong><span id="goldSpan">{{city.gold}}</span>
     </div>
 
     {% if acc.alliance %}
