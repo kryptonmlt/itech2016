@@ -200,7 +200,9 @@ def buy(request):
             	city.war_machines += 1
             	city.save()
             	return HttpResponse(city.war_machines)
-    	return HttpResponse("-1")
+    else:
+    	return HttpResponse("-3")
+    return HttpResponse("-1")
 
 def calc_house_price(base, supply):
     return base + supply
