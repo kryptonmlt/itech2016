@@ -90,7 +90,7 @@ class Badge(models.Model):
 class Log(models.Model):
     city = models.ForeignKey(City)
     text = models.CharField(max_length=200)
-    date_occurred = models.DateTimeField('date occurred')
+    date_occurred = models.DateTimeField('date occurred',default=timezone.now())
 
     def __str__(self):
         return formats.date_format(self.date_occurred, "SHORT_DATETIME_FORMAT") + ": " + self.text + "$$"

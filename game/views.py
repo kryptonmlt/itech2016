@@ -209,18 +209,41 @@ def calc_wall_price(base, level):
     
 @login_required
 def attack(request, opponent):
+
 	user = User.objects.get(username=opponent)
 	enemyaccount = Account.objects.get(user=user)
 	ecity = City.objects.all().get(account=enemyaccount)
 	acc = Account.objects.get(pk=request.user.pk)
 	city = City.objects.all().get(account=acc)
-	
+	print "opponent",user.username
+	print "you", acc.user.username
 	if city.footmen+(city.bowmen*1.5)+(city.knights*2)+(city.war_machines*4)>(ecity.footmen+(ecity.bowmen*1.5)+(ecity.knights*2)+(ecity.war_machines*4))*((10+ecity.walls_level)/10):
+		createWinLog(city,user)
+		createDefeatLog(ecity,request.user)
+		ecity.gold-=tempgold
+		city.gold+=tempgold
+		city.save()
+		ecity.save()
 		print "victory"
 		return HttpResponse("victory")
 	else:
+		createWinLog(ecity,request.user)
+		createDefeatLog(city,user)
+		tempgold=city.gold/5
+		ecity.gold+=tempgold
+		city.gold-=tempgold
+		city.save()
+		ecity.save()
 		print "defeat"
 		return HttpResponse("defeat")
+
+def createWinLog(city,user):
+	log=Log.objects.create(city=city, text="you defeated "+user.username)
+	log.save()
+	
+def createDefeatLog(city,user):
+	log=Log.objects.create(city=city, text="you were defeated by "+user.username)
+	log.save()
 
 @login_required
 def create_alliance(request):
