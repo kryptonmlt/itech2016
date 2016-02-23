@@ -13,14 +13,24 @@
             var x = document.getElementById("msg").value;
             $.get('/game/alliance_request/{{ alliance.name}}', {msg: x}, function(data){
                 $('#requestResult').html(data);
+                if(data != -1){
+                    $("#leaveNotifAlert").show();
+                }
             });
             document.getElementById("msg").value="";
         }
 
         function leaveAlliance() {
             $.get('/game/leave_alliance/', function(data){
-                $('#leaveResult').html(data);
+                $('#requestResult').html(data);
+                if(data != -1){
+                    $("#leaveNotifAlert").show();
+                }
             });
+        }
+
+        function returnToGame(){
+            window.location.href = "/game/";
         }
 
 		$(document).ready(function(){
@@ -35,6 +45,10 @@
                 $.get('/game/decline_alliance/'+reqAcc, function(data){
                     location.reload();
                 });
+            });
+
+            $('.alert .close').on('click', function(e) {
+                returnToGame();
             });
         });
     </script>
@@ -54,11 +68,14 @@
         <button onclick="sendAllianceRequest();" id="alliance_request_button" class="btn btn-primary" type="button">
             Request
         </button>
-        <span id="requestResult"></span>
         {% if acc.alliance == alliance %}
         <button onclick="leaveAlliance();" id="leave_button" class="btn btn-primary" type="button">Leave</button>
-        <span id="leaveResult"></span>
+
         {% endif %}
+    </div>
+    <div class="alert fade in alert-success" id="leaveNotifAlert" style="display:none;">
+        <button type="button" class="close">×</button>
+        <strong><span id="requestResult"></span></strong>
     </div>
 
     <div class="row">
