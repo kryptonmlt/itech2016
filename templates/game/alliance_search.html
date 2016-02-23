@@ -37,7 +37,11 @@
     </div>
     <div class="row">
         {% if similar_alliances %}
-            <h2> {{ similar_alliances | length }} results for search: {{query}}</h2>
+            {% if query %}
+                <h2> {{ similar_alliances | length }} results for search: {{query}}</h2>
+            {% else %}
+                <h2> Top {{ similar_alliances | length }} Alliances</h2>
+            {% endif %}
             <ul>
                 {% for alliance in similar_alliances %}
                 <!-- Following line changed to add an HTML hyperlink -->

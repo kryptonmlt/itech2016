@@ -65,7 +65,7 @@ class AllianceRequest(models.Model):
     date_occurred = models.DateTimeField('date occurred', default=datetime.datetime.now)
 
     def __str__(self):
-        return self.from_account.user.username + " asking " + self.alliance_owner.user.username
+        return self.from_account.user.username + " asking " + self.alliance.name
 
 
 class Message(models.Model):
@@ -107,3 +107,11 @@ class Cost(models.Model):
 
     def __str__(self):
         return "Cost stats"
+
+
+class CityGraphic(models.Model):
+    level = models.IntegerField(default=0)
+    picture = models.ImageField(upload_to='media', blank=True)
+
+    def __str__(self):
+        return "City Lvl " + str(self.level)

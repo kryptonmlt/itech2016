@@ -50,15 +50,22 @@ def battle(request, user_name):
 
 @login_required
 def alliance(request, alliance_name):
-    acc = Account.objects.get(pk=request.user.pk)
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
     alli = Alliance.objects.get(name=alliance_name)
     allies = Account.objects.all().filter(alliance=alli).order_by('-wins')
+    owner = False
     try:
         owner = Account.objects.get(alliance=alli, alliance_owner=True)
         owner_username = owner.user.username
+        if owner_username == acc.user.username:
+            owner = True
     except Account.DoesNotExist:
         owner_username = "N/A"
-    requests = AllianceRequest.objects.filter(alliance_owner=acc)
+    if owner:
+        requests = AllianceRequest.objects.filter(alliance=alli)
+    else:
+        requests = ""
 
     context_dict = {'allies': allies, 'leader': owner_username, 'acc': acc, 'requests': requests, 'alliance': alli}
     return render(request, 'game/alliance.html', context_dict)
@@ -68,7 +75,7 @@ def alliance(request, alliance_name):
 def alliance_request(request, alliance_name):
     acc = Account.objects.get(pk=request.user.pk)
     if acc.alliance:
-        if acc.alliance.name == alliance_name :
+        if acc.alliance.name == alliance_name:
             return HttpResponse("You are already in this alliance!")
         else:
             return HttpResponse("Leave alliance first!")
@@ -342,5 +349,6 @@ def alliance_search(request, query):
 
 @login_required
 def alliance_search_empty(request):
-    context_dict = {'similar_alliances': "", 'query': ""}
+    similar_alliances = Alliance.objects.order_by('-all_time_score')[:10]
+    context_dict = {'similar_alliances': similar_alliances, 'query': ""}
     return render(request, 'game/alliance_search.html', context_dict)

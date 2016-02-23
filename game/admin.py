@@ -1,5 +1,5 @@
 from django.contrib import admin
-from game.models import Alliance, Account, City, AllianceRequest, Message, Badge, Log, Cost
+from game.models import Alliance, Account, City, AllianceRequest, Message, Badge, Log, Cost, CityGraphic
 
 # Register your models here.
 admin.site.register(Alliance)
@@ -10,3 +10,4 @@ admin.site.register(Message)
 admin.site.register(Badge)
 admin.site.register(Log)
 admin.site.register(Cost)
+admin.site.register(CityGraphic)
