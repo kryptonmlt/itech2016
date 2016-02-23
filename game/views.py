@@ -366,3 +366,9 @@ def alliance_search_empty(request):
     similar_alliances = Alliance.objects.order_by('-all_time_score')[:10]
     context_dict = {'similar_alliances': similar_alliances, 'query': ""}
     return render(request, 'game/alliance_search.html', context_dict)
+
+
+@login_required
+def city_img(request, house_level):
+    city_pic = CityGraphic.objects.get(level=house_level)
+    return HttpResponse(str(city_pic.picture))
