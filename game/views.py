@@ -6,6 +6,7 @@ from game.models import Account, Alliance, AllianceRequest, City, Badge, Log, Me
 from django.contrib.auth.models import User
 import datetime
 from random import randint
+from django.db.models import Q
 
 
 # Create your views here.
@@ -207,75 +208,88 @@ def calc_house_price(base, supply):
 
 def calc_wall_price(base, level):
     return base * (level + 1)
-    
+
+
 @login_required
 def attack(request, opponent):
+    user = User.objects.get(username=opponent)
+    enemyaccount = Account.objects.get(user=user)
+    ecity = City.objects.all().get(account=enemyaccount)
+    acc = Account.objects.get(pk=request.user.pk)
+    city = City.objects.all().get(account=acc)
+    print "opponent", user.username
+    print "you", acc.user.username
+    if city.footmen + (city.bowmen * 1.5) + (city.knights * 2) + (city.war_machines * 4) > (
+                        ecity.footmen + (ecity.bowmen * 1.5) + (ecity.knights * 2) + (ecity.war_machines * 4)) * (
+                (10 + ecity.walls_level) / 10):
+        rnggold = randint(10, 15)
+        tempgold = ecity.gold / rnggold
+        loseArmy(city, ecity, False, True, user, tempgold)
+        loseArmy(ecity, city, True, False, request.user, tempgold)
+        print "victory"
+        return HttpResponse("victory")
+    else:
+        rnggold = randint(5, 10)
+        tempgold = city.gold / rnggold
+        loseArmy(city, ecity, False, False, user, tempgold)
+        loseArmy(ecity, city, True, True, request.user, tempgold)
+        print "defeat"
+        return HttpResponse("defeat")
 
-	user = User.objects.get(username=opponent)
-	enemyaccount = Account.objects.get(user=user)
-	ecity = City.objects.all().get(account=enemyaccount)
-	acc = Account.objects.get(pk=request.user.pk)
-	city = City.objects.all().get(account=acc)
-	print "opponent",user.username
-	print "you", acc.user.username
-	if city.footmen+(city.bowmen*1.5)+(city.knights*2)+(city.war_machines*4)>(ecity.footmen+(ecity.bowmen*1.5)+(ecity.knights*2)+(ecity.war_machines*4))*((10+ecity.walls_level)/10):
-		rnggold=randint(10,15)
-		tempgold=ecity.gold/rnggold
-		loseArmy(city,ecity,False,True,user,tempgold)
-		loseArmy(ecity,city,True,False,request.user,tempgold)
-		print "victory"
-		return HttpResponse("victory")
-	else:
-		rnggold=randint(5,10)
-		tempgold=city.gold/rnggold
-		loseArmy(city,ecity,False,False,user,tempgold)
-		loseArmy(ecity,city,True,True,request.user,tempgold)
-		print "defeat"
-		return HttpResponse("defeat")
 
-def loseArmy(city,ecity,defender,winner,user,tempgold):
-	if defender:
-		if winner:
-			rng=randint(5,15)
-			city.gold+=tempgold
-			ecity.gold-=tempgold
-			createWinLog(city,user,rng,defender,tempgold)
-		rng=randint(15,30)
-		createDefeatLog(city,user,rng,defender,tempgold)
-		city.gold-=tempgold
-		ecity.gold+=tempgold
-	else:
-		if winner:
-			rng=randint(15,30)
-			createWinLog(city,user,rng,defender,tempgold)
-			city.gold+=tempgold
-			ecity.gold-=tempgold
-		rng=randint(30,50)
-		createDefeatLog(city,user,rng,defender,tempgold)
-		city.gold-=tempgold
-		ecity.gold+=tempgold
-		
-	city.footmen-=city.footmen/rng
-	city.bowmen-=city.bowmen/rng
-	city.knights-=city.knights/rng
-	city.war_machines-=city.war_machines/rng
-	city.save()
+def loseArmy(city, ecity, defender, winner, user, tempgold):
+    if defender:
+        if winner:
+            rng = randint(5, 15)
+            city.gold += tempgold
+            ecity.gold -= tempgold
+            createWinLog(city, user, rng, defender, tempgold)
+        rng = randint(15, 30)
+        createDefeatLog(city, user, rng, defender, tempgold)
+        city.gold -= tempgold
+        ecity.gold += tempgold
+    else:
+        if winner:
+            rng = randint(15, 30)
+            createWinLog(city, user, rng, defender, tempgold)
+            city.gold += tempgold
+            ecity.gold -= tempgold
+        rng = randint(30, 50)
+        createDefeatLog(city, user, rng, defender, tempgold)
+        city.gold -= tempgold
+        ecity.gold += tempgold
 
-def createWinLog(city,user,casualties,defender,tempgold):
-	if defender:
-		log=Log.objects.create(city=city, text="you defended your city successfully from "+user.username+" losing "+str(casualties)+" % of your troops and gained "+str(tempgold)+" of the enemy's gold")
-	else:
-		log=Log.objects.create(city=city, text="you defeated "+user.username+" losing "+str(casualties)+" % of your troops and gained "+str(tempgold)+" of the enemy's gold")
-	
-	log.save()
-	
-def createDefeatLog(city,user,casualties,defender,tempgold):
-	if defender:
-		log=Log.objects.create(city=city, text="you failed to defend your city from "+user.username+" losing "+str(casualties)+" % of your troops and lost "+str(tempgold)+" of your gold")
-	else:
-		log=Log.objects.create(city=city, text="you suffered a defeat from "+user.username+" losing "+str(casualties)+" % of your troops and lost "+str(tempgold)+" of your gold")
-	
-	log.save()
+    city.footmen -= city.footmen / rng
+    city.bowmen -= city.bowmen / rng
+    city.knights -= city.knights / rng
+    city.war_machines -= city.war_machines / rng
+    city.save()
+
+
+def createWinLog(city, user, casualties, defender, tempgold):
+    if defender:
+        log = Log.objects.create(city=city,
+                                 text="you defended your city successfully from " + user.username + " losing " + str(
+                                     casualties) + " % of your troops and gained " + str(
+                                     tempgold) + " of the enemy's gold")
+    else:
+        log = Log.objects.create(city=city, text="you defeated " + user.username + " losing " + str(
+            casualties) + " % of your troops and gained " + str(tempgold) + " of the enemy's gold")
+
+    log.save()
+
+
+def createDefeatLog(city, user, casualties, defender, tempgold):
+    if defender:
+        log = Log.objects.create(city=city,
+                                 text="you failed to defend your city from " + user.username + " losing " + str(
+                                     casualties) + " % of your troops and lost " + str(tempgold) + " of your gold")
+    else:
+        log = Log.objects.create(city=city, text="you suffered a defeat from " + user.username + " losing " + str(
+            casualties) + " % of your troops and lost " + str(tempgold) + " of your gold")
+
+    log.save()
+
 
 @login_required
 def create_alliance(request):
@@ -297,3 +311,10 @@ def create_alliance(request):
     acc.alliance = created_alliance
     acc.alliance_owner = True
     return HttpResponse("1")
+
+
+@login_required
+def alliance_search(request, query):
+    similar_alliances = Alliance.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
+    context_dict = {'similar_alliances': similar_alliances}
+    return render(request, 'game/alliance_search.html', context_dict)
