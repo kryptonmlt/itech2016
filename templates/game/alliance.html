@@ -46,6 +46,15 @@
                     location.reload();
                 });
             });
+            $('.kickButton').click(function() {
+                reqAcc = $(this).attr("reqAcc");
+                $.get('/game/kick_member/'+reqAcc, function(data){
+                    console.log(data);
+                    if(data == 1){
+                        location.reload();
+                    }
+                });
+            });
 
             $('.alert .close').on('click', function(e) {
                 returnToGame();
@@ -70,11 +79,10 @@
         </button>
         {% if acc.alliance == alliance %}
         <button onclick="leaveAlliance();" id="leave_button" class="btn btn-primary" type="button">Leave</button>
-
         {% endif %}
     </div>
     <div class="alert fade in alert-success" id="leaveNotifAlert" style="display:none;">
-        <button type="button" class="close">×</button>
+        <button type="button" class="close">Back</button>
         <strong><span id="requestResult"></span></strong>
     </div>
 
@@ -101,7 +109,15 @@
         <h3>Members ({{ allies | length }} / 50)</h3>
         <ol>
             {% for acc in allies %}
-            <li><a href="/game/battle/{{acc.user.username}}">{{acc.user.username}}</a> {{ acc.wins }}</li>
+            <li><a href="/game/battle/{{acc.user.username}}">{{acc.user.username}}</a> {{ acc.wins }}
+                {% if acc.user.username != leader %}
+                    {% if request.user.username == leader %}
+                        <button reqAcc="{{acc.user.username}}" type="button"
+                                class="btn btn-danger btn-xs kickButton">Kick
+                        </button>
+                    {% endif %}
+                {% endif %}
+            </li>
             {% endfor %}
         </ol>
     </div>

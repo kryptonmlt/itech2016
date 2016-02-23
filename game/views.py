@@ -214,6 +214,19 @@ def calc_wall_price(base, level):
 
 
 @login_required
+def kick_member(request, member):
+    admin = Account.objects.get(pk=request.user.pk)
+    other_member = User.objects.get(username=member)
+    poor_member = Account.objects.get(user=other_member)
+    if admin.alliance_owner:
+        poor_member.alliance = None
+        poor_member.save()
+        return HttpResponse("1")
+    else:
+        return HttpResponse("-1")
+
+
+@login_required
 def attack(request, opponent):
     user = User.objects.get(username=opponent)
     enemyaccount = Account.objects.get(user=user)
