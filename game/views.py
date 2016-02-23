@@ -217,8 +217,7 @@ def attack(request, opponent):
     ecity = City.objects.all().get(account=enemyaccount)
     acc = Account.objects.get(pk=request.user.pk)
     city = City.objects.all().get(account=acc)
-    print "opponent", user.username
-    print "you", acc.user.username
+    
     if city.footmen + (city.bowmen * 1.5) + (city.knights * 2) + (city.war_machines * 4) > (
                 ecity.footmen + (ecity.bowmen * 1.5) + (ecity.knights * 2) + (ecity.war_machines * 4)) * (
         (10 + ecity.walls_level) / 10):
@@ -244,20 +243,22 @@ def loseArmy(city, ecity, defender, winner, user, tempgold):
             city.gold += tempgold
             ecity.gold -= tempgold
             createWinLog(city, user, rng, defender, tempgold)
-        rng = randint(15, 30)
-        createDefeatLog(city, user, rng, defender, tempgold)
-        city.gold -= tempgold
-        ecity.gold += tempgold
+        else:
+        	rng = randint(15, 30)
+        	createDefeatLog(city, user, rng, defender, tempgold)
+        	city.gold -= tempgold
+        	ecity.gold += tempgold
     else:
         if winner:
             rng = randint(15, 30)
             createWinLog(city, user, rng, defender, tempgold)
             city.gold += tempgold
             ecity.gold -= tempgold
-        rng = randint(30, 50)
-        createDefeatLog(city, user, rng, defender, tempgold)
-        city.gold -= tempgold
-        ecity.gold += tempgold
+        else:
+        	rng = randint(30, 50)
+        	createDefeatLog(city, user, rng, defender, tempgold)
+        	city.gold -= tempgold
+        	ecity.gold += tempgold
 
     city.footmen -= city.footmen * rng / 100
     city.bowmen -= city.bowmen * rng / 100
