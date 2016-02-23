@@ -206,7 +206,21 @@ def calc_house_price(base, supply):
 
 def calc_wall_price(base, level):
     return base * (level + 1)
-
+    
+@login_required
+def attack(request, opponent):
+	user = User.objects.get(username=opponent)
+	enemyaccount = Account.objects.get(user=user)
+	ecity = City.objects.all().get(account=enemyaccount)
+	acc = Account.objects.get(pk=request.user.pk)
+	city = City.objects.all().get(account=acc)
+	
+	if city.footmen+(city.bowmen*1.5)+(city.knights*2)+(city.war_machines*4)>(ecity.footmen+(ecity.bowmen*1.5)+(ecity.knights*2)+(ecity.war_machines*4))*((10+ecity.walls_level)/10):
+		print "victory"
+		return HttpResponse("victory")
+	else:
+		print "defeat"
+		return HttpResponse("defeat")
 
 @login_required
 def create_alliance(request):
