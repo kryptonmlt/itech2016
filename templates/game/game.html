@@ -67,17 +67,6 @@
                    }
                  });
             });
-            $('#createAllianceButton').click(function(){
-                name=document.getElementById("createAllianceName").value;
-                desc=document.getElementById("createDescName").value;
-                $.get('/game/create_alliance', {'name': name,'desc':desc}, function(data){
-                    if(data ==1){
-                        window.location.href = "/game/";
-                    }else{
-                        console.log(data);
-                    }
-                });
-            });
 
             // when alert close
             $('.alert .close').on('click', function(e) {
@@ -171,16 +160,15 @@
             </table>
         </div>
         <div class="col-md-4">
-            <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Opponents <span
-                        class="caret"></span></button>
-                <ul class="dropdown-menu scrollable-menu" role="menu">
-                    {% for acc in userlist %}
+        	<div class="list-group">
+ 				 <a class="list-group-item active">
+    			 Opponents
+  				 </a>
+  				 {% for acc in userlist %}
                     <li><a href="/game/battle/{{acc.user.username}}">{{acc.user.username}} </a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
+                  {% endfor %}
+  			</div>
+  		</div>
     </div>
 
     <div class="alert fade in alert-danger" id="alertNoGold" style="display:none;">
@@ -212,10 +200,10 @@
         <div class="alert fade in alert-success col-lg-6" id="createAllianceStep" style="display:none;">
             <button type="button" class="close">×</button>
                 <div class="input-group">
-                    <input id="createAllianceName" type="text" class="form-control" placeholder="Alliance Name...">
-                    <input id="createDescName" type="text" class="form-control" placeholder="Description...">
+                    <input id="createAllianceName" type="text" class="form-control" placeholder="Description...">
+                    <input id="createDescName" type="text" class="form-control" placeholder="Alliance Name...">
                       <span class="input-group-btn">
-                        <button id="createAllianceButton" class="btn btn-default" type="button">Create!</button>
+                        <button class="btn btn-default" type="button">Create!</button>
                       </span>
                 </div>
         </div>
