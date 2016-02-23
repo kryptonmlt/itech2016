@@ -175,32 +175,32 @@ def buy(request):
             city.walls_level += 1
             city.save()
             return HttpResponse(str(city.walls_level) + "," + str(calc_wall_price(cost.wall_price, city.walls_level)))
-    if element_type == 'footmen':
-        if city.gold >= 10:
-            city.gold -= 10
-            city.footmen += 1
-            city.save()
-            return HttpResponse(city.footmen)
-    if element_type == 'bowmen':
-        if city.gold >= 15:
-            city.gold -= 15
-            city.bowmen += 1
-            city.save()
-            return HttpResponse(city.bowmen)
-    if element_type == 'knights':
-        if city.gold >= 25:
-            city.gold -= 25
-            city.knights += 1
-            city.save()
-            return HttpResponse(city.knights)
-    if element_type == 'war_machines':
-        if city.gold >= 50:
-            city.gold -= 50
-            city.war_machines += 1
-            city.save()
-            return HttpResponse(city.war_machines)
-    return HttpResponse("-1")
-
+    if city.footmen+city.bowmen+city.knights+city.war_machines<city.supply:
+    	if element_type == 'footmen':
+        	if city.gold >= 10:
+        		city.gold -= 10
+            	city.footmen += 1
+            	city.save()
+            	return HttpResponse(city.footmen)
+    	if element_type == 'bowmen':
+        	if city.gold >= 15:
+        	    city.gold -= 15
+            	city.bowmen += 1
+            	city.save()
+            	return HttpResponse(city.bowmen)
+   		if element_type == 'knights':
+   			if city.gold >= 25:
+   				city.gold -= 25
+            	city.knights += 1
+            	city.save()
+            	return HttpResponse(city.knights)
+    	if element_type == 'war_machines':
+        	if city.gold >= 50:
+        		city.gold -= 50
+            	city.war_machines += 1
+            	city.save()
+            	return HttpResponse(city.war_machines)
+    	return HttpResponse("-1")
 
 def calc_house_price(base, supply):
     return base + supply
@@ -217,8 +217,7 @@ def attack(request, opponent):
     ecity = City.objects.all().get(account=enemyaccount)
     acc = Account.objects.get(pk=request.user.pk)
     city = City.objects.all().get(account=acc)
-    print "opponent", user.username
-    print "you", acc.user.username
+    
     if city.footmen + (city.bowmen * 1.5) + (city.knights * 2) + (city.war_machines * 4) > (
                         ecity.footmen + (ecity.bowmen * 1.5) + (ecity.knights * 2) + (ecity.war_machines * 4)) * (
                 (10 + ecity.walls_level) / 10):
@@ -244,20 +243,22 @@ def loseArmy(city, ecity, defender, winner, user, tempgold):
             city.gold += tempgold
             ecity.gold -= tempgold
             createWinLog(city, user, rng, defender, tempgold)
-        rng = randint(15, 30)
-        createDefeatLog(city, user, rng, defender, tempgold)
-        city.gold -= tempgold
-        ecity.gold += tempgold
+        else:
+        	rng = randint(15, 30)
+        	createDefeatLog(city, user, rng, defender, tempgold)
+        	city.gold -= tempgold
+        	ecity.gold += tempgold
     else:
         if winner:
             rng = randint(15, 30)
             createWinLog(city, user, rng, defender, tempgold)
             city.gold += tempgold
             ecity.gold -= tempgold
-        rng = randint(30, 50)
-        createDefeatLog(city, user, rng, defender, tempgold)
-        city.gold -= tempgold
-        ecity.gold += tempgold
+        else:
+        	rng = randint(30, 50)
+        	createDefeatLog(city, user, rng, defender, tempgold)
+        	city.gold -= tempgold
+        	ecity.gold += tempgold
 
     city.footmen -= city.footmen * rng / 100
     city.bowmen -= city.bowmen * rng / 100
