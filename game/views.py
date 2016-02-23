@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
-from game.models import Account, Alliance, AllianceRequest, City, Badge, Log, Message, Cost
+from game.models import Account, Alliance, AllianceRequest, City, Badge, Log, Message, Cost, CityGraphic
 from django.contrib.auth.models import User
 import datetime
 from random import randint
@@ -19,7 +19,8 @@ def index(request):
     cost.wall_price = calc_wall_price(cost.wall_price, city.walls_level)
     cost.house_price = calc_house_price(cost.house_price, city.house_level)
     cost.lands_price = calc_lands_price(cost.lands_price, city.lands_owned)
-    context_dict = {'userlist': userlist, 'cost': cost, 'city': city, 'acc': acc}
+    city_pic = CityGraphic.objects.get(level=city.house_level)
+    context_dict = {'userlist': userlist, 'cost': cost, 'city': city, 'acc': acc, 'city_pic' : city_pic}
     print "game page loaded!"
     return render(request, 'game/game.html', context_dict)
 
