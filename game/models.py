@@ -23,7 +23,7 @@ class Account(models.Model):
     wins = models.IntegerField(default=0)
     defeats = models.IntegerField(default=0)
     alliance_owner = models.BooleanField(default=False)
-    alliance = models.ForeignKey(Alliance, default=None, null=True, blank=True)
+    alliance = models.ForeignKey(Alliance, on_delete=models.SET_NULL, default=None, null=True, blank=True)
 
     def __str__(self):
         return self.user.username
