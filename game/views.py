@@ -175,32 +175,32 @@ def buy(request):
             city.walls_level += 1
             city.save()
             return HttpResponse(str(city.walls_level) + "," + str(calc_wall_price(cost.wall_price, city.walls_level)))
-    if element_type == 'footmen':
-        if city.gold >= 10:
-            city.gold -= 10
-            city.footmen += 1
-            city.save()
-            return HttpResponse(city.footmen)
-    if element_type == 'bowmen':
-        if city.gold >= 15:
-            city.gold -= 15
-            city.bowmen += 1
-            city.save()
-            return HttpResponse(city.bowmen)
-    if element_type == 'knights':
-        if city.gold >= 25:
-            city.gold -= 25
-            city.knights += 1
-            city.save()
-            return HttpResponse(city.knights)
-    if element_type == 'war_machines':
-        if city.gold >= 50:
-            city.gold -= 50
-            city.war_machines += 1
-            city.save()
-            return HttpResponse(city.war_machines)
-    return HttpResponse("-1")
-
+    if city.footmen+city.bowmen+city.knights+city.war_machines<city.supply:
+    	if element_type == 'footmen':
+        	if city.gold >= 10:
+        		city.gold -= 10
+            	city.footmen += 1
+            	city.save()
+            	return HttpResponse(city.footmen)
+    	if element_type == 'bowmen':
+        	if city.gold >= 15:
+        	    city.gold -= 15
+            	city.bowmen += 1
+            	city.save()
+            	return HttpResponse(city.bowmen)
+   		if element_type == 'knights':
+   			if city.gold >= 25:
+   				city.gold -= 25
+            	city.knights += 1
+            	city.save()
+            	return HttpResponse(city.knights)
+    	if element_type == 'war_machines':
+        	if city.gold >= 50:
+        		city.gold -= 50
+            	city.war_machines += 1
+            	city.save()
+            	return HttpResponse(city.war_machines)
+    	return HttpResponse("-1")
 
 def calc_house_price(base, supply):
     return base + supply
