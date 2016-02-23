@@ -167,6 +167,9 @@
         <strong>Insufficient supplies!</strong>
     </div>
     <div class="row">
+        <strong>Username: </strong><span id="username">{{acc.user.username}}</span>
+    </div>
+    <div class="row">
         <strong>Gold: </strong><span id="goldSpan">{{city.gold}}</span>
     </div>
 
@@ -176,7 +179,7 @@
             href="/game/alliance/{{acc.alliance.name}}">{{acc.alliance.name}}</a><br/>
     </div>
     {% else %}
-        <strong>Create or Join an alliance</strong>
+        <strong>Create or <a href="/game/alliance_search/">Join</a> an alliance</strong>
     {% endif %}
 
     <div class="row">

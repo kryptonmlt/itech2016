@@ -18,5 +18,6 @@ urlpatterns = patterns('',
                        url(r'^leave_alliance/', views.leave_alliance, name='leave_alliance'),
                        url(r'^alliance/(?P<alliance_name>[\w\-]+)/$', views.alliance, name='alliance'),
                        url(r'^alliance_search/(?P<query>[\w\-]+)/$', views.alliance_search, name='alliance_search'),
+                       url(r'^alliance_search/$', views.alliance_search_empty, name='alliance_search_empty'),
                        url(r'^battle/(?P<user_name>[\w\-]+)/$', views.battle, name='battle'),
                        )

@@ -219,8 +219,8 @@ def attack(request, opponent):
     city = City.objects.all().get(account=acc)
     
     if city.footmen + (city.bowmen * 1.5) + (city.knights * 2) + (city.war_machines * 4) > (
-                ecity.footmen + (ecity.bowmen * 1.5) + (ecity.knights * 2) + (ecity.war_machines * 4)) * (
-        (10 + ecity.walls_level) / 10):
+                        ecity.footmen + (ecity.bowmen * 1.5) + (ecity.knights * 2) + (ecity.war_machines * 4)) * (
+                (10 + ecity.walls_level) / 10):
         rnggold = randint(10, 15)
         tempgold = ecity.gold / rnggold
         loseArmy(city, ecity, False, True, user, tempgold)
@@ -318,4 +318,10 @@ def create_alliance(request):
 def alliance_search(request, query):
     similar_alliances = Alliance.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
     context_dict = {'similar_alliances': similar_alliances, 'query': query}
+    return render(request, 'game/alliance_search.html', context_dict)
+
+
+@login_required
+def alliance_search_empty(request):
+    context_dict = {'similar_alliances': "", 'query': ""}
     return render(request, 'game/alliance_search.html', context_dict)
