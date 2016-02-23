@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <title>Search: {{query}}</title>
+    <script>
+        $(document).ready(function(){
+            $('#searchButton').click(function(){
+                 window.location.href = "/game/alliance_search/"+document.getElementById("searchText").value;
+            });
+        });
+
+
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <input id="searchText" type="text" class="form-control" placeholder="Search">
+                  <span class="input-group-btn">
+                    <button id="searchButton" class="btn btn-default" type="button">Search</button>
+                  </span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        {% if similar_alliances %}
+        <h2>Search Results for: {{query}}</h2>
+        <ul>
+            {% for alliance in similar_alliances %}
+            <!-- Following line changed to add an HTML hyperlink -->
+            <li><a href="/game/alliance/{{ alliance.name }}">{{alliance.name}}</a> - Score:{{ alliance.all_time_score }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>

@@ -6,6 +6,7 @@ from game.models import Account, Alliance, AllianceRequest, City, Badge, Log, Me
 from django.contrib.auth.models import User
 import datetime
 from random import randint
+from django.db.models import Q
 
 
 # Create your views here.
@@ -297,3 +298,10 @@ def create_alliance(request):
     acc.alliance = created_alliance
     acc.alliance_owner = True
     return HttpResponse("1")
+
+
+@login_required
+def alliance_search(request, query):
+    similar_alliances = Alliance.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
+    context_dict = {'similar_alliances': similar_alliances, 'query':query}
+    return render(request, 'game/alliance_search.html', context_dict)
