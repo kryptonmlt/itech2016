@@ -255,6 +255,12 @@ def loseArmy(city,ecity,defender,winner,user,tempgold):
 		city.gold-=tempgold
 		ecity.gold+=tempgold
 		
+
+	city.footmen-=city.footmen*rng/100
+	city.bowmen-=city.bowmen*rng/100
+	city.knights-=city.knights*rng/100
+	city.war_machines-=city.war_machines*rng/100
+
 	city.footmen-=city.footmen/rng
 	city.bowmen-=city.bowmen/rng
 	city.knights-=city.knights/rng
@@ -263,18 +269,18 @@ def loseArmy(city,ecity,defender,winner,user,tempgold):
 
 def createWinLog(city,user,casualties,defender,tempgold):
 	if defender:
-		log=Log.objects.create(city=city, text="you defended your city successfully from "+user.username+" losing "+str(casualties)+" % of your troops and gained "+str(tempgold)+" of the enemy's gold")
+		log=Log.objects.create(city=city, text="you defended your city successfully from "+user.username+" losing "+str(casualties)+" % of your troops and gaining "+str(tempgold)+" gold coins from your enemy")
 	else:
-		log=Log.objects.create(city=city, text="you defeated "+user.username+" losing "+str(casualties)+" % of your troops and gained "+str(tempgold)+" of the enemy's gold")
+		log=Log.objects.create(city=city, text="you defeated "+user.username+" losing "+str(casualties)+" % of your troops and gaining "+str(tempgold)+" gold coins from your enemy")
 	
 	log.save()
 	
 def createDefeatLog(city,user,casualties,defender,tempgold):
 	if defender:
-		log=Log.objects.create(city=city, text="you failed to defend your city from "+user.username+" losing "+str(casualties)+" % of your troops and lost "+str(tempgold)+" of your gold")
+		log=Log.objects.create(city=city, text="you failed to defend your city from "+user.username+" losing "+str(casualties)+" % of your troops and "+str(tempgold)+" gold coins")
 	else:
-		log=Log.objects.create(city=city, text="you suffered a defeat from "+user.username+" losing "+str(casualties)+" % of your troops and lost "+str(tempgold)+" of your gold")
-	
+		log=Log.objects.create(city=city, text="you suffered a defeat from "+user.username+" losing "+str(casualties)+" % of your troops and "+str(tempgold)+" gold coins")
+
 	log.save()
 
 @login_required
