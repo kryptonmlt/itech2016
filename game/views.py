@@ -301,18 +301,19 @@ def create_alliance(request):
         desc = request.GET['desc']
     else:
         # missing data exit
-        return HttpResponse("-2")
-
+        return HttpResponse("-1")
+    print name,desc
     acc = Account.objects.get(pk=request.user.pk)
     try:
         # create alliance
         created_alliance = Alliance.objects.create(name=name, description=desc)
         created_alliance.save()
     except Alliance.IntegrityError:
-        return HttpResponse("Name Exists")
+        return HttpResponse("-2")
     # alliance successfully created
     acc.alliance = created_alliance
     acc.alliance_owner = True
+    acc.save();
     return HttpResponse("1")
 
 

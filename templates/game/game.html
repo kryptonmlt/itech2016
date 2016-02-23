@@ -67,6 +67,17 @@
                    }
                  });
             });
+            $('#createAllianceButton').click(function(){
+                name=document.getElementById("createAllianceName").value;
+                desc=document.getElementById("createDescName").value;
+                $.get('/game/create_alliance', {'name': name,'desc':desc}, function(data){
+                    if(data ==1){
+                        window.location.href = "/game/";
+                    }else{
+                        console.log(data);
+                    }
+                });
+            });
 
             // when alert close
             $('.alert .close').on('click', function(e) {
@@ -201,10 +212,10 @@
         <div class="alert fade in alert-success col-lg-6" id="createAllianceStep" style="display:none;">
             <button type="button" class="close">×</button>
                 <div class="input-group">
-                    <input id="createAllianceName" type="text" class="form-control" placeholder="Description...">
-                    <input id="createDescName" type="text" class="form-control" placeholder="Alliance Name...">
+                    <input id="createAllianceName" type="text" class="form-control" placeholder="Alliance Name...">
+                    <input id="createDescName" type="text" class="form-control" placeholder="Description...">
                       <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">Create!</button>
+                        <button id="createAllianceButton" class="btn btn-default" type="button">Create!</button>
                       </span>
                 </div>
         </div>
