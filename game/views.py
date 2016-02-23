@@ -68,12 +68,14 @@ def alliance(request, alliance_name):
 def alliance_request(request, alliance_name):
     acc = Account.objects.get(pk=request.user.pk)
     if acc.alliance:
-        return HttpResponse("Leave alliance first!")
+        if acc.alliance.name == alliance_name :
+            return HttpResponse("You are already in this alliance!")
+        else:
+            return HttpResponse("Leave alliance first!")
 
     alli = Alliance.objects.get(name=alliance_name)
-    owner = Account.objects.get(alliance=alli, alliance_owner=True)
 
-    already_exists = AllianceRequest.objects.filter(from_account=acc, alliance_owner=owner)
+    already_exists = AllianceRequest.objects.filter(from_account=acc, alliance=alli)
     if already_exists:
         return HttpResponse("Already submitted")
     else:
@@ -81,7 +83,7 @@ def alliance_request(request, alliance_name):
         if request.method == 'GET':
             msg = request.GET['msg']
         print str(datetime.datetime.now)
-        all_req = AllianceRequest.objects.create(from_account=acc, alliance_owner=owner, text=msg)
+        all_req = AllianceRequest.objects.create(from_account=acc, alliance=alli, text=msg)
         all_req.save()
         return HttpResponse("Submitted")
 
@@ -114,16 +116,16 @@ def leave_alliance(request):
 
 @login_required
 def accept_alliance(request, from_account_username):
-    acc = Account.objects.get(pk=request.user.pk)
+    leader = Account.objects.get(pk=request.user.pk)
     other_user = User.objects.get(username=from_account_username)
     recruit = Account.objects.get(user=other_user)
     try:
-        req = AllianceRequest.objects.get(from_account=recruit, alliance_owner=acc)
+        req = AllianceRequest.objects.get(from_account=recruit, alliance=leader.alliance)
         req.delete()
         if recruit.alliance:  # check whether he is already in an alliance
-            return HttpResponse(recruit.user.username + " already in an alliance!")
+            return HttpResponse(recruit.user.username + " is already in an alliance!")
         else:
-            recruit.alliance = acc.alliance
+            recruit.alliance = leader.alliance
             recruit.save()
             return HttpResponse(recruit.user.username + " is now a member of your alliance!")
     except AllianceRequest.DoesNotExist:
@@ -132,11 +134,11 @@ def accept_alliance(request, from_account_username):
 
 @login_required
 def decline_alliance(request, from_account_username):
-    acc = Account.objects.get(pk=request.user.pk)
+    leader = Account.objects.get(pk=request.user.pk)
     other_user = User.objects.get(username=from_account_username)
     recruit = Account.objects.get(user=other_user)
     try:
-        req = AllianceRequest.objects.get(from_account=recruit, alliance_owner=acc)
+        req = AllianceRequest.objects.get(from_account=recruit, alliance=leader.alliance)
         req.delete()
         return HttpResponse("You declined " + recruit.user.username + " from becoming a member of your alliance!")
     except AllianceRequest.DoesNotExist:
