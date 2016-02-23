@@ -75,6 +75,8 @@
             setInterval(function() {populateLogBox()}, 5000);
         });
 
+
+
     </script>
 
 </head>
@@ -98,12 +100,16 @@
                 <tr>
                     <td style="width:5%">Supply</td>
                     <td style="width:5%"><span id="supplyLevel">{{city.supply}}</span></td>
-                    <td style="width:5%"><span id="supplyCost">{{cost.house_price}}</span> <button id="houseButton" element_type="supply" type="button">+</button> </td>
+                    <td style="width:5%"><span id="supplyCost">{{cost.house_price}}</span>
+                        <button id="houseButton" element_type="supply" type="button">+</button>
+                    </td>
                 </tr>
                 <tr>
                     <td style="width:5%">Walls Level</td>
                     <td style="width:5%"><span id="wallLevel">{{city.walls_level}}</span></td>
-                    <td style="width:5%"><span id="wallCost">{{cost.wall_price}}</span> <button id="wallButton" element_type="wall" type="button">+</button> </td>
+                    <td style="width:5%"><span id="wallCost">{{cost.wall_price}}</span>
+                        <button id="wallButton" element_type="wall" type="button">+</button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -121,22 +127,30 @@
                 <tr>
                     <td style="width:5%">Footmen</td>
                     <td style="width:5%"><span id="footmen">{{city.footmen}}</span></td>
-                    <td style="width:5%">{{cost.footmen_price}} <button id="footmenButton" element_type="footmen" type="button">+</button> </td>
+                    <td style="width:5%">{{cost.footmen_price}}
+                        <button id="footmenButton" element_type="footmen" type="button">+</button>
+                    </td>
                 </tr>
                 <tr>
                     <td style="width:5%">Knights</td>
                     <td style="width:5%"><span id="knights">{{city.knights}}</span></td>
-                    <td style="width:5%">{{cost.knights_price}} <button id="knightsButton" element_type="knights" type="button">+</button> </td>
+                    <td style="width:5%">{{cost.knights_price}}
+                        <button id="knightsButton" element_type="knights" type="button">+</button>
+                    </td>
                 </tr>
                 <tr>
                     <td style="width:5%">Bowmen</td>
                     <td style="width:5%"><span id="bowmen">{{city.bowmen}}</span></td>
-                    <td style="width:5%">{{cost.bowmen_price}} <button id="bowmenButton" element_type="bowmen" type="button">+</button> </td>
+                    <td style="width:5%">{{cost.bowmen_price}}
+                        <button id="bowmenButton" element_type="bowmen" type="button">+</button>
+                    </td>
                 </tr>
                 <tr>
                     <td style="width:5%">WarMachines</td>
                     <td style="width:5%"><span id="war_machines">{{city.war_machines}}</span></td>
-                    <td style="width:5%">{{cost.war_machines_price}} <button id="war_machinesButton" element_type="war_machines" type="button">+</button> </td>
+                    <td style="width:5%">{{cost.war_machines_price}}
+                        <button id="war_machinesButton" element_type="war_machines" type="button">+</button>
+                    </td>
                 </tr>
                 </tbody>
 
@@ -166,14 +180,28 @@
         <strong>Gold: </strong><span id="goldSpan">{{city.gold}}</span>
     </div>
 
-    {% if acc.alliance %}
     <div class="row">
-        <strong>Alliance: </strong><a
-            href="/game/alliance/{{acc.alliance.name}}">{{acc.alliance.name}}</a><br/>
+        {% if acc.alliance %}
+            <strong>Alliance: </strong><a
+                href="/game/alliance/{{acc.alliance.name}}">{{acc.alliance.name}}</a><br/>
+        {% else %}
+        <strong><a href="javascript:$('#createAllianceStep').show();">Create</a> or <a
+                href="/game/alliance_search/">Join</a> an alliance</strong>
+        {% endif %}
     </div>
-    {% else %}
-        <strong>Create or <a href="/game/alliance_search/">Join</a> an alliance</strong>
-    {% endif %}
+
+    <div class="row">
+        <div class="alert fade in alert-success col-lg-6" id="createAllianceStep" style="display:none;">
+            <button type="button" class="close">×</button>
+                <div class="input-group">
+                    <input id="createAllianceName" type="text" class="form-control" placeholder="Description...">
+                    <input id="createDescName" type="text" class="form-control" placeholder="Alliance Name...">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Create!</button>
+                      </span>
+                </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="panel panel-default col-md-4">
