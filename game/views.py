@@ -188,12 +188,12 @@ def buy(request):
             	city.bowmen += 1
             	city.save()
             	return HttpResponse(city.bowmen)
-   		if element_type == 'knights':
+        if element_type == 'knights':
    			if city.gold >= 25:
    				city.gold -= 25
-            	city.knights += 1
-            	city.save()
-            	return HttpResponse(city.knights)
+   				city.knights += 1
+   				city.save()
+   				return HttpResponse(city.knights)
     	if element_type == 'war_machines':
         	if city.gold >= 50:
         		city.gold -= 50
