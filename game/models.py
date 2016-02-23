@@ -47,7 +47,9 @@ class City(models.Model):
     account = models.ForeignKey(Account)
     name = models.CharField(max_length=100)
     gold = models.IntegerField(default=100)
-    supply = models.IntegerField(default=0)
+    supply = models.IntegerField(default=50)
+    house_level = models.IntegerField(default=1)
+    lands_owned = models.IntegerField(default=0)
     walls_level = models.IntegerField(default=0)
     footmen = models.IntegerField(default=0)
     bowmen = models.IntegerField(default=0)
@@ -56,6 +58,9 @@ class City(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_maximum_troops(self):
+        return 50 * self.house_level
 
 
 class AllianceRequest(models.Model):
@@ -103,6 +108,7 @@ class Cost(models.Model):
     war_machines_price = models.IntegerField(default=50)
     house_price = models.IntegerField(default=100)
     wall_price = models.IntegerField(default=1000)
+    lands_price = models.IntegerField(default=500)
     login_gold = models.IntegerField(default=100)
 
     def __str__(self):

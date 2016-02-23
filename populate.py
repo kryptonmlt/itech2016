@@ -26,10 +26,10 @@ def populate():
     a3 = add_account(u3, 20, 1, True, al2, 'Kurt')
     a4 = add_account(u4, 10, 10, False, al1, 'Pedro')
 
-    c1 = add_city(a1, 'Rubens Kindom', 40, 100, 2, 10, 10, 10, 10)
-    c2 = add_city(a2, 'Florians Kindom', 1000, 200, 2, 20, 40, 10, 10)
-    c3 = add_city(a3, 'Kurtmans Kindom', 9993923, 50, 2, 10, 20, 0, 10)
-    c4 = add_city(a4, 'Pedros Kindom', 1234, 100, 2, 0, 10, 10, 50)
+    c1 = add_city(a1, 'Rubens Kindom', 40, 5, 2, 7, 10, 10, 10, 10)
+    c2 = add_city(a2, 'Florians Kindom', 1000, 10, 0, 2, 20, 40, 10, 10)
+    c3 = add_city(a3, 'Kurtmans Kindom', 9993923, 5, 3, 2, 10, 20, 0, 10)
+    c4 = add_city(a4, 'Pedros Kindom', 1234, 100, 2, 0, 2, 10, 10, 50)
 
     add_log(c1, 'you got attacked by kurtman')
     add_log(c1, 'kurtman won!')
@@ -83,7 +83,7 @@ def add_account(user, wins, defeats, alliance_owner, alliance, picture):
 
 
 def add_city_graphic(level, picture):
-    cg = CityGraphic.objects.create(level=level, picture='media/' + picture)
+    cg = CityGraphic.objects.create(level=level, picture=picture)
     cg.save()
 
 
@@ -95,11 +95,12 @@ def add_alliance(name, description, all_time_score):
     return a
 
 
-def add_city(account, name, gold, supply, walls_level, footmen, bowmen, knights, war_machines):
+def add_city(account, name, gold, house_level, lands_owned, walls_level, footmen, bowmen, knights, war_machines):
     c = City.objects.get_or_create(account=account)[0]
     c.name = name
     c.gold = gold
-    c.supply = supply
+    c.house_level = house_level
+    c.lands_owned = lands_owned
     c.walls_level = walls_level
     c.footmen = footmen
     c.bowmen = bowmen

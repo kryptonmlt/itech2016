@@ -17,7 +17,8 @@ def index(request):
     city = City.objects.get(account=acc)
     userlist = Account.objects.exclude(user=request.user)
     cost.wall_price = calc_wall_price(cost.wall_price, city.walls_level)
-    cost.house_price = calc_house_price(cost.house_price, city.supply)
+    cost.house_price = calc_house_price(cost.house_price, city.house_level)
+    cost.lands_price = calc_lands_price(cost.lands_price, city.lands_owned)
     context_dict = {'userlist': userlist, 'cost': cost, 'city': city, 'acc': acc}
     print "game page loaded!"
     return render(request, 'game/game.html', context_dict)
@@ -170,13 +171,14 @@ def buy(request):
     city = City.objects.all().get(account=acc)
     cost = Cost.objects.all().get()
 
-    if element_type == 'supply':
-        temp_cost = calc_house_price(cost.house_price, city.supply)
+    if element_type == 'house':
+        temp_cost = calc_house_price(cost.house_price, city.house_level)
         if city.gold >= temp_cost:
             city.gold -= temp_cost
-            city.supply += 50
+            city.house_level += 1
             city.save()
-            return HttpResponse(str(city.supply) + "," + str(calc_house_price(cost.house_price, city.supply)))
+            return HttpResponse(str(city.house_level) + "," + str(city.get_maximum_troops()) + "," + str(
+                calc_house_price(cost.house_price, city.house_level)))
     if element_type == 'wall':
         temp_cost = calc_wall_price(cost.wall_price, city.walls_level)
         if city.gold >= temp_cost:
@@ -184,7 +186,14 @@ def buy(request):
             city.walls_level += 1
             city.save()
             return HttpResponse(str(city.walls_level) + "," + str(calc_wall_price(cost.wall_price, city.walls_level)))
-    if city.footmen + city.bowmen + city.knights + city.war_machines < city.supply:
+    if element_type == 'lands':
+        temp_cost = calc_lands_price(cost.lands_price, city.lands_owned)
+        if city.gold >= temp_cost:
+            city.gold -= temp_cost
+            city.lands_owned += 1
+            city.save()
+            return HttpResponse(str(city.lands_owned) + "," + str(calc_lands_price(cost.lands_price, city.lands_owned)))
+    if city.footmen + city.bowmen + city.knights + city.war_machines < city.get_maximum_troops():
         if element_type == 'footmen':
             if city.gold >= 10:
                 city.gold -= 10
@@ -214,8 +223,12 @@ def buy(request):
     return HttpResponse("-1")
 
 
-def calc_house_price(base, supply):
-    return base + supply
+def calc_house_price(base, level):
+    return base * (level + 1)
+
+
+def calc_lands_price(base, level):
+    return base * (level + 1)
 
 
 def calc_wall_price(base, level):
