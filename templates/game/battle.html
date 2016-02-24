@@ -27,17 +27,17 @@
 {% if user.is_authenticated %}
 
 <h1>{{account.user.username}}</h1>
-<img src="media/{{account.picture}}" width=10% class= col-md-offset-0 />
-
-suply: {{city.supply}}<br>
-
+<img src="media/{{account.picture}}" width=10% class="img-thumbnail" />
+<div>
+supply level: {{city.supply}}<br>
 walls level: {{city.walls_level}}<br>
-
+</div>
 
 <button id="attackButton" type="button">Attack</button>
 
-
+<div>
 <a href="/game/logout/">Logout</a><br/>
+</div>
 
 {% else %}
 <a href="/game/register/">Register Here</a><br/>
