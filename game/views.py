@@ -20,7 +20,7 @@ def index(request):
     cost.house_price = calc_house_price(cost.house_price, city.house_level)
     cost.lands_price = calc_lands_price(cost.lands_price, city.lands_owned)
     city_pic = CityGraphic.objects.get(level=city.house_level)
-    context_dict = {'userlist': userlist, 'cost': cost, 'city': city, 'acc': acc, 'city_pic' : city_pic}
+    context_dict = {'userlist': userlist, 'cost': cost, 'city': city, 'acc': acc, 'city_pic': city_pic}
     print "game page loaded!"
     return render(request, 'game/game.html', context_dict)
 
@@ -35,7 +35,8 @@ def user_logout(request):
 
 @login_required
 def get_logs(request):
-    acc = Account.objects.get(pk=request.user.pk)
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
     cities = City.objects.all().filter(account=acc)
     logs = Log.objects.all().filter(city=cities).order_by('-date_occurred')[:10]
     return HttpResponse(logs)
@@ -75,7 +76,8 @@ def alliance(request, alliance_name):
 
 @login_required
 def alliance_request(request, alliance_name):
-    acc = Account.objects.get(pk=request.user.pk)
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
     if acc.alliance:
         if acc.alliance.name == alliance_name:
             return HttpResponse("You are already in this alliance!")
@@ -99,7 +101,8 @@ def alliance_request(request, alliance_name):
 
 @login_required
 def leave_alliance(request):
-    acc = Account.objects.get(pk=request.user.pk)
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
     if acc.alliance:
         reply = ""
         if acc.alliance_owner:
@@ -125,7 +128,8 @@ def leave_alliance(request):
 
 @login_required
 def accept_alliance(request, from_account_username):
-    leader = Account.objects.get(pk=request.user.pk)
+    user = User.objects.get(pk=request.user.pk)
+    leader = Account.objects.get(user=user)
     other_user = User.objects.get(username=from_account_username)
     recruit = Account.objects.get(user=other_user)
     try:
@@ -143,7 +147,8 @@ def accept_alliance(request, from_account_username):
 
 @login_required
 def decline_alliance(request, from_account_username):
-    leader = Account.objects.get(pk=request.user.pk)
+    user = User.objects.get(pk=request.user.pk)
+    leader = Account.objects.get(user=user)
     other_user = User.objects.get(username=from_account_username)
     recruit = Account.objects.get(user=other_user)
     try:
@@ -156,7 +161,8 @@ def decline_alliance(request, from_account_username):
 
 @login_required
 def get_gold(request):
-    acc = Account.objects.get(pk=request.user.pk)
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
     city = City.objects.all().get(account=acc)
     return HttpResponse(city.gold)
 
@@ -168,7 +174,8 @@ def buy(request):
     else:
         return HttpResponse("-2")
 
-    acc = Account.objects.get(pk=request.user.pk)
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
     city = City.objects.all().get(account=acc)
     cost = Cost.objects.all().get()
 
@@ -238,7 +245,8 @@ def calc_wall_price(base, level):
 
 @login_required
 def kick_member(request, member):
-    admin = Account.objects.get(pk=request.user.pk)
+    user = User.objects.get(pk=request.user.pk)
+    admin = Account.objects.get(user=user)
     other_member = User.objects.get(username=member)
     poor_member = Account.objects.get(user=other_member)
     if admin.alliance_owner:
@@ -254,7 +262,8 @@ def attack(request, opponent):
     user = User.objects.get(username=opponent)
     enemyaccount = Account.objects.get(user=user)
     ecity = City.objects.all().get(account=enemyaccount)
-    acc = Account.objects.get(pk=request.user.pk)
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
     city = City.objects.all().get(account=acc)
 
     if city.footmen + (city.bowmen * 1.5) + (city.knights * 2) + (city.war_machines * 4) > (
@@ -339,8 +348,9 @@ def create_alliance(request):
     else:
         # missing data exit
         return HttpResponse("-1")
-    print name, desc
-    acc = Account.objects.get(pk=request.user.pk)
+
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
     try:
         # create alliance
         created_alliance = Alliance.objects.create(name=name, description=desc)
@@ -370,6 +380,6 @@ def alliance_search_empty(request):
 
 @login_required
 def city_img(request, house_level):
-	print house_level/10
-	city_pic = CityGraphic.objects.get(level=1+(house_level/10))
-	return HttpResponse(str(city_pic.picture))
+    print house_level / 10
+    city_pic = CityGraphic.objects.get(level=1 + (house_level / 10))
+    return HttpResponse(str(city_pic.picture))
