@@ -87,7 +87,7 @@ class Message(models.Model):
 
 
 class Badge(models.Model):
-    account = models.ForeignKey(Account)
+    account = models.ForeignKey(Account, related_name="account_badges")
     name = models.CharField(max_length=200)
 
     def __str__(self):
@@ -95,7 +95,7 @@ class Badge(models.Model):
 
 
 class Log(models.Model):
-    city = models.ForeignKey(City)
+    account = models.ForeignKey(Account, related_name="account_logs", default=None, null=True, blank=True)
     text = models.CharField(max_length=200)
     date_occurred = models.DateTimeField('date occurred', default=timezone.now)
 

@@ -26,21 +26,21 @@ def populate():
     a3 = add_account(u3, 20, 1, True, al2, 'Kurt')
     a4 = add_account(u4, 10, 10, False, al1, 'Pedro')
 
-    c1 = add_city(a1, 'Rubens Kindom', 40, 5, 2, 7, 10, 10, 10, 10)
-    c2 = add_city(a2, 'Florians Kindom', 1000, 10, 0, 2, 20, 40, 10, 10)
-    c3 = add_city(a3, 'Kurtmans Kindom', 9993923, 5, 3, 2, 10, 20, 0, 10)
-    c4 = add_city(a4, 'Pedros Kindom', 1234, 100, 2, 0, 2, 10, 10, 50)
+    add_city(a1, 'Rubens Kindom', 40, 5, 2, 7, 10, 10, 10, 10)
+    add_city(a2, 'Florians Kindom', 1000, 10, 0, 2, 20, 40, 10, 10)
+    add_city(a3, 'Kurtmans Kindom', 9993923, 5, 3, 2, 10, 20, 0, 10)
+    add_city(a4, 'Pedros Kindom', 1234, 100, 2, 0, 2, 10, 10, 50)
 
-    add_log(c1, 'you got attacked by kurtman')
-    add_log(c1, 'kurtman won!')
-    add_log(c1, 'you lost 100 gold')
+    add_log(a1, 'you got attacked by kurtman')
+    add_log(a1, 'kurtman won!')
+    add_log(a1, 'you lost 100 gold')
 
-    add_log(c3, 'you attacked ruben')
-    add_log(c3, 'you won!')
-    add_log(c3, 'you won 100 gold')
+    add_log(a2, 'you attacked ruben')
+    add_log(a2, 'you won!')
+    add_log(a2, 'you won 100 gold')
 
-    add_log(c2, 'welcome to the game')
-    add_log(c4, 'welcome to the game')
+    add_log(a3, 'welcome to the game')
+    add_log(a4, 'welcome to the game')
 
     add_badge(a1, 'Lost 10 games in a row!')
     add_badge(a1, 'Won 5 games in a row!')
@@ -110,8 +110,8 @@ def add_city(account, name, gold, house_level, lands_owned, walls_level, footmen
     return c
 
 
-def add_log(city, text):
-    l = Log.objects.get_or_create(city=city, date_occurred=datetime.now())[0]
+def add_log(account, text):
+    l = Log.objects.get_or_create(account=account, date_occurred=datetime.now())[0]
     l.text = text
     l.date_occurred = datetime.now()
     l.save()

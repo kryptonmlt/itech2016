@@ -54,15 +54,14 @@ def user_logout(request):
 def get_logs(request):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
-    cities = City.objects.all().filter(account=acc)
     try:
         last_log_id = request.GET['latest_log_id']
         if last_log_id == -1:
-            logs = Log.objects.all().filter(city=cities).order_by('date_occurred')[:10]
+            logs = Log.objects.all().filter(account=acc).order_by('date_occurred')[:10]
         else:
-            logs = Log.objects.all().filter(city=cities, pk__gt=last_log_id).order_by('date_occurred')
+            logs = Log.objects.all().filter(account=acc, pk__gt=last_log_id).order_by('date_occurred')
     except MultiValueDictKeyError:
-        logs = Log.objects.all().filter(city=cities).order_by('date_occurred')[:10]
+        logs = Log.objects.all().filter(account=acc).order_by('date_occurred')[:10]
     return HttpResponse(logs)
 
 
@@ -123,6 +122,7 @@ def alliance_request(request, alliance_name):
         print str(datetime.datetime.now)
         all_req = AllianceRequest.objects.create(from_account=acc, alliance=alli, text=msg)
         all_req.save()
+        create_log(acc, "You sent a request to join alliance " + alli.name)
         return HttpResponse("Submitted")
 
 
@@ -139,8 +139,13 @@ def leave_alliance(request):
                 next_leader = next_in_line[0]
                 next_leader.alliance_owner = True
                 next_leader.save()
+                create_log(acc,
+                           "You left the alliance " + acc.alliance.name + ", " + next_leader.user.username + " is your successor")
+                create_log(next_leader, "You approved " + acc.user.username + " to becoming a member of your alliance!")
                 reply = "Next in line (" + next_leader.user.username + ") now leader of alliance, "
             else:  # delete alliance since no one left to take it
+                create_log(acc,
+                           "You left the alliance " + acc.alliance.name + ", alliance was disbanded due to no successors")
                 acc.alliance.delete()
                 reply = "No one next in line, alliance collapsed, "
         acc.alliance = None
@@ -167,6 +172,9 @@ def accept_alliance(request, from_account_username):
         else:
             recruit.alliance = leader.alliance
             recruit.save()
+            create_log(recruit,
+                       "You are now a member of " + req.alliance.name + ", request was accepted by alliance leader " + leader.user.username)
+            create_log(leader, "You approved " + recruit.user.username + " to becoming a member of your alliance!")
             return HttpResponse(recruit.user.username + " is now a member of your alliance!")
     except AllianceRequest.DoesNotExist:
         return HttpResponse("Request not found for " + recruit.user.username)
@@ -180,6 +188,9 @@ def decline_alliance(request, from_account_username):
     recruit = Account.objects.get(user=other_user)
     try:
         req = AllianceRequest.objects.get(from_account=recruit, alliance=leader.alliance)
+        create_log(recruit,
+                   "Your request to join " + req.alliance.name + " was declined by alliance leader " + leader.user.username)
+        create_log(leader, "You declined " + recruit.user.username + " from becoming a member of your alliance!")
         req.delete()
         return HttpResponse("You declined " + recruit.user.username + " from becoming a member of your alliance!")
     except AllianceRequest.DoesNotExist:
@@ -279,6 +290,8 @@ def kick_member(request, member):
     if admin.alliance_owner:
         poor_member.alliance = None
         poor_member.save()
+        create_log(admin, "you kicked " + poor_member.user.username + " from the the alliance")
+        create_log(poor_member, "you were kicked from the alliance under the rule of Leader " + admin.user.username)
         return HttpResponse("1")
     else:
         return HttpResponse("-1")
@@ -298,40 +311,40 @@ def attack(request, opponent):
                 (10 + ecity.walls_level) / 10):
         rnggold = randint(10, 15)
         tempgold = ecity.gold / rnggold
-        loseArmy(city, ecity, False, True, enemy, tempgold)
-        loseArmy(ecity, city, True, False, user, tempgold)
+        lose_army(city, ecity, False, True, enemy, tempgold)
+        lose_army(ecity, city, True, False, user, tempgold)
         print "victory"
         return HttpResponse("victory")
     else:
         rnggold = randint(5, 10)
         tempgold = city.gold / rnggold
-        loseArmy(city, ecity, False, False, enemy, tempgold)
-        loseArmy(ecity, city, True, True, user, tempgold)
+        lose_army(city, ecity, False, False, enemy, tempgold)
+        lose_army(ecity, city, True, True, user, tempgold)
         print "defeat"
         return HttpResponse("defeat")
 
 
-def loseArmy(city, ecity, defender, winner, user, tempgold):
+def lose_army(city, ecity, defender, winner, user, tempgold):
     if defender:
         if winner:
             rng = randint(5, 15)
             city.gold += tempgold
             ecity.gold -= tempgold
-            createWinLog(city, user, rng, defender, tempgold)
+            create_win_log(city.account, user, rng, defender, tempgold)
         else:
             rng = randint(15, 30)
-            createDefeatLog(city, user, rng, defender, tempgold)
+            create_defeat_log(city.account, user, rng, defender, tempgold)
             city.gold -= tempgold
             ecity.gold += tempgold
     else:
         if winner:
             rng = randint(15, 30)
-            createWinLog(city, user, rng, defender, tempgold)
+            create_win_log(city.account, user, rng, defender, tempgold)
             city.gold += tempgold
             ecity.gold -= tempgold
         else:
             rng = randint(30, 50)
-            createDefeatLog(city, user, rng, defender, tempgold)
+            create_defeat_log(city.account, user, rng, defender, tempgold)
             city.gold -= tempgold
             ecity.gold += tempgold
 
@@ -344,26 +357,27 @@ def loseArmy(city, ecity, defender, winner, user, tempgold):
     city.save()
 
 
-def createWinLog(city, user, casualties, defender, tempgold):
+def create_win_log(account, user, casualties, defender, tempgold):
     if defender:
-        log = Log.objects.create(city=city,
-                                 text="you defended your city successfully from " + user.username + " losing " + str(
-                                     casualties) + " % of your troops and gaining " + str(
+        log = Log.objects.create(account=account,
+                                 text="Your troops managed to defend the city successfully from " + user.username + ", but lost " + str(
+                                     casualties) + " % of your troops and gained " + str(
                                      tempgold) + " gold coins from your enemy")
     else:
-        log = Log.objects.create(city=city, text="you defeated " + user.username + " losing " + str(
+        log = Log.objects.create(account=account, text="You defeated " + user.username + " losing " + str(
             casualties) + " % of your troops and gaining " + str(tempgold) + " gold coins from your enemy")
     log.save()
 
 
-def createDefeatLog(city, user, casualties, defender, tempgold):
+def create_defeat_log(account, user, casualties, defender, tempgold):
     if defender:
-        log = Log.objects.create(city=city,
-                                 text="you failed to defend your city from " + user.username + " losing " + str(
+        log = Log.objects.create(account=account,
+                                 text="You failed to defend your city from " + user.username + " losing " + str(
                                      casualties) + " % of your troops and " + str(tempgold) + " gold coins")
     else:
-        log = Log.objects.create(city=city, text="you suffered a defeat from " + user.username + " losing " + str(
-            casualties) + " % of your troops and " + str(tempgold) + " gold coins")
+        log = Log.objects.create(account=account,
+                                 text="The army of " + user.username + " was too powerful and lost " + str(
+                                     casualties) + " % of your troops along with " + str(tempgold) + " gold coins")
     log.save()
 
 
@@ -388,6 +402,7 @@ def create_alliance(request):
     acc.alliance = created_alliance
     acc.alliance_owner = True
     acc.save();
+    create_log(acc, "Let it be known, " + acc.user.username + " just founded the alliance " + acc.alliance.name)
     return HttpResponse("1")
 
 
@@ -413,3 +428,8 @@ def get_correct_image(house_level):
 def city_img(request, house_level):
     city_pic = CityGraphic.objects.get(level=get_correct_image(house_level))
     return HttpResponse(str(city_pic.picture))
+
+
+def create_log(account, text):
+    log = Log.objects.create(account=account, text=text)
+    log.save()
