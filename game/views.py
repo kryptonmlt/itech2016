@@ -19,7 +19,7 @@ def index(request):
     cost.wall_price = calc_wall_price(cost.wall_price, city.walls_level)
     cost.house_price = calc_house_price(cost.house_price, city.house_level)
     cost.lands_price = calc_lands_price(cost.lands_price, city.lands_owned)
-    city_pic = CityGraphic.objects.get(level=city.house_level)
+    city_pic = CityGraphic.objects.get(level=get_correct_image(city.house_level))
     context_dict = {'userlist': userlist, 'cost': cost, 'city': city, 'acc': acc, 'city_pic': city_pic}
     print "game page loaded!"
     return render(request, 'game/game.html', context_dict)
@@ -378,8 +378,11 @@ def alliance_search_empty(request):
     return render(request, 'game/alliance_search.html', context_dict)
 
 
+def get_correct_image(house_level):
+    return 1 + (int(house_level) / 10)
+
+
 @login_required
 def city_img(request, house_level):
-    img_lvl = 1 + (int(house_level) / 10)
-    city_pic = CityGraphic.objects.get(level=img_lvl)
+    city_pic = CityGraphic.objects.get(level=get_correct_image(house_level))
     return HttpResponse(str(city_pic.picture))
