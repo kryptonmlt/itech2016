@@ -370,5 +370,6 @@ def alliance_search_empty(request):
 
 @login_required
 def city_img(request, house_level):
-    city_pic = CityGraphic.objects.get(level=house_level)
-    return HttpResponse(str(city_pic.picture))
+	print house_level/10
+	city_pic = CityGraphic.objects.get(level=1+(house_level/10))
+	return HttpResponse(str(city_pic.picture))
