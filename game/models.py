@@ -62,7 +62,7 @@ class City(models.Model):
         return 50 * self.house_level
 
     def army_total(self):
-        return self.footmen+self.bowmen+self.knights+self.war_machines
+        return self.footmen + self.bowmen + self.knights + self.war_machines
 
 
 class AllianceRequest(models.Model):
@@ -100,7 +100,8 @@ class Log(models.Model):
     date_occurred = models.DateTimeField('date occurred', default=timezone.now)
 
     def __str__(self):
-        return formats.date_format(self.date_occurred, "SHORT_DATETIME_FORMAT") + ": " + self.text + "$$"
+        return str(self.pk) + "||" + formats.date_format(self.date_occurred,
+                                                    "SHORT_DATETIME_FORMAT") + "||" + self.text + "$$"
 
 
 class Cost(models.Model):

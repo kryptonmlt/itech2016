@@ -8,6 +8,7 @@ from game.forms import CityForm
 import datetime
 from random import randint
 from django.db.models import Q
+from django.utils.datastructures import MultiValueDictKeyError
 
 
 # Create your views here.
@@ -54,7 +55,14 @@ def get_logs(request):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
     cities = City.objects.all().filter(account=acc)
-    logs = Log.objects.all().filter(city=cities).order_by('-date_occurred')[:10]
+    try:
+        last_log_id = request.GET['latest_log_id']
+        if last_log_id == -1:
+            logs = Log.objects.all().filter(city=cities).order_by('date_occurred')[:10]
+        else:
+            logs = Log.objects.all().filter(city=cities, pk__gt=last_log_id).order_by('date_occurred')
+    except MultiValueDictKeyError:
+        logs = Log.objects.all().filter(city=cities).order_by('date_occurred')[:10]
     return HttpResponse(logs)
 
 

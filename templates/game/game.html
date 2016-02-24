@@ -9,12 +9,25 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
+    <style>
+    </style>
     <script>
+        latest_log_id = -1;
 
         function populateLogBox(){
-            $.get('/game/get_logs/', function(data){
-                $('#logs_text').html(data.replace(/\$\$/g,'<br />'));
+            $.get('/game/get_logs/',{'latest_log_id':latest_log_id}, function(data){
+
+                logs = data.split('$$');
+                for(i=0; i < logs.length; i++){
+                    if(logs[i] != ""){
+                        real_log = logs[i].split('||');
+                        log_id = parseInt(real_log[0]);
+                        if(log_id>latest_log_id){
+                            latest_log_id=log_id;
+                        }
+                        document.getElementById("logs_text").value += real_log[1]+': '+real_log[2]+'\n'
+                    }
+                }
             });
         }
 
@@ -25,6 +38,8 @@
         }
 
 		$(document).ready(function(){
+		    document.getElementById("logs_text").readOnly = true;
+
             $('#houseButton,#wallButton,#footmenButton,#knightsButton,#bowmenButton,#war_machinesButton,#landsButton').click(function(){
                 et = $(this).attr("element_type");
                 $.get('/game/buy', {element_type: et}, function(data){
@@ -256,11 +271,13 @@
             </div>
 
             <div class="row">
-                <div class="panel panel-default col-md-12">
-                    <div class="panel-heading">Account Logs</div>
-                    <div id="logs_text" class="panel-body"></div>
+                <div class="row">
+                    <label for="logs_text" id="LogsHeading">Account Logs</label>
                 </div>
-
+                <div class="row">
+                    <textarea id="logs_text"
+                        style="min-width: 100%; height: 100px; max-height: 100px;"></textarea>
+                </div>
             </div>
 
 
