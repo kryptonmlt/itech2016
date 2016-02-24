@@ -1,6 +1,9 @@
 from django.conf.urls import patterns, url
 from game import views
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = patterns('',
                        url(r'^$', views.index, name='game'),
                        url(r'^get_logs/$', views.get_logs, name='get_logs'),
@@ -9,6 +12,8 @@ urlpatterns = patterns('',
                        url(r'^get_gold/$', views.get_gold, name='get_gold'),
                        url(r'^kick_member/(?P<member>[\w\-]+)/$', views.kick_member,
                            name='kick_member'),
+                       url(r'^city_img/(?P<house_level>[\w\-]+)/$', views.city_img,
+                           name='city_img'),
                        url(r'^create_alliance/$', views.create_alliance, name='create_alliance'),
                        url(r'^alliance_request/(?P<alliance_name>[\w\-]+)/$', views.alliance_request,
                            name='alliance_request'),
@@ -24,3 +29,6 @@ urlpatterns = patterns('',
                        url(r'^alliance_search/$', views.alliance_search_empty, name='alliance_search_empty'),
                        url(r'^battle/(?P<user_name>[\w\-]+)/$', views.battle, name='battle'),
                        )
+
+if settings.DEBUG is True:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

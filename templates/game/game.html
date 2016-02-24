@@ -42,6 +42,16 @@
                                 $('#houseLevel').html(res[0]);
                                 $('#maximumTroops').html(res[1]);
                                 $('#houseCost').html(res[2]);
+                                try {
+                                    $.get('/game/city_img/'+res[0], function(data){
+                                        if(data!=-1){
+                                            document.getElementById("cityImg").src = data;
+                                        }
+                                    });
+                                }
+                                catch(err) {
+                                    console.log(err.message);
+                                }
                                 break;
                            case "wall":
                                 var res = data.split(",");
@@ -237,7 +247,7 @@
             <div class="panel-heading">Account Logs</div>
             <div id="logs_text" class="panel-body"></div>
         </div>
-        <img src="/{{city_pic.picture}}" width=40% class= col-md-offset-1 />
+        <img id="cityImg" src="/{{ city_pic.picture}}" width=40% class= col-md-offset-1 />
     </div>
 
 
