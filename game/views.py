@@ -60,10 +60,13 @@ def get_logs(request):
 
 @login_required
 def battle(request, user_name):
-    user = User.objects.get(username=user_name)
+    user = User.objects.get(pk=request.user.pk)
     account = Account.objects.get(user=user)
+    enemy_user = User.objects.get(username=user_name)
+    enemy_account = Account.objects.get(user=enemy_user)
+    enemy_city = City.objects.get(account=enemy_account)
     city = City.objects.get(account=account)
-    context_dict = {'account': account, 'city': city}
+    context_dict = {'enemy_city': enemy_city, 'city': city}
     return render(request, 'game/battle.html', context_dict)
 
 

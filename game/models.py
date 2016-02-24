@@ -61,6 +61,9 @@ class City(models.Model):
     def get_maximum_troops(self):
         return 50 * self.house_level
 
+    def army_total(self):
+        return self.footmen+self.bowmen+self.knights+self.war_machines
+
 
 class AllianceRequest(models.Model):
     from_account = models.ForeignKey(Account, related_name="from_account_alliance_request")

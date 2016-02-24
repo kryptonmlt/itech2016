@@ -19,6 +19,15 @@
       });
 
 
+
+
+
+
+
+
+
+
+
     </script>
 
 </head>
@@ -26,25 +35,63 @@
 
 
 {% if user.is_authenticated %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <h1>{{city.account.user.username}}</h1>
 
-<h1>{{account.user.username}}</h1>
-<img src="{{ MEDIA_URL }}/media/{{account.picture}}" %}" width=10% class="img-thumbnail"/>
-<div>
-    supply level: {{city.supply}}<br>
-    walls level: {{city.walls_level}}<br>
+            <div class="row">
+                <img src="{{ MEDIA_URL }}/media/{{city.account.picture}}" %}" width=90% class="img-thumbnail"/>
+            </div>
+            <div class="row">
+                <li><strong>Supply Capacity: </strong><span
+                        id="maximumTroops">{{city.get_maximum_troops}}</span></li>
+                <li><strong>Walls Level: </strong><span
+                        id="maximumTroops">{{city.walls_level}}</span></li>
+                <li><strong>Footmen: </strong><span
+                        id="maximumTroops">{{city.footmen}}</span></li>
+                <li><strong>Bowmen: </strong><span
+                        id="maximumTroops">{{city.bowmen}}</span></li>
+                <li><strong>Knights: </strong><span
+                        id="maximumTroops">{{city.knights}}</span></li>
+                <li><strong>War Machines: </strong><span
+                        id="maximumTroops">{{city.war_machines}}</span></li>
+                <li><strong>Army Total: </strong><span
+                        id="maximumTroops">{{city.army_total}}</span></li>
+            </div>
+        </div>
+        <div class="col-md-8">
+                <img src="{{ MEDIA_URL }}/media/siege.jpg" %}" width=90% class="img-thumbnail"/>
+        </div>
+
+        <div class="col-md-2">
+            <h1>{{enemy_city.account.user.username}}</h1>
+            <div class="row">
+                <img src="{{ MEDIA_URL }}/media/{{enemy_city.account.picture}}" %}" width=90% class="img-thumbnail"/>
+            </div>
+            <div class="row">
+                <li><strong>Supply Capacity: </strong><span
+                        id="maximumTroops">{{city.get_maximum_troops}}</span></li>
+                <li><strong>Walls Level: </strong><span
+                        id="maximumTroops">{{city.walls_level}}</span></li>
+            </div>
+        </div>
+    </div>
+    <div class="row vertical-center-row">
+        <div class="col-md-5 col-md-offset-5">
+            <button id="attackButton" type="button">Attack</button>
+
+            <div>
+                <a href="/game/logout/">Logout</a><br/>
+            </div>
+
+            {% else %}
+            <a href="/game/register/">Register Here</a><br/>
+            <a href="/game/login/">Login</a><br/>
+            {% endif %}
+            <a href="/game/">Home</a><br/>
+        </div>
+    </div>
 </div>
-
-<button id="attackButton" type="button">Attack</button>
-
-<div>
-    <a href="/game/logout/">Logout</a><br/>
-</div>
-
-{% else %}
-<a href="/game/register/">Register Here</a><br/>
-<a href="/game/login/">Login</a><br/>
-{% endif %}
-<a href="/game/">Home</a><br/>
-
 </body>
 </html>
