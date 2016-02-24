@@ -96,6 +96,7 @@
 
 
 
+
     </script>
 
 </head>
@@ -103,163 +104,175 @@
 {% if user.is_authenticated %}
 
 <div class="container">
-	
-	<div>
-    	 <img src="{% static "images/banner.png" %}" width=80% class="img-responsive" />
-	<div>
-	
-    <div class="row">
-        <h2><strong>Lord {{acc.user}} - {{city.name}}</strong></h2>
-    </div>
 
-    <div class="row">
-        <strong>Supply Capacity: </strong><span id="maximumTroops">{{city.get_maximum_troops}}</span>
-        <strong>Gold: </strong><span id="goldSpan">{{city.gold}}</span>
-    </div>
+    <div>
+        <img src="{% static "images/banner.png" %}" width=80% class="img-responsive" />
+        <div>
 
-    <div class="row">
-        <div class="col-md-5">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>Structures</th>
-                    <th>Level</th>
-                    <th>Upgrade Cost</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td style="width:5%">Supply Level</td>
-                    <td style="width:5%"><span id="houseLevel">{{city.house_level}}</span></td>
-                    <td style="width:5%"><span id="houseCost">{{cost.house_price}}</span>
-                        <button id="houseButton" element_type="house" type="button">+</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:5%">Walls Level</td>
-                    <td style="width:5%"><span id="wallLevel">{{city.walls_level}}</span></td>
-                    <td style="width:5%"><span id="wallCost">{{cost.wall_price}}</span>
-                        <button id="wallButton" element_type="wall" type="button">+</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:5%">Lands Owned</td>
-                    <td style="width:5%"><span id="lands_owned">{{city.lands_owned}}</span></td>
-                    <td style="width:5%"><span id="lands_owned_cost">{{cost.lands_price}}</span>
-                        <button id="landsButton" element_type="lands" type="button">+</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-5">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>Troop Type</th>
-                    <th>Amount</th>
-                    <th>Hiring Cost</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td style="width:5%">Footmen</td>
-                    <td style="width:5%"><span id="footmen">{{city.footmen}}</span></td>
-                    <td style="width:5%">{{cost.footmen_price}}
-                        <button id="footmenButton" element_type="footmen" type="button">+</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:5%">Knights</td>
-                    <td style="width:5%"><span id="knights">{{city.knights}}</span></td>
-                    <td style="width:5%">{{cost.knights_price}}
-                        <button id="knightsButton" element_type="knights" type="button">+</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:5%">Bowmen</td>
-                    <td style="width:5%"><span id="bowmen">{{city.bowmen}}</span></td>
-                    <td style="width:5%">{{cost.bowmen_price}}
-                        <button id="bowmenButton" element_type="bowmen" type="button">+</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:5%">WarMachines</td>
-                    <td style="width:5%"><span id="war_machines">{{city.war_machines}}</span></td>
-                    <td style="width:5%">{{cost.war_machines_price}}
-                        <button id="war_machinesButton" element_type="war_machines" type="button">+</button>
-                    </td>
-                </tr>
-                </tbody>
+            <div class="row">
+                <h2><strong>Lord {{acc.user}} - {{city.name}}</strong></h2>
+            </div>
 
-            </table>
-        </div>
-        <div class="col-md-2">
-        	<div class="list-group">
- 				 <a class="list-group-item active">
-    			 Opponents
-  				 </a>
-  				 {% for acc in userlist %}
-                    <li><a href="/game/battle/{{acc.user.username}}">{{acc.user.username}} </a></li>
-                  {% endfor %}
-  			</div>
-  		</div>
-    </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Structures</th>
+                                <th>Level</th>
+                                <th>Upgrade Cost</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td style="width:5%">Supply Level</td>
+                                <td style="width:5%"><span id="houseLevel">{{city.house_level}}</span></td>
+                                <td style="width:5%"><span id="houseCost">{{cost.house_price}}</span>
+                                    <button id="houseButton" element_type="house" type="button">+</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:5%">Walls Level</td>
+                                <td style="width:5%"><span id="wallLevel">{{city.walls_level}}</span></td>
+                                <td style="width:5%"><span id="wallCost">{{cost.wall_price}}</span>
+                                    <button id="wallButton" element_type="wall" type="button">+</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:5%">Lands Owned</td>
+                                <td style="width:5%"><span id="lands_owned">{{city.lands_owned}}</span></td>
+                                <td style="width:5%"><span id="lands_owned_cost">{{cost.lands_price}}</span>
+                                    <button id="landsButton" element_type="lands" type="button">+</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Troop Type</th>
+                                <th>Amount</th>
+                                <th>Hiring Cost</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td style="width:5%">Footmen</td>
+                                <td style="width:5%"><span id="footmen">{{city.footmen}}</span></td>
+                                <td style="width:5%">{{cost.footmen_price}}
+                                    <button id="footmenButton" element_type="footmen" type="button">+</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:5%">Knights</td>
+                                <td style="width:5%"><span id="knights">{{city.knights}}</span></td>
+                                <td style="width:5%">{{cost.knights_price}}
+                                    <button id="knightsButton" element_type="knights" type="button">+</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:5%">Bowmen</td>
+                                <td style="width:5%"><span id="bowmen">{{city.bowmen}}</span></td>
+                                <td style="width:5%">{{cost.bowmen_price}}
+                                    <button id="bowmenButton" element_type="bowmen" type="button">+</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:5%">WarMachines</td>
+                                <td style="width:5%"><span id="war_machines">{{city.war_machines}}</span></td>
+                                <td style="width:5%">{{cost.war_machines_price}}
+                                    <button id="war_machinesButton" element_type="war_machines" type="button">+</button>
+                                </td>
+                            </tr>
+                            </tbody>
 
-    <div class="alert fade in alert-danger" id="alertNoGold" style="display:none;">
-        <button type="button" class="close">×</button>
-        <strong>Not enough gold!</strong>
-    </div>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <img id="cityImg" src="/{{ city_pic.picture}}" width=100% class="img-thumbnail"/>
+                </div>
+                <div class="col-md-2">
+                    <div class="row">
+                        <img src="{{ MEDIA_URL }}/media/{{acc.picture}}" %}" width=90% class="img-thumbnail"/>
+                    </div>
+                    <div class="row">
+                        <strong>Supply Capacity: </strong><span
+                            id="maximumTroops">{{city.get_maximum_troops}}</span></br>
+                        <strong>Gold: </strong><span id="goldSpan">{{city.gold}}</span>
+                    </div>
+                    <div class="row">
+                        {% if acc.alliance %}
+                        {% if acc.alliance_owner %}
+                        <strong>Leader of: </strong>
+                        {% else %}
+                        <strong>Member of: </strong>
+                        {% endif %}
+                        <a href="/game/alliance/{{acc.alliance.name}}">{{acc.alliance.name}}</a><br/>
+                        {% else %}
+                        <strong><a href="javascript:$('#createAllianceStep').show();">Create</a> or <a
+                                href="/game/alliance_search/">Join</a> an alliance</strong>
+                        {% endif %}
+                    </div>
 
-    <div class="alert fade in alert-danger" id="alertInsufficientMaxTroops" style="display:none;">
-        <button type="button" class="close">×</button>
-        <strong>Insufficient supplies!</strong>
-    </div>
-	
-    <div class="row">
-        {% if acc.alliance %}
-            {% if acc.alliance_owner %}
-                <strong>Leader of: </strong>
-            {% else %}
-                <strong>Member of: </strong>
-            {% endif %}
-            <a href="/game/alliance/{{acc.alliance.name}}">{{acc.alliance.name}}</a><br/>
-        {% else %}
-        <strong><a href="javascript:$('#createAllianceStep').show();">Create</a> or <a
-                href="/game/alliance_search/">Join</a> an alliance</strong>
-        {% endif %}
-    </div>
-
-    <div class="row">
-        <div class="alert fade in alert-success col-lg-6" id="createAllianceStep" style="display:none;">
-            <button type="button" class="close">×</button>
-                <div class="input-group">
-                    <input id="createAllianceName" type="text" class="form-control" placeholder="Description...">
-                    <input id="createDescName" type="text" class="form-control" placeholder="Alliance Name...">
+                    <div class="row">
+                        <div class="alert fade in alert-success col-lg-6" id="createAllianceStep" style="display:none;">
+                            <button type="button" class="close">×</button>
+                            <div class="input-group">
+                                <input id="createAllianceName" type="text" class="form-control"
+                                       placeholder="Description...">
+                                <input id="createDescName" type="text" class="form-control"
+                                       placeholder="Alliance Name...">
                       <span class="input-group-btn">
                         <button class="btn btn-default" type="button">Create!</button>
                       </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="list-group">
+                            <a class="list-group-item active">
+                                Opponents
+                            </a>
+                            {% for acc in userlist %}
+                            <li><a href="/game/battle/{{acc.user.username}}">{{acc.user.username}} </a></li>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
+            </div>
+
+            <div class="alert fade in alert-danger" id="alertNoGold" style="display:none;">
+                <button type="button" class="close">×</button>
+                <strong>Not enough gold!</strong>
+            </div>
+
+            <div class="alert fade in alert-danger" id="alertInsufficientMaxTroops" style="display:none;">
+                <button type="button" class="close">×</button>
+                <strong>Insufficient supplies!</strong>
+            </div>
+
+            <div class="row">
+                <div class="panel panel-default col-md-12">
+                    <div class="panel-heading">Account Logs</div>
+                    <div id="logs_text" class="panel-body"></div>
+                </div>
+
+            </div>
+
+
+            <div class="row">
+                <a href="/game/logout/">Logout</a><br/>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="panel panel-default col-md-3">
-            <div class="panel-heading">Account Logs</div>
-            <div id="logs_text" class="panel-body"></div>
-        </div>
-        <img id="cityImg" src="/{{ city_pic.picture}}" width=50% class= col-md-offset-1 />
-    </div>
 
-
-    <div class="row">
-        <a href="/game/logout/">Logout</a><br/>
-    </div>
-</div>
-
-{% else %}
-<a href="/game/register/">Register Here</a><br/>
-<a href="/game/login/">Login</a><br/>
-{% endif %}
+        {% else %}
+        <a href="/game/register/">Register Here</a><br/>
+        <a href="/game/login/">Login</a><br/>
+        {% endif %}
 
 </body>
 </html>

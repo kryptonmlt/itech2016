@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-{% load staticfiles %} 
+{% load staticfiles %}
 <html lang="en">
 <head>
-	<title>Rulers of The Kingdom</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <title>Rulers of The Kingdom</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-  <script>
+    <script>
 	  $(document).ready(function(){
           $('#attackButton').click(function(){
           	$.get('/game/attack/'+"{{account.user.username}}", function(data){
@@ -18,7 +18,8 @@
           });
       });
 
-  </script>
+
+    </script>
 
 </head>
 <body>
@@ -29,14 +30,14 @@
 <h1>{{account.user.username}}</h1>
 <img src="{{ MEDIA_URL }}/media/{{account.picture}}" %}" width=10% class="img-thumbnail"/>
 <div>
-supply level: {{city.supply}}<br>
-walls level: {{city.walls_level}}<br>
+    supply level: {{city.supply}}<br>
+    walls level: {{city.walls_level}}<br>
 </div>
 
 <button id="attackButton" type="button">Attack</button>
 
 <div>
-<a href="/game/logout/">Logout</a><br/>
+    <a href="/game/logout/">Logout</a><br/>
 </div>
 
 {% else %}
