@@ -259,8 +259,8 @@ def kick_member(request, member):
 
 @login_required
 def attack(request, opponent):
-    user = User.objects.get(username=opponent)
-    enemyaccount = Account.objects.get(user=user)
+    enemy = User.objects.get(username=opponent)
+    enemyaccount = Account.objects.get(user=enemy)
     ecity = City.objects.all().get(account=enemyaccount)
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
@@ -271,15 +271,15 @@ def attack(request, opponent):
                 (10 + ecity.walls_level) / 10):
         rnggold = randint(10, 15)
         tempgold = ecity.gold / rnggold
-        loseArmy(city, ecity, False, True, user, tempgold)
-        loseArmy(ecity, city, True, False, request.user, tempgold)
+        loseArmy(city, ecity, False, True, enemy, tempgold)
+        loseArmy(ecity, city, True, False, user, tempgold)
         print "victory"
         return HttpResponse("victory")
     else:
         rnggold = randint(5, 10)
         tempgold = city.gold / rnggold
-        loseArmy(city, ecity, False, False, user, tempgold)
-        loseArmy(ecity, city, True, True, request.user, tempgold)
+        loseArmy(city, ecity, False, False, enemy, tempgold)
+        loseArmy(ecity, city, True, True, user, tempgold)
         print "defeat"
         return HttpResponse("defeat")
 
