@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from game.models import Account, Alliance, AllianceRequest, City, Badge, Log, Message, Cost, CityGraphic
 from django.contrib.auth.models import User
+from game.forms import CityForm
 import datetime
 from random import randint
 from django.db.models import Q
@@ -14,14 +15,29 @@ from django.db.models import Q
 def index(request):
     cost = Cost.objects.get(pk=1)
     acc = Account.objects.get(user=request.user)
-    city = City.objects.get(account=acc)
+    try:
+        city = City.objects.get(account=acc)
+    except City.DoesNotExist:
+        city = None
+        err_msg = ""
+        if request.method == 'POST':
+            city_form = CityForm(data=request.POST)
+            if city_form.is_valid():
+                city = city_form.save(commit=False)
+                city.account = acc
+                city.save()
+            else:
+                err_msg = "Form was not valid!"
+        if city is None:
+            city_form = CityForm()
+            return render(request, 'game/create_city.html', {'city_form': city_form, 'acc': acc, 'err_msg': err_msg})
+
     userlist = Account.objects.exclude(user=request.user)
     cost.wall_price = calc_wall_price(cost.wall_price, city.walls_level)
     cost.house_price = calc_house_price(cost.house_price, city.house_level)
     cost.lands_price = calc_lands_price(cost.lands_price, city.lands_owned)
     city_pic = CityGraphic.objects.get(level=get_correct_image(city.house_level))
     context_dict = {'userlist': userlist, 'cost': cost, 'city': city, 'acc': acc, 'city_pic': city_pic}
-    print "game page loaded!"
     return render(request, 'game/game.html', context_dict)
 
 

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <title>City Creation</title>
+</head>
+<body>
+<h1>Name your city {{acc.user.username}} !</h1>
+<div class="container">
+    {% if err_msg %}
+    <div class="row">
+        <strong>{{err_msg}}</strong>
+    </div>
+    {% endif %}
+    <div class="row">
+        <form id="city_form" class="form city-form" method="post" action="/game/"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {{ city_form.as_p }}
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <input type="submit" name="submit" id="register-submit" tabindex="4"
+                               class="form-control btn btn-register" value="Create!">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
