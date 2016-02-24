@@ -56,7 +56,7 @@ def populate():
     add_message(a1, a4, 'you are good')
 
     for x in range(0, 50):
-        add_city_graphic(x, 'city/' + str(x) + '.png')
+        add_city_graphic(x, 'media/city/' + str(x) + '.png')
 
     add_costs()
 
