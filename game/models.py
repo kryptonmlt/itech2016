@@ -116,7 +116,7 @@ class Cost(models.Model):
 
 class CityGraphic(models.Model):
     level = models.IntegerField(default=0)
-    picture = models.ImageField(upload_to='media', blank=True)
+    picture = models.ImageField(upload_to='city', blank=True)
 
     def __str__(self):
         return "City Lvl " + str(self.level)
