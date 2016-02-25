@@ -35,7 +35,7 @@ def index(request):
             return render(request, 'game/create_city.html', {'city_form': city_form, 'acc': acc, 'err_msg': err_msg})
 
     userlist = Account.objects.exclude(user=request.user)
-    cost.wall_price = cost.calc_wall_price( city.walls_level)
+    cost.wall_price = cost.calc_wall_price(city.walls_level)
     cost.farms_price = cost.calc_farms_price(city.farms)
     cost.stone_caves_price = cost.calc_caves_price(city.stone_caves)
     cost.gold_mines_price = cost.calc_mines_price(city.gold_mines)
@@ -308,50 +308,60 @@ def buy(request):
 
     if element_type == 'wall':
         temp_cost = cost.calc_wall_price(city.walls_level).split(',')
-        if city.gold >= temp_cost[0] & city.lumber>=temp_cost[1] & city.stones>=temp_cost[2]:
-            city.gold -= temp_cost[0]
-            city.lumber -= temp_cost[1]
-            city.stones -= temp_cost[2]
-            city.walls_level += 1
-            city.save()
-            return HttpResponse(str(city.walls_level) + "," + str(cost.calc_wall_price(city.walls_level)))
+        if city.gold >= int(temp_cost[0]):
+            if city.lumber >= int(temp_cost[1]):
+                if city.stones >= int(temp_cost[2]):
+                    city.gold -= int(temp_cost[0])
+                    city.lumber -= int(temp_cost[1])
+                    city.stones -= int(temp_cost[2])
+                    city.walls_level += 1
+                    city.save()
+                    return HttpResponse(str(city.walls_level) + "," + cost.calc_wall_price(city.walls_level))
     if element_type == 'farms':
         temp_cost = cost.calc_houses_price(city.farms).split(',')
-        if city.gold >= temp_cost[0] & city.lumber>=temp_cost[1] & city.stones>=temp_cost[2]:
-            city.gold -= temp_cost[0]
-            city.lumber -= temp_cost[1]
-            city.stones -= temp_cost[2]
-            city.houses_level += 1
-            city.save()
-            return HttpResponse(str(city.farms) + "," + str(city.get_maximum_troops()) + "," + str(
-                cost.calc_farms_price(city.farms)))
+        if city.gold >= int(temp_cost[0]):
+            if city.lumber >= int(temp_cost[1]):
+                if city.stones >= int(temp_cost[2]):
+                    city.gold -= int(temp_cost[0])
+                    city.lumber -= int(temp_cost[1])
+                    city.stones -= int(temp_cost[2])
+                    city.houses_level += 1
+                    city.save()
+                    return HttpResponse(
+                        str(city.farms) + "," + str(city.get_maximum_troops()) + "," + cost.calc_farms_price(city.farms))
     if element_type == 'gold_mines':
         temp_cost = cost.calc_mines_price(city.gold_mines).split(',')
-        if city.gold >= temp_cost[0] & city.lumber>=temp_cost[1] & city.stones>=temp_cost[2]:
-            city.gold -= temp_cost[0]
-            city.lumber -= temp_cost[1]
-            city.stones -= temp_cost[2]
-            city.gold_mines += 1
-            city.save()
-            return HttpResponse(str(city.gold_mines) + "," + str(cost.calc_mines_price(city.gold_mines)))
+        if city.gold >= int(temp_cost[0]):
+            if city.lumber >= int(temp_cost[1]):
+                if city.stones >= int(temp_cost[2]):
+                    city.gold -= temp_cost[0]
+                    city.lumber -= temp_cost[1]
+                    city.stones -= temp_cost[2]
+                    city.gold_mines += 1
+                    city.save()
+                    return HttpResponse(str(city.gold_mines) + "," + str(cost.calc_mines_price(city.gold_mines)))
     if element_type == 'stone_caves':
         temp_cost = cost.calc_caves_price(city.stone_caves).split(',')
-        if city.gold >= temp_cost[0] & city.lumber>=temp_cost[1] & city.stones>=temp_cost[2]:
-            city.gold -= temp_cost[0]
-            city.lumber -= temp_cost[1]
-            city.stones -= temp_cost[2]
-            city.stone_caves += 1
-            city.save()
-            return HttpResponse(str(city.stone_caves) + "," + str(cost.calc_caves_price(city.stone_caves)))
+        if city.gold >= int(temp_cost[0]):
+            if city.lumber >= int(temp_cost[1]):
+                if city.stones >= int(temp_cost[2]):
+                    city.gold -= int(temp_cost[0])
+                    city.lumber -= int(temp_cost[1])
+                    city.stones -= int(temp_cost[2])
+                    city.stone_caves += 1
+                    city.save()
+                    return HttpResponse(str(city.stone_caves) + "," + cost.calc_caves_price(city.stone_caves))
     if element_type == 'lumber_mills':
         temp_cost = cost.calc_mills_price(city.lumber_mills).split(',')
-        if city.gold >= temp_cost[0] & city.lumber>=temp_cost[1] & city.stones>=temp_cost[2]:
-            city.gold -= temp_cost[0]
-            city.lumber -= temp_cost[1]
-            city.stones -= temp_cost[2]
-            city.lumber_mills += 1
-            city.save()
-            return HttpResponse(str(city.lumber_mills) + "," + str(cost.calc_mills_price(city.lumber_mills)))
+        if city.gold >= int(temp_cost[0]):
+            if city.lumber >= int(temp_cost[1]):
+                if city.stones >= int(temp_cost[2]):
+                    city.gold -= int(temp_cost[0])
+                    city.lumber -= int(temp_cost[1])
+                    city.stones -= int(temp_cost[2])
+                    city.lumber_mills += 1
+                    city.save()
+                    return HttpResponse(str(city.lumber_mills) + "," + cost.calc_mills_price(city.lumber_mills))
     if city.footmen + city.bowmen + city.knights + city.war_machines < city.get_maximum_troops():
         if element_type == 'footmen':
             if city.gold >= cost.footmen_price:
@@ -373,12 +383,15 @@ def buy(request):
                 return HttpResponse(city.knights)
         if element_type == 'war_machines':
             temp_cost = cost.calc_war_machines_price(city.war_machines).split(',')
-            if city.gold >= temp_cost[0] & city.lumber>=temp_cost[1] & city.stones>=temp_cost[2]:
-                city.gold -= temp_cost[0]
-                city.lumber -= temp_cost[1]
-                city.war_machines += 1
-                city.save()
-                return HttpResponse(city.war_machines)
+            if city.gold >= int(temp_cost[0]):
+                if city.lumber >= int(temp_cost[1]):
+                    if city.stones >= int(temp_cost[2]):
+                        city.gold -= int(temp_cost[0])
+                        city.lumber -= int(temp_cost[1])
+                        city.stones -= int(temp_cost[2])
+                        city.war_machines += 1
+                        city.save()
+                        return HttpResponse(city.war_machines)
     else:
         return HttpResponse("-3")
     return HttpResponse("-1")
