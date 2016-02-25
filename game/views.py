@@ -28,6 +28,7 @@ def index(request):
                 city = city_form.save(commit=False)
                 city.account = acc
                 city.save()
+                create_log(acc, "Welcome to the game " + acc.user.username + " owner of " + city.name)
             else:
                 err_msg = "Form was not valid!"
         if city is None:
@@ -334,7 +335,8 @@ def buy(request):
                     city.farms += 1
                     city.save()
                     return HttpResponse(
-                        str(city.farms) + "," + str(city.get_maximum_troops()) + "," + cost.calc_farms_price(city.farms))
+                        str(city.farms) + "," + str(city.get_maximum_troops()) + "," + cost.calc_farms_price(
+                            city.farms))
                 else:
                     return HttpResponse("-3")
             else:
