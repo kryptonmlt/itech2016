@@ -122,35 +122,39 @@ class Cost(models.Model):
     footmen_price = models.IntegerField(default=10)
     bowmen_price = models.IntegerField(default=15)
     knights_price = models.IntegerField(default=25)
-    war_machines_price = models.IntegerField(default=50)
-    wall_price = models.IntegerField(default=1000)
-    farms_price = models.IntegerField(default=500)
-    lumber_mills_price = models.IntegerField(default=500)
-    stone_caves_price = models.IntegerField(default=500)
-    gold_mines_price = models.IntegerField(default=500)
-    login_gold = models.IntegerField(default=100)
+    war_machines_price = models.IntegerField(default=40)
+    wall_price = models.CharField(max_length=100,default="1000,100,200")
+    farms_price = models.CharField(max_length=100,default="200,100,100")
+    lumber_mills_price = models.CharField(max_length=100,default="200,200,100")
+    stone_caves_price = models.CharField(max_length=100,default="200,150,150")
+    gold_mines_price = models.CharField(max_length=100,default="300,150,150")
 
     def __str__(self):
         return "Cost stats"
 
-    def calc_houses_price(self, level):
-        return self.houses_price * (level + 1)
-
     def calc_farms_price(self, level):
-        return self.farms_price * (level + 1)
+        prices=self.farms_price.split()
+        return str(int(prices[0])* (level + 1))+","+str(int(prices[1])* (level + 1))+","+str(int(prices[2])* (level + 1))
 
     def calc_wall_price(self, level):
-        return self.wall_price * (level + 1)
+        prices=self.wall_price.split()
+        return str(int(prices[0])* (level + 1))+","+str(int(prices[1])* (level + 1))+","+str(int(prices[2])* (level + 1))
 
     def calc_mills_price(self, level):
-        return self.lumber_mills_price * (level + 1)
+        prices=self.lumber_mills_price.split()
+        return str(int(prices[0])* (level + 1))+","+str(int(prices[1])* (level + 1))+","+str(int(prices[2])* (level + 1))
 
     def calc_caves_price(self, level):
-        return self.stone_caves_price * (level + 1)
+        prices=self.stone_caves_price.split()
+        return str(int(prices[0])* (level + 1))+","+str(int(prices[1])* (level + 1))+","+str(int(prices[2])* (level + 1))
 
     def calc_mines_price(self, level):
-        return self.gold_mines_price * (level + 1)
+        prices=self.gold_mines_price.split()
+        return str(int(prices[0])* (level + 1))+","+str(int(prices[1])* (level + 1))+","+str(int(prices[2])* (level + 1))
 
+    def calc_war_machines_price(self):
+        prices=self.war_machines_price.split()
+        return str(int(prices[0]))+","+str(int(prices[1]))+","+str(int(prices[2]))
 
 class CityGraphic(models.Model):
     level = models.IntegerField(default=0)
