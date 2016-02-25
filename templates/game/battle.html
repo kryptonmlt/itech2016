@@ -12,7 +12,7 @@
     <script>
 	  $(document).ready(function(){
           $('#attackButton').click(function(){
-          	$.get('/game/attack/'+"{{account.user.username}}", function(data){
+          	$.get('/game/attack/'+"{{city.account.user.username}}", function(data){
                    console.log(data); 
          	});
           });
