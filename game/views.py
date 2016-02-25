@@ -327,15 +327,15 @@ def attack(request, opponent):
                 (10 + ecity.walls_level) / 10):
         rnggold = randint(10, 15)
         tempgold = ecity.gold / rnggold
-        lose_army(city, ecity, False, True, tempgold)
+        result = lose_army(city, ecity, False, True, tempgold)
         lose_army(ecity, city, True, False, tempgold)
-        return HttpResponse("victory")
+        return HttpResponse(result)
     else:
         rnggold = randint(5, 10)
         tempgold = city.gold / rnggold
-        lose_army(city, ecity, False, False, tempgold)
+        result = lose_army(city, ecity, False, False, tempgold)
         lose_army(ecity, city, True, True, tempgold)
-        return HttpResponse("defeat")
+        return HttpResponse(result)
 
 
 def lose_army(city, ecity, defender, winner, tempgold):
@@ -362,13 +362,19 @@ def lose_army(city, ecity, defender, winner, tempgold):
             city.gold -= tempgold
             ecity.gold += tempgold
 
-    city.footmen -= city.footmen * rng / 100
-    city.bowmen -= city.bowmen * rng / 100
-    city.knights -= city.knights * rng / 100
-    city.war_machines -= city.war_machines * rng / 100
+    footmenlost=city.footmen * rng / 100
+    city.footmen -= footmenlost
+    bowmenlost=city.footmen * rng / 100
+    city.bowmen -= bowmenlost
+    knightslost=city.knights * rng / 100
+    city.knights -= knightslost
+    war_machineslost=city.war_machines * rng / 100
+    city.war_machines -= war_machineslost
 
     ecity.save()
     city.save()
+
+    return "You lost: \n"+str(footmenlost)+" Footmen \n"+str(bowmenlost)+" Bowmen \n"+str(knightslost)+" Knights \n"+str(war_machineslost)+" War Machines"
 
 
 def create_win_log(account, enemy_account, casualties, defender, tempgold):
