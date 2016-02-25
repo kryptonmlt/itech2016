@@ -78,6 +78,19 @@ def battle(request, user_name):
 
 
 @login_required
+def change_orders(request):
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
+    if acc.alliance_owner:
+        if request.method == 'GET':
+            orders = request.GET['orders']
+            acc.alliance.orders = orders
+            acc.alliance.save()
+            return HttpResponse("1")
+    return HttpResponse("-1")
+
+
+@login_required
 def alliance(request, alliance_name):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
@@ -392,12 +405,9 @@ def create_alliance(request):
 
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
-    try:
-        # create alliance
-        created_alliance = Alliance.objects.create(name=name, description=desc)
-        created_alliance.save()
-    except Alliance.IntegrityError:
-        return HttpResponse("-2")
+    # create alliance
+    created_alliance = Alliance.objects.create(name=name, description=desc)
+    created_alliance.save()
     # alliance successfully created
     acc.alliance = created_alliance
     acc.alliance_owner = True

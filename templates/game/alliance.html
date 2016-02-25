@@ -29,11 +29,28 @@
             });
         }
 
+        function changeOrders() {
+            var orders = document.getElementById("orders_text_area").value;
+            $.get('/game/change_orders/',{'orders':orders}, function(data){
+                $('#requestResult').html("Orders Changed Successfully");
+                if(data != -1){
+                    $("#leaveNotifAlert").show();
+                }
+            });
+        }
+
         function returnToGame(){
             window.location.href = "/game/";
         }
 
 		$(document).ready(function(){
+
+            {% if acc.alliance == alliance %}
+                {% if request.user.username != leader %}
+                    document.getElementById("orders_text_area").readOnly = true;
+                {% endif %}
+            {% endif %}
+
             $('.acceptButton').click(function() {
                 reqAcc = $(this).attr("reqAcc");
                 $.get('/game/accept_alliance/'+reqAcc, function(data){
@@ -60,6 +77,7 @@
                 returnToGame();
             });
         });
+
     </script>
 </head>
 <body>
@@ -68,22 +86,46 @@
         <h1>Alliance {{ alliance.name}}</a></h1>
         <h2>Leader <a href="/game/battle/{{leader}}">{{leader}}</a></h2>
     </div>
+
     <div class="row">
-        <strong>Alliance score:</strong> {{ alliance.all_time_score}}
-        <strong>Description:</strong> {{ alliance.description}}
-    </div>
-    <div class="row">
-        <strong>Message:</strong><input type="text" id="msg">
+        {% if acc.alliance != alliance %}
+        <strong>Alliance Request:</strong><input type="text" id="msg">
         <button onclick="sendAllianceRequest();" id="alliance_request_button" class="btn btn-primary" type="button">
             Request
         </button>
+        {% endif %}
         {% if acc.alliance == alliance %}
         <button onclick="leaveAlliance();" id="leave_button" class="btn btn-primary" type="button">Leave</button>
         {% endif %}
     </div>
-    <div class="alert fade in alert-success" id="leaveNotifAlert" style="display:none;">
-        <button type="button" class="close">Back</button>
-        <strong><span id="requestResult"></span></strong>
+    <div class="row">
+        <div class="row">
+            <strong>Alliance score:</strong> {{ alliance.all_time_score}}
+        </div>
+        <div class="row">
+            <strong>Description:</strong> {{ alliance.description}}
+        </div>
+        {% if acc.alliance == alliance %}
+        <div class="row">
+            <strong>Orders:</strong>
+        </div>
+        <div class="row">
+                    <textarea id="orders_text_area"
+                              style="min-width: 100%; height: 100px; max-height: 100px;">{{ alliance.orders}}</textarea>
+        </div>
+        {% if request.user.username == leader %}
+        <div class="row">
+            <button onclick="changeOrders();" id="change_orders_button" class="btn btn-primary" type="button">Change
+            </button>
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="alert fade in alert-success" id="leaveNotifAlert" style="display:none;">
+            <button type="button" class="close">Back</button>
+            <strong><span id="requestResult"></span></strong>
+        </div>
     </div>
 
     <div class="row">
@@ -111,11 +153,11 @@
             {% for acc in allies %}
             <li><a href="/game/battle/{{acc.user.username}}">{{acc.user.username}}</a> {{ acc.wins }}
                 {% if acc.user.username != leader %}
-                    {% if request.user.username == leader %}
-                        <button reqAcc="{{acc.user.username}}" type="button"
-                                class="btn btn-danger btn-xs kickButton">Kick
-                        </button>
-                    {% endif %}
+                {% if request.user.username == leader %}
+                <button reqAcc="{{acc.user.username}}" type="button"
+                        class="btn btn-danger btn-xs kickButton">Kick
+                </button>
+                {% endif %}
                 {% endif %}
             </li>
             {% endfor %}
