@@ -217,7 +217,6 @@ def decline_alliance(request, from_account_username):
     except AllianceRequest.DoesNotExist:
         return HttpResponse("Request not found for " + recruit.user.username)
 
-
 @login_required
 def get_gold(request):
     user = User.objects.get(pk=request.user.pk)

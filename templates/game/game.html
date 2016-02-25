@@ -34,17 +34,12 @@
         }
 
         function updateResources(){
-            $.get('/game/get_gold/', function(data){
-                $('#goldSpan').html(data);
-            });
-            $.get('/game/get_stones/', function(data){
-                $('#stonesSpan').html(data);
-            });
-            $.get('/game/get_food/', function(data){
-                $('#foodSpan').html(data);
-            });
-            $.get('/game/get_lumber/', function(data){
-                $('#lumberSpan').html(data);
+            $.get('/game/get_resources/', function(data){
+                resources = data.split(',');
+                $('#goldSpan').html(data[0]);
+                $('#lumberSpan').html(data[1]);
+                $('#stonesSpan').html(data[2]);
+                $('#foodSpan').html(data[3]);
             });
         }
 

@@ -128,6 +128,8 @@ class Cost(models.Model):
         return "Cost stats"
 
 
+
+
 class CityGraphic(models.Model):
     level = models.IntegerField(default=0)
     picture = models.ImageField(upload_to='city', blank=True)
