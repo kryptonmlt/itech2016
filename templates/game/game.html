@@ -60,7 +60,7 @@
                        //increments stuff
                        switch(et){
                            case "farms":
-                                var res = data.split(",");
+                                var res = data.split(",",3);
                                 $('#farms').html(res[0]);
                                 $('#maximumTroops').html(res[1]);
                                 $('#farms_cost').html(res[2]);
@@ -76,22 +76,22 @@
                                 }
                                 break;
                            case "wall":
-                                var res = data.split(",");
+                                var res = data.split(",",2);
                                 $('#wallLevel').html(res[0]);
                                 $('#wallCost').html(res[1]);
                                 break;
                            case "stone_caves":
-                                var res = data.split(",");
+                                var res = data.split(",",2);
                                 $('#stone_caves').html(res[0]);
                                 $('#stone_caves_cost').html(res[1]);
                                 break;
                            case "gold_mines":
-                                var res = data.split(",");
+                                var res = data.split(",",2);
                                 $('#gold_mines').html(res[0]);
                                 $('#gold_mines_cost').html(res[1]);
                                 break;
                            case "lumber_mills":
-                                var res = data.split(",");
+                                var res = data.split(",",2);
                                 $('#lumber_mills').html(res[0]);
                                 $('#lumber_mills_cost').html(res[1]);
                                 break;
