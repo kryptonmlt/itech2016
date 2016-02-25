@@ -89,8 +89,17 @@ class Message(models.Model):
     date_occurred = models.DateTimeField('date occurred', default=timezone.now)
 
     def __str__(self):
-        return str(
-            self.date_occurred) + ": " + self.text + ", from " + self.from_account.user.username + " to " + self.to_account.user.username
+        return self.from_account.user.username + ": " + self.text + "$$"
+
+
+class AllianceMessage(models.Model):
+    from_account = models.ForeignKey(Account, related_name="from_account_alliance_messages")
+    to_alliance = models.ForeignKey(Alliance, related_name="to_alliance_messages")
+    text = models.CharField(max_length=200)
+    date_occurred = models.DateTimeField('date occurred', default=timezone.now)
+
+    def __str__(self):
+        return self.from_account.user.username + ": " + self.text + "$$"
 
 
 class Badge(models.Model):
@@ -144,8 +153,6 @@ class Cost(models.Model):
 
     def calc_mines_price(self, level):
         return self.gold_mines_price * (level + 1)
-
-
 
 
 class CityGraphic(models.Model):

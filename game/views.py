@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
-from game.models import Account, Alliance, AllianceRequest, City, Badge, Log, Message, Cost, CityGraphic
+from game.models import Account, Alliance, AllianceRequest, City, Badge, Log, Message, Cost, CityGraphic, \
+    AllianceMessage
 from django.contrib.auth.models import User
 from game.forms import CityForm
 import datetime
@@ -34,7 +35,7 @@ def index(request):
             return render(request, 'game/create_city.html', {'city_form': city_form, 'acc': acc, 'err_msg': err_msg})
 
     userlist = Account.objects.exclude(user=request.user)
-    cost.wall_price = cost.calc_wall_price( city.walls_level)
+    cost.wall_price = cost.calc_wall_price(city.walls_level)
     cost.houses_price = cost.calc_houses_price(city.houses_level)
     cost.farms_price = cost.calc_farms_price(city.farms)
     cost.stone_caves_price = cost.calc_caves_price(city.stone_caves)
@@ -66,6 +67,72 @@ def get_logs(request):
     except MultiValueDictKeyError:
         logs = Log.objects.all().filter(account=acc).order_by('date_occurred')[:10]
     return HttpResponse(logs)
+
+
+@login_required
+def get_messages(request):
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
+    try:
+        last_message_id = request.GET['latest_log_id']
+        if last_message_id == -1:
+            messages = Message.objects.all().filter(Q(to_account=acc) | Q(from_account=acc)).order_by('date_occurred')[
+                       :10]
+        else:
+            messages = Message.objects.all().filter(Q(to_account=acc) | Q(from_account=acc),
+                                                    pk__gt=last_message_id).order_by('date_occurred')
+    except MultiValueDictKeyError:
+        messages = Message.objects.all().filter(Q(to_account=acc) | Q(from_account=acc)).order_by('date_occurred')[:10]
+    return HttpResponse(messages)
+
+
+@login_required
+def add_message(request):
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
+    try:
+        message = request.GET['message']
+        to_account_id = request.GET['to_account_id']
+        other_account = Account.objects.get(pk=to_account_id)
+        m = Message.create(from_account=acc, to_account=other_account, text=message)
+        m.save()
+    except MultiValueDictKeyError:
+        return HttpResponse("-1")
+    return HttpResponse("1")
+
+
+@login_required
+def add_alliance_message(request):
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
+    try:
+        message = request.GET['message']
+        to_alliance_id = request.GET['to_alliance_id']
+        other_alliance = Alliance.objects.get(pk=to_alliance_id)
+        am = AllianceMessage.create(from_account=acc, to_alliance=other_alliance, text=message)
+        am.save()
+    except MultiValueDictKeyError:
+        return HttpResponse("-1")
+    return HttpResponse("1")
+
+
+@login_required
+def get_alliance_messages(request):
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
+    try:
+        last_message_id = request.GET['latest_log_id']
+        if last_message_id == -1:
+            messages = AllianceMessage.objects.all().filter(Q(to_alliance=acc.alliance) | Q(from_account=acc)).order_by(
+                'date_occurred')[
+                       :10]
+        else:
+            messages = AllianceMessage.objects.all().filter(Q(to_alliance=acc.alliance) | Q(from_account=acc),
+                                                            pk__gt=last_message_id).order_by('date_occurred')
+    except MultiValueDictKeyError:
+        messages = AllianceMessage.objects.all().filter(Q(to_alliance=acc.alliance) | Q(from_account=acc)).order_by(
+            'date_occurred')[:10]
+    return HttpResponse(messages)
 
 
 @login_required
@@ -217,15 +284,16 @@ def decline_alliance(request, from_account_username):
     except AllianceRequest.DoesNotExist:
         return HttpResponse("Request not found for " + recruit.user.username)
 
-@login_required
 
+@login_required
 @login_required
 def get_resources(request):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
     city = City.objects.all().get(account=acc)
-    print str(city.gold)+","+str(city.lumber)+","+str(city.stones)+","+str(city.food)
-    return HttpResponse(str(city.gold)+","+str(city.lumber)+","+str(city.stones)+","+str(city.food))
+    print str(city.gold) + "," + str(city.lumber) + "," + str(city.stones) + "," + str(city.food)
+    return HttpResponse(str(city.gold) + "," + str(city.lumber) + "," + str(city.stones) + "," + str(city.food))
+
 
 @login_required
 def buy(request):
@@ -240,7 +308,7 @@ def buy(request):
     cost = Cost.objects.all().get()
 
     if element_type == 'houses':
-        temp_cost = cost.calc_houses_price( city.houses_level)
+        temp_cost = cost.calc_houses_price(city.houses_level)
         if city.gold >= temp_cost:
             city.gold -= temp_cost
             city.houses_level += 1
@@ -377,23 +445,26 @@ def lose_army(city, ecity, defender, winner, tempgold):
             city.gold -= tempgold
             ecity.gold += tempgold
 
-    footmenlost=city.footmen * rng / 100
+    footmenlost = city.footmen * rng / 100
     city.footmen -= footmenlost
-    bowmenlost=city.footmen * rng / 100
+    bowmenlost = city.footmen * rng / 100
     city.bowmen -= bowmenlost
-    knightslost=city.knights * rng / 100
+    knightslost = city.knights * rng / 100
     city.knights -= knightslost
-    war_machineslost=city.war_machines * rng / 100
+    war_machineslost = city.war_machines * rng / 100
     city.war_machines -= war_machineslost
 
     ecity.save()
     city.save()
 
     if winner:
-        result= "You defeated " + ecity.account.user.username+ " gaining " + str(tempgold) + " gold coins from your enemy and losing:\n"
+        result = "You defeated " + ecity.account.user.username + " gaining " + str(
+            tempgold) + " gold coins from your enemy and losing:\n"
     else:
-        result="You suffered a defeat from " + ecity.account.user.username + " losing "+ str(tempgold) + " gold coins along with:\n"
-    return result+str(footmenlost)+" Footmen \n"+str(bowmenlost)+" Bowmen \n"+str(knightslost)+" Knights \n"+str(war_machineslost)+" War Machines"
+        result = "You suffered a defeat from " + ecity.account.user.username + " losing " + str(
+            tempgold) + " gold coins along with:\n"
+    return result + str(footmenlost) + " Footmen \n" + str(bowmenlost) + " Bowmen \n" + str(
+        knightslost) + " Knights \n" + str(war_machineslost) + " War Machines"
 
 
 def create_win_log(account, enemy_account, casualties, defender, tempgold):
