@@ -87,7 +87,7 @@ class Message(models.Model):
     date_occurred = models.DateTimeField('date occurred', default=timezone.now)
 
     def __str__(self):
-        return self.from_account.user.username + ": " + self.text + "$$"
+        return str(self.pk) + "||" + self.from_account.user.username + "||" + self.text + "$$"
 
 
 class AllianceMessage(models.Model):
@@ -97,7 +97,7 @@ class AllianceMessage(models.Model):
     date_occurred = models.DateTimeField('date occurred', default=timezone.now)
 
     def __str__(self):
-        return self.from_account.user.username + ": " + self.text + "$$"
+        return str(self.pk) + "||" + self.from_account.user.username + "||" + self.text + "$$"
 
 
 class Badge(models.Model):
