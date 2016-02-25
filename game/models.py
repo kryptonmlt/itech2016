@@ -122,7 +122,7 @@ class Cost(models.Model):
     footmen_price = models.IntegerField(default=10)
     bowmen_price = models.IntegerField(default=15)
     knights_price = models.IntegerField(default=25)
-    war_machines_price = models.IntegerField(default=40)
+    war_machines_price = models.CharField(max_length=100,default="40,10")
     wall_price = models.CharField(max_length=100,default="1000,100,200")
     farms_price = models.CharField(max_length=100,default="200,100,100")
     lumber_mills_price = models.CharField(max_length=100,default="200,200,100")
@@ -154,7 +154,7 @@ class Cost(models.Model):
 
     def calc_war_machines_price(self):
         prices=self.war_machines_price.split(',')
-        return str(int(prices[0]))+","+str(int(prices[1]))+","+str(int(prices[2]))
+        return str(int(prices[0]))+","+str(int(prices[1]))
 
 class CityGraphic(models.Model):
     level = models.IntegerField(default=0)
