@@ -15,6 +15,7 @@
         latest_log_id = -1;
 
         function populateLogBox(){
+            logs_text_area = document.getElementById("logs_text");
             $.get('/game/get_logs/',{'latest_log_id':latest_log_id}, function(data){
 
                 logs = data.split('$$');
@@ -25,7 +26,8 @@
                         if(log_id>latest_log_id){
                             latest_log_id=log_id;
                         }
-                        document.getElementById("logs_text").value += real_log[1]+': '+real_log[2]+'\n'
+                        logs_text_area.value += real_log[1]+': '+real_log[2]+'\n'
+                        logs_text_area.scrollTop = logs_text_area.scrollHeight;
                     }
                 }
             });

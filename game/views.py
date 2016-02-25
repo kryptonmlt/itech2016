@@ -86,6 +86,10 @@ def change_orders(request):
             orders = request.GET['orders']
             acc.alliance.orders = orders
             acc.alliance.save()
+            members = Account.objects.all().filter(alliance=acc.alliance)
+            for member in members:
+                create_log(member, "Leader "+acc.user.username+" gave out new orders!")
+
             return HttpResponse("1")
     return HttpResponse("-1")
 
@@ -303,7 +307,7 @@ def kick_member(request, member):
     if admin.alliance_owner:
         poor_member.alliance = None
         poor_member.save()
-        create_log(admin, "you kicked " + poor_member.user.username + " from the the alliance")
+        create_log(admin, "you kicked " + poor_member.user.username + " from the alliance")
         create_log(poor_member, "you were kicked from the alliance under the rule of Leader " + admin.user.username)
         return HttpResponse("1")
     else:
