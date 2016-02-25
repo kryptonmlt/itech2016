@@ -324,14 +324,14 @@ def buy(request):
             return HttpResponse("-1")
 
     if element_type == 'farms':
-        temp_cost = cost.calc_houses_price(city.farms).split(',')
+        temp_cost = cost.calc_farms_price(city.farms).split(',')
         if city.gold >= int(temp_cost[0]):
             if city.lumber >= int(temp_cost[1]):
                 if city.stones >= int(temp_cost[2]):
                     city.gold -= int(temp_cost[0])
                     city.lumber -= int(temp_cost[1])
                     city.stones -= int(temp_cost[2])
-                    city.houses_level += 1
+                    city.farms += 1
                     city.save()
                     return HttpResponse(
                         str(city.farms) + "," + str(city.get_maximum_troops()) + "," + cost.calc_farms_price(city.farms))
@@ -346,9 +346,9 @@ def buy(request):
         if city.gold >= int(temp_cost[0]):
             if city.lumber >= int(temp_cost[1]):
                 if city.stones >= int(temp_cost[2]):
-                    city.gold -= temp_cost[0]
-                    city.lumber -= temp_cost[1]
-                    city.stones -= temp_cost[2]
+                    city.gold -= int(temp_cost[0])
+                    city.lumber -= int(temp_cost[1])
+                    city.stones -= int(temp_cost[2])
                     city.gold_mines += 1
                     city.save()
                     return HttpResponse(str(city.gold_mines) + "," + str(cost.calc_mines_price(city.gold_mines)))
