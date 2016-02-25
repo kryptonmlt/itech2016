@@ -48,9 +48,15 @@ class City(models.Model):
     account = models.ForeignKey(Account)
     name = models.CharField(max_length=100)
     gold = models.IntegerField(default=1000)
-    house_level = models.IntegerField(default=1)
-    lands_owned = models.IntegerField(default=0)
+    lumber = models.IntegerField(default=100)
+    stones = models.IntegerField(default=100)
+    food = models.IntegerField(default=100)
+    houses_level = models.IntegerField(default=1)
+    farms = models.IntegerField(default=0)
     walls_level = models.IntegerField(default=0)
+    lumber_mills = models.IntegerField(default=0)
+    stone_caves = models.IntegerField(default=0)
+    gold_mines = models.IntegerField(default=0)
     footmen = models.IntegerField(default=0)
     bowmen = models.IntegerField(default=0)
     knights = models.IntegerField(default=0)
@@ -60,7 +66,7 @@ class City(models.Model):
         return self.name
 
     def get_maximum_troops(self):
-        return 50 * self.house_level
+        return 50 * self.houses_level
 
     def army_total(self):
         return self.footmen + self.bowmen + self.knights + self.war_machines
@@ -110,9 +116,12 @@ class Cost(models.Model):
     bowmen_price = models.IntegerField(default=15)
     knights_price = models.IntegerField(default=25)
     war_machines_price = models.IntegerField(default=50)
-    house_price = models.IntegerField(default=100)
+    houses_price = models.IntegerField(default=100)
     wall_price = models.IntegerField(default=1000)
-    lands_price = models.IntegerField(default=500)
+    farms_price = models.IntegerField(default=500)
+    lumber_mills_price = models.IntegerField(default=500)
+    stone_caves_price = models.IntegerField(default=500)
+    gold_mines_price = models.IntegerField(default=500)
     login_gold = models.IntegerField(default=100)
 
     def __str__(self):

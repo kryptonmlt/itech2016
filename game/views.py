@@ -35,9 +35,12 @@ def index(request):
 
     userlist = Account.objects.exclude(user=request.user)
     cost.wall_price = calc_wall_price(cost.wall_price, city.walls_level)
-    cost.house_price = calc_house_price(cost.house_price, city.house_level)
-    cost.lands_price = calc_lands_price(cost.lands_price, city.lands_owned)
-    city_pic = CityGraphic.objects.get(level=get_correct_image(city.house_level))
+    cost.houses_price = calc_houses_price(cost.houses_price, city.houses_level)
+    cost.farms_price = calc_farms_price(cost.farms_price, city.farms)
+    cost.stone_caves_price = calc_caves_price(cost.stone_caves_price, city.stone_caves)
+    cost.gold_mines_price = calc_mines_price(cost.gold_mines_price, city.gold_mines)
+    cost.lumber_mills_price = calc_mills_price(cost.lumber_mills_price, city.lumber_mills)
+    city_pic = CityGraphic.objects.get(level=get_correct_image(city.houses_level))
     context_dict = {'userlist': userlist, 'cost': cost, 'city': city, 'acc': acc, 'city_pic': city_pic}
     return render(request, 'game/game.html', context_dict)
 
@@ -220,6 +223,27 @@ def get_gold(request):
     city = City.objects.all().get(account=acc)
     return HttpResponse(city.gold)
 
+@login_required
+def get_lumber(request):
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
+    city = City.objects.all().get(account=acc)
+    return HttpResponse(city.lumber)
+
+@login_required
+def get_stones(request):
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
+    city = City.objects.all().get(account=acc)
+    return HttpResponse(city.stones)
+
+@login_required
+def get_food(request):
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
+    city = City.objects.all().get(account=acc)
+    return HttpResponse(city.food)
+
 
 @login_required
 def buy(request):
@@ -233,14 +257,14 @@ def buy(request):
     city = City.objects.all().get(account=acc)
     cost = Cost.objects.all().get()
 
-    if element_type == 'house':
-        temp_cost = calc_house_price(cost.house_price, city.house_level)
+    if element_type == 'houses':
+        temp_cost = calc_houses_price(cost.houses_price, city.houses_level)
         if city.gold >= temp_cost:
             city.gold -= temp_cost
-            city.house_level += 1
+            city.houses_level += 1
             city.save()
-            return HttpResponse(str(city.house_level) + "," + str(city.get_maximum_troops()) + "," + str(
-                calc_house_price(cost.house_price, city.house_level)))
+            return HttpResponse(str(city.houses_level) + "," + str(city.get_maximum_troops()) + "," + str(
+                calc_houses_price(cost.houses_price, city.houses_level)))
     if element_type == 'wall':
         temp_cost = calc_wall_price(cost.wall_price, city.walls_level)
         if city.gold >= temp_cost:
@@ -248,13 +272,34 @@ def buy(request):
             city.walls_level += 1
             city.save()
             return HttpResponse(str(city.walls_level) + "," + str(calc_wall_price(cost.wall_price, city.walls_level)))
-    if element_type == 'lands':
-        temp_cost = calc_lands_price(cost.lands_price, city.lands_owned)
+    if element_type == 'farms':
+        temp_cost = calc_farms_price(cost.farms_price, city.farms)
         if city.gold >= temp_cost:
             city.gold -= temp_cost
-            city.lands_owned += 1
+            city.farms += 1
             city.save()
-            return HttpResponse(str(city.lands_owned) + "," + str(calc_lands_price(cost.lands_price, city.lands_owned)))
+            return HttpResponse(str(city.farms_owned) + "," + str(calc_farms_price(cost.farms_price, city.farms)))
+    if element_type == 'gold_mines':
+        temp_cost = calc_mines_price(cost.gold_mines_price, city.gold_mines)
+        if city.gold >= temp_cost:
+            city.gold -= temp_cost
+            city.gold_mines += 1
+            city.save()
+            return HttpResponse(str(city.gold_mines) + "," + str(calc_mines_price(cost.gold_mines_price, city.gold_mines)))
+    if element_type == 'stone_caves':
+        temp_cost = calc_caves_price(cost.stone_caves_price, city.stone_caves)
+        if city.gold >= temp_cost:
+            city.gold -= temp_cost
+            city.stone_caves += 1
+            city.save()
+            return HttpResponse(str(city.stone_caves) + "," + str(calc_caves_price(cost.stone_caves_price, city.stone_caves)))
+    if element_type == 'lumber_mills':
+        temp_cost = calc_mills_price(cost.lumber_mills_price, city.lumber_mills)
+        if city.gold >= temp_cost:
+            city.gold -= temp_cost
+            city.lumber_mills += 1
+            city.save()
+            return HttpResponse(str(city.lumber_mills) + "," + str(calc_mills_price(cost.lumber_mills_price, city.lumber_mills)))
     if city.footmen + city.bowmen + city.knights + city.war_machines < city.get_maximum_troops():
         if element_type == 'footmen':
             if city.gold >= 10:
@@ -285,15 +330,22 @@ def buy(request):
     return HttpResponse("-1")
 
 
-def calc_house_price(base, level):
+def calc_houses_price(base, level):
     return base * (level + 1)
 
-
-def calc_lands_price(base, level):
+def calc_farms_price(base, level):
     return base * (level + 1)
-
 
 def calc_wall_price(base, level):
+    return base * (level + 1)
+
+def calc_mills_price(base, level):
+    return base * (level + 1)
+
+def calc_caves_price(base, level):
+    return base * (level + 1)
+
+def calc_mines_price(base, level):
     return base * (level + 1)
 
 
