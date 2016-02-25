@@ -11,12 +11,16 @@
 
     <script>
 	  $(document).ready(function(){
+	      logs_text_area = document.getElementById("logs_text");
           $('#attackButton').click(function(){
           	$.get('/game/attack/'+"{{enemy_city.account.user.username}}", function(data){
-                   console.log(data); 
+                   console.log(data);
+            logs_text_area.value +=data
+
          	});
           });
       });
+
 
     </script>
 
@@ -51,7 +55,7 @@
             </div>
         </div>
         <div class="col-md-8">
-                <img src="{{ MEDIA_URL }}/media/siege.jpg" %}" width=90% class="img-thumbnail"/>
+            <img src="{{ MEDIA_URL }}/media/siege.jpg" %}" width=90% class="img-thumbnail"/>
         </div>
 
         <div class="col-md-2">
@@ -68,10 +72,19 @@
         </div>
     </div>
     <div class="row vertical-center-row">
-        <div class="col-md-5 col-md-offset-5">
+        <div class="col-md-5 col-md-offset-3">
+            <div class="row vertical-center-row">
             <button id="attackButton" type="button">Attack</button>
+            </div>
+            <div class="row vertical-center-row">
+            <label for="logs_text" id="LogsHeading">Battle Results</label>
+            <textarea id="logs_text" style="min-width: 100%; height: 100px; max-height: 100px;"></textarea>
+            </div>
+            <div class="row vertical-center-row">
+            <a href="/game/">to City</a><br/>
+            </div>
 
-            <div>
+            <div class="row vertical-center-row">
                 <a href="/game/logout/">Logout</a><br/>
             </div>
 
@@ -79,7 +92,7 @@
             <a href="/game/register/">Register Here</a><br/>
             <a href="/game/login/">Login</a><br/>
             {% endif %}
-            <a href="/game/">Home</a><br/>
+
         </div>
     </div>
 </div>
