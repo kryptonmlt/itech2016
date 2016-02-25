@@ -12,21 +12,11 @@
     <script>
 	  $(document).ready(function(){
           $('#attackButton').click(function(){
-          	$.get('/game/attack/'+"{{city.account.user.username}}", function(data){
+          	$.get('/game/attack/'+"{{enemy_city.account.user.username}}", function(data){
                    console.log(data); 
          	});
           });
       });
-
-
-
-
-
-
-
-
-
-
 
     </script>
 

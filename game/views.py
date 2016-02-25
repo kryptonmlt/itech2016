@@ -88,7 +88,7 @@ def change_orders(request):
             acc.alliance.save()
             members = Account.objects.all().filter(alliance=acc.alliance)
             for member in members:
-                create_log(member, "Leader "+acc.user.username+" gave out new orders!")
+                create_log(member, "Leader " + acc.user.username + " gave out new orders!")
 
             return HttpResponse("1")
     return HttpResponse("-1")
@@ -327,38 +327,38 @@ def attack(request, opponent):
                 (10 + ecity.walls_level) / 10):
         rnggold = randint(10, 15)
         tempgold = ecity.gold / rnggold
-        lose_army(city, ecity, False, True, enemy, tempgold)
-        lose_army(ecity, city, True, False, user, tempgold)
+        lose_army(city, ecity, False, True, tempgold)
+        lose_army(ecity, city, True, False, tempgold)
         return HttpResponse("victory")
     else:
         rnggold = randint(5, 10)
         tempgold = city.gold / rnggold
-        lose_army(city, ecity, False, False, enemy, tempgold)
-        lose_army(ecity, city, True, True, user, tempgold)
+        lose_army(city, ecity, False, False, tempgold)
+        lose_army(ecity, city, True, True, tempgold)
         return HttpResponse("defeat")
 
 
-def lose_army(city, ecity, defender, winner, user, tempgold):
+def lose_army(city, ecity, defender, winner, tempgold):
     if defender:
         if winner:
             rng = randint(5, 15)
             city.gold += tempgold
             ecity.gold -= tempgold
-            create_win_log(city.account, user, rng, defender, tempgold)
+            create_win_log(city.account, ecity.account, rng, defender, tempgold)
         else:
             rng = randint(15, 30)
-            create_defeat_log(city.account, user, rng, defender, tempgold)
+            create_defeat_log(city.account, ecity.account, rng, defender, tempgold)
             city.gold -= tempgold
             ecity.gold += tempgold
     else:
         if winner:
             rng = randint(15, 30)
-            create_win_log(city.account, user, rng, defender, tempgold)
+            create_win_log(city.account, ecity.account, rng, defender, tempgold)
             city.gold += tempgold
             ecity.gold -= tempgold
         else:
             rng = randint(30, 50)
-            create_defeat_log(city.account, user, rng, defender, tempgold)
+            create_defeat_log(city.account, ecity.account, rng, defender, tempgold)
             city.gold -= tempgold
             ecity.gold += tempgold
 
@@ -371,26 +371,26 @@ def lose_army(city, ecity, defender, winner, user, tempgold):
     city.save()
 
 
-def create_win_log(account, user, casualties, defender, tempgold):
+def create_win_log(account, enemy_account, casualties, defender, tempgold):
     if defender:
         log = Log.objects.create(account=account,
-                                 text="Your troops managed to defend the city successfully from " + user.username + ", but lost " + str(
+                                 text="Your troops managed to defend the city successfully from " + enemy_account.user.username + ", but lost " + str(
                                      casualties) + " % of your troops and gained " + str(
                                      tempgold) + " gold coins from your enemy")
     else:
-        log = Log.objects.create(account=account, text="You defeated " + user.username + " losing " + str(
+        log = Log.objects.create(account=account, text="You defeated " + enemy_account.user.username + " losing " + str(
             casualties) + " % of your troops and gaining " + str(tempgold) + " gold coins from your enemy")
     log.save()
 
 
-def create_defeat_log(account, user, casualties, defender, tempgold):
+def create_defeat_log(account, enemy_account, casualties, defender, tempgold):
     if defender:
         log = Log.objects.create(account=account,
-                                 text="You failed to defend your city from " + user.username + " losing " + str(
+                                 text="You failed to defend your city from " + enemy_account.user.username + " losing " + str(
                                      casualties) + " % of your troops and " + str(tempgold) + " gold coins")
     else:
         log = Log.objects.create(account=account,
-                                 text="The army of " + user.username + " was too powerful and lost " + str(
+                                 text="The army of " + enemy_account.user.username + " was too powerful and lost " + str(
                                      casualties) + " % of your troops along with " + str(tempgold) + " gold coins")
     log.save()
 
