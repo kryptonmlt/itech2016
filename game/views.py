@@ -35,13 +35,12 @@ def index(request):
             return render(request, 'game/create_city.html', {'city_form': city_form, 'acc': acc, 'err_msg': err_msg})
 
     userlist = Account.objects.exclude(user=request.user)
-    cost.wall_price = cost.calc_wall_price(city.walls_level)
-    cost.houses_price = cost.calc_houses_price(city.houses_level)
+    cost.wall_price = cost.calc_wall_price( city.walls_level)
     cost.farms_price = cost.calc_farms_price(city.farms)
     cost.stone_caves_price = cost.calc_caves_price(city.stone_caves)
     cost.gold_mines_price = cost.calc_mines_price(city.gold_mines)
     cost.lumber_mills_price = cost.calc_mills_price(city.lumber_mills)
-    city_pic = CityGraphic.objects.get(level=get_correct_image(city.houses_level))
+    city_pic = CityGraphic.objects.get(level=get_correct_image(city.farms))
     context_dict = {'userlist': userlist, 'cost': cost, 'city': city, 'acc': acc, 'city_pic': city_pic}
     return render(request, 'game/game.html', context_dict)
 
@@ -307,14 +306,6 @@ def buy(request):
     city = City.objects.all().get(account=acc)
     cost = Cost.objects.all().get()
 
-    if element_type == 'houses':
-        temp_cost = cost.calc_houses_price(city.houses_level)
-        if city.gold >= temp_cost:
-            city.gold -= temp_cost
-            city.houses_level += 1
-            city.save()
-            return HttpResponse(str(city.houses_level) + "," + str(city.get_maximum_troops()) + "," + str(
-                cost.calc_houses_price(city.houses_level)))
     if element_type == 'wall':
         temp_cost = cost.calc_wall_price(city.walls_level)
         if city.gold >= temp_cost:
@@ -323,12 +314,13 @@ def buy(request):
             city.save()
             return HttpResponse(str(city.walls_level) + "," + str(cost.calc_wall_price(city.walls_level)))
     if element_type == 'farms':
-        temp_cost = cost.calc_farms_price(city.farms)
+        temp_cost = cost.calc_houses_price( city.farms)
         if city.gold >= temp_cost:
             city.gold -= temp_cost
-            city.farms += 1
+            city.houses_level += 1
             city.save()
-            return HttpResponse(str(city.farms) + "," + str(cost.calc_farms_price(city.farms)))
+            return HttpResponse(str(city.farms) + "," + str(city.get_maximum_troops()) + "," + str(
+                cost.calc_farms_price(city.farms)))
     if element_type == 'gold_mines':
         temp_cost = cost.calc_mines_price(city.gold_mines)
         if city.gold >= temp_cost:
@@ -527,13 +519,13 @@ def alliance_search_empty(request):
     return render(request, 'game/alliance_search.html', context_dict)
 
 
-def get_correct_image(house_level):
-    return 1 + (int(house_level) / 10)
+def get_correct_image(farms):
+    return 1 + (int(farms) / 10)
 
 
 @login_required
-def city_img(request, house_level):
-    city_pic = CityGraphic.objects.get(level=get_correct_image(house_level))
+def city_img(request, farms):
+    city_pic = CityGraphic.objects.get(level=get_correct_image(farms))
     return HttpResponse(str(city_pic.picture))
 
 
