@@ -73,7 +73,7 @@ def get_messages(request):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
     try:
-        last_message_id = request.GET['latest_log_id']
+        last_message_id = request.GET['last_message_id']
         if last_message_id == -1:
             messages = Message.objects.all().filter(Q(to_account=acc) | Q(from_account=acc)).order_by('date_occurred')[
                        :10]
@@ -93,7 +93,7 @@ def add_message(request):
         message = request.GET['message']
         to_account_id = request.GET['to_account_id']
         other_account = Account.objects.get(pk=to_account_id)
-        m = Message.create(from_account=acc, to_account=other_account, text=message)
+        m = Message.objects.create(from_account=acc, to_account=other_account, text=message)
         m.save()
     except MultiValueDictKeyError:
         return HttpResponse("-1")
@@ -108,7 +108,7 @@ def add_alliance_message(request):
         message = request.GET['message']
         to_alliance_id = request.GET['to_alliance_id']
         other_alliance = Alliance.objects.get(pk=to_alliance_id)
-        am = AllianceMessage.create(from_account=acc, to_alliance=other_alliance, text=message)
+        am = AllianceMessage.objects.create(from_account=acc, to_alliance=other_alliance, text=message)
         am.save()
     except MultiValueDictKeyError:
         return HttpResponse("-1")
@@ -120,7 +120,7 @@ def get_alliance_messages(request):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
     try:
-        last_message_id = request.GET['latest_log_id']
+        last_message_id = request.GET['last_message_id']
         if last_message_id == -1:
             messages = AllianceMessage.objects.all().filter(Q(to_alliance=acc.alliance) | Q(from_account=acc)).order_by(
                 'date_occurred')[
