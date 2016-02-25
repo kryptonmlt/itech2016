@@ -42,6 +42,11 @@
             });
         }
 
+        function getBuildingInfo(data){
+            index = data.indexOf(",");
+            var info = [data.substr(0, index), data.substr(index + 1)];
+            return info;
+        }
 
 		$(document).ready(function(){
 		    document.getElementById("logs_text").readOnly = true;
@@ -65,10 +70,11 @@
                        //increments stuff
                        switch(et){
                            case "farms":
-                                var res = data.split(",",3);
+                                console.log(data)
+                                var res = data.split(",");
                                 $('#farms').html(res[0]);
                                 $('#maximumTroops').html(res[1]);
-                                $('#farms_cost').html(res[2]);
+                                $('#farms_cost').html(res[2]+","+res[3]+","+res[4]);
                                 try {
                                     $.get('/game/city_img/'+res[0], function(data){
                                         if(data!=-1){
@@ -81,22 +87,23 @@
                                 }
                                 break;
                            case "wall":
-                                var res = data.split(",",2);
+                                console.log(data);
+                                var res = getBuildingInfo(data);
                                 $('#wallLevel').html(res[0]);
                                 $('#wallCost').html(res[1]);
                                 break;
                            case "stone_caves":
-                                var res = data.split(",",2);
+                                var res = getBuildingInfo(data);
                                 $('#stone_caves').html(res[0]);
                                 $('#stone_caves_cost').html(res[1]);
                                 break;
                            case "gold_mines":
-                                var res = data.split(",",2);
+                                var res = getBuildingInfo(data);
                                 $('#gold_mines').html(res[0]);
                                 $('#gold_mines_cost').html(res[1]);
                                 break;
                            case "lumber_mills":
-                                var res = data.split(",",2);
+                                var res = getBuildingInfo(data);
                                 $('#lumber_mills').html(res[0]);
                                 $('#lumber_mills_cost').html(res[1]);
                                 break;
