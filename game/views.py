@@ -148,6 +148,7 @@ def leave_alliance(request):
     acc = Account.objects.get(user=user)
     if acc.alliance:
         reply = ""
+        extra_info = ""
         if acc.alliance_owner:
             next_in_line = \
                 Account.objects.all().filter(alliance=acc.alliance).exclude(user=request.user).order_by('-wins')
@@ -155,15 +156,16 @@ def leave_alliance(request):
                 next_leader = next_in_line[0]
                 next_leader.alliance_owner = True
                 next_leader.save()
-                create_log(acc,
-                           "You left the alliance " + acc.alliance.name + ", " + next_leader.user.username + " is your successor")
-                create_log(next_leader, "You approved " + acc.user.username + " to becoming a member of your alliance!")
+                extra_info = ", " + next_leader.user.username + " is your successor"
+                create_log(next_leader,
+                           "You became the new leader of the alliance " + next_leader.alliance.name + ", after" + acc.user.username + " left.")
                 reply = "Next in line (" + next_leader.user.username + ") now leader of alliance, "
             else:  # delete alliance since no one left to take it
-                create_log(acc,
-                           "You left the alliance " + acc.alliance.name + ", alliance was disbanded due to no successors")
+                extra_info = ", alliance was disbanded due to no successors";
                 acc.alliance.delete()
                 reply = "No one next in line, alliance collapsed, "
+        create_log(acc,
+                   "You left the alliance " + acc.alliance.name + extra_info)
         acc.alliance = None
         acc.alliance_owner = False
         acc.save()
