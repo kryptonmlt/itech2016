@@ -95,12 +95,11 @@ def add_alliance(name, description, all_time_score):
     return a
 
 
-def add_city(account, name, gold, house_level, lands_owned, walls_level, footmen, bowmen, knights, war_machines):
+def add_city(account, name, gold,farms, walls_level, footmen, bowmen, knights, war_machines):
     c = City.objects.get_or_create(account=account)[0]
     c.name = name
     c.gold = gold
-    c.house_level = house_level
-    c.lands_owned = lands_owned
+    c.farms = farms
     c.walls_level = walls_level
     c.footmen = footmen
     c.bowmen = bowmen
