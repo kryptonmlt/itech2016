@@ -161,6 +161,7 @@
 
 
 
+
     </script>
 
 </head>
@@ -183,9 +184,10 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>Structures</th>
-                        <th>Level</th>
-                        <th>Upgrade Cost</th>
+                        <td>Structures</td>
+                        <td>Level</td>
+                        <td>Cost<img src="{% static "images/resources.png" %}" align="right" width=50% class="img-responsive" />
+                        </td>
                     </tr>
                     </thead>
                     <tbody>
@@ -284,15 +286,15 @@
                         <td><span id="maximumTroops">{{city.get_maximum_troops}}</span></td>
                     </tr>
                     <tr>
-                        <td><strong>Gold </strong></td>
+                        <td><strong>Gold <img src="{% static "images/gold.png" %}" align="right" width=20% class="img-responsive" /></strong></td>
                         <td><span id="goldSpan">{{city.gold}}</span></td>
                     </tr>
                     <tr>
-                        <td><strong>Lumber </strong></td>
+                        <td><strong>Lumber <img src="{% static "images/lumber.png" %}" align="right" width=20% class="img-responsive" /></strong></td>
                         <td><span id="lumberSpan">{{city.lumber}}</span></td>
                     </tr>
                     <tr>
-                        <td><strong>Stones </strong></td>
+                        <td><strong>Stones <img src="{% static "images/stones.png" %}" align="right" width=20% class="img-responsive" /></strong></td>
                         <td><span id="stonesSpan">{{city.stones}}</span></td>
                     </tr>
 
