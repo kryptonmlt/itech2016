@@ -108,7 +108,7 @@ class Log(models.Model):
 
     def __str__(self):
         return str(self.pk) + "||" + formats.date_format(self.date_occurred,
-                                                    "SHORT_DATETIME_FORMAT") + "||" + self.text + "$$"
+                                                         "SHORT_DATETIME_FORMAT") + "||" + self.text + "$$"
 
 
 class Cost(models.Model):
@@ -126,6 +126,24 @@ class Cost(models.Model):
 
     def __str__(self):
         return "Cost stats"
+
+    def calc_houses_price(self, level):
+        return self.houses_price * (level + 1)
+
+    def calc_farms_price(self, level):
+        return self.farms_price * (level + 1)
+
+    def calc_wall_price(self, level):
+        return self.wall_price * (level + 1)
+
+    def calc_mills_price(self, level):
+        return self.lumber_mills_price * (level + 1)
+
+    def calc_caves_price(self, level):
+        return self.stone_caves_price * (level + 1)
+
+    def calc_mines_price(self, level):
+        return self.gold_mines_price * (level + 1)
 
 
 
