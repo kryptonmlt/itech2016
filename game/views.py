@@ -280,7 +280,7 @@ def buy(request):
             city.gold -= temp_cost
             city.farms += 1
             city.save()
-            return HttpResponse(str(city.farms) + "," + str(calc_farms_price(cost.farms_price, city.farms)))
+            return HttpResponse(str(city.farms_owned) + "," + str(calc_farms_price(cost.farms_price, city.farms)))
     if element_type == 'gold_mines':
         temp_cost = calc_mines_price(cost.gold_mines_price, city.gold_mines)
         if city.gold >= temp_cost:
