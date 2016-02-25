@@ -227,34 +227,6 @@ def get_resources(request):
     print str(city.gold)+","+str(city.lumber)+","+str(city.stones)+","+str(city.food)
     return HttpResponse(str(city.gold)+","+str(city.lumber)+","+str(city.stones)+","+str(city.food))
 
-def get_gold(request):
-    user = User.objects.get(pk=request.user.pk)
-    acc = Account.objects.get(user=user)
-    city = City.objects.all().get(account=acc)
-    return HttpResponse(city.gold)
-
-@login_required
-def get_lumber(request):
-    user = User.objects.get(pk=request.user.pk)
-    acc = Account.objects.get(user=user)
-    city = City.objects.all().get(account=acc)
-    return HttpResponse(city.lumber)
-
-@login_required
-def get_stones(request):
-    user = User.objects.get(pk=request.user.pk)
-    acc = Account.objects.get(user=user)
-    city = City.objects.all().get(account=acc)
-    return HttpResponse(city.stones)
-
-@login_required
-def get_food(request):
-    user = User.objects.get(pk=request.user.pk)
-    acc = Account.objects.get(user=user)
-    city = City.objects.all().get(account=acc)
-    return HttpResponse(city.food)
-
-
 @login_required
 def buy(request):
     if request.method == 'GET':
