@@ -26,10 +26,10 @@ def populate():
     a3 = add_account(u3, 20, 1, True, al2, 'Kurt')
     a4 = add_account(u4, 10, 10, False, al1, 'Pedro')
 
-    add_city(a1, 'Rubens Kindom', 40, 5, 2, 7, 10, 10, 10, 10)
-    add_city(a2, 'Florians Kindom', 1000, 10, 0, 2, 20, 40, 10, 10)
-    add_city(a3, 'Kurtmans Kindom', 9993923, 5, 3, 2, 10, 20, 0, 10)
-    add_city(a4, 'Pedros Kindom', 1234, 100, 2, 0, 2, 10, 10, 50)
+    add_city(a1, 'Rubens Kingdom', 40, 5, 2, 7, 10, 10, 10, 10)
+    add_city(a2, 'Florians Kingdom', 1000, 10, 0, 2, 20, 40, 10, 10)
+    add_city(a3, 'Kurtmans Kigndom', 9993923, 5, 3, 2, 10, 20, 0, 10)
+    add_city(a4, 'Pedros Kingdom', 1234, 100, 2, 0, 2, 10, 10, 50)
 
     add_log(a1, 'you got attacked by kurtman')
     add_log(a1, 'kurtman won!')
