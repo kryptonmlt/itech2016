@@ -374,7 +374,11 @@ def lose_army(city, ecity, defender, winner, tempgold):
     ecity.save()
     city.save()
 
-    return "You lost: \n"+str(footmenlost)+" Footmen \n"+str(bowmenlost)+" Bowmen \n"+str(knightslost)+" Knights \n"+str(war_machineslost)+" War Machines"
+    if winner:
+        result= "You defeated " + ecity.account.user.username+ " gaining " + str(tempgold) + " gold coins from your enemy and losing:\n"
+    else:
+        result="You suffered a defeat from " + ecity.account.user.username + " losing "+ str(tempgold) + " gold coins along with:\n"
+    return result+str(footmenlost)+" Footmen \n"+str(bowmenlost)+" Bowmen \n"+str(knightslost)+" Knights \n"+str(war_machineslost)+" War Machines"
 
 
 def create_win_log(account, enemy_account, casualties, defender, tempgold):
@@ -393,10 +397,10 @@ def create_defeat_log(account, enemy_account, casualties, defender, tempgold):
     if defender:
         log = Log.objects.create(account=account,
                                  text="You failed to defend your city from " + enemy_account.user.username + " losing " + str(
-                                     casualties) + " % of your troops and " + str(tempgold) + " gold coins")
+                                     casualties) + " % of your troops along with " + str(tempgold) + " gold coins")
     else:
         log = Log.objects.create(account=account,
-                                 text="The army of " + enemy_account.user.username + " was too powerful and lost " + str(
+                                 text="You suffered a defeat from " + enemy_account.user.username + " losing " + str(
                                      casualties) + " % of your troops along with " + str(tempgold) + " gold coins")
     log.save()
 
