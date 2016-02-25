@@ -218,6 +218,15 @@ def decline_alliance(request, from_account_username):
         return HttpResponse("Request not found for " + recruit.user.username)
 
 @login_required
+
+@login_required
+def get_resources(request):
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
+    city = City.objects.all().get(account=acc)
+    print str(city.gold)+","+str(city.lumber)+","+str(city.stones)+","+str(city.food)
+    return HttpResponse(str(city.gold)+","+str(city.lumber)+","+str(city.stones)+","+str(city.food))
+
 def get_gold(request):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
