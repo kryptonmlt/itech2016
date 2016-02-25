@@ -59,11 +59,11 @@
                     }else {
                        //increments stuff
                        switch(et){
-                           case "houses":
+                           case "farms":
                                 var res = data.split(",");
-                                $('#housesLevel').html(res[0]);
+                                $('#farms').html(res[0]);
                                 $('#maximumTroops').html(res[1]);
-                                $('#housesCost').html(res[2]);
+                                $('#farms_cost').html(res[2]);
                                 try {
                                     $.get('/game/city_img/'+res[0], function(data){
                                         if(data!=-1){
@@ -79,11 +79,6 @@
                                 var res = data.split(",");
                                 $('#wallLevel').html(res[0]);
                                 $('#wallCost').html(res[1]);
-                                break;
-                           case "farms":
-                                var res = data.split(",");
-                                $('#farms').html(res[0]);
-                                $('#farms_cost').html(res[1]);
                                 break;
                            case "stone_caves":
                                 var res = data.split(",");
@@ -182,13 +177,6 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td style="width:5%">Supply Level</td>
-                            <td style="width:5%"><span id="housesLevel">{{city.houses_level}}</span></td>
-                            <td style="width:5%"><span id="housesCost">{{cost.houses_price}}</span>
-                                <button id="housesButton" element_type="houses" type="button">+</button>
-                            </td>
-                        </tr>
                         <tr>
                             <td style="width:5%">Walls Level</td>
                             <td style="width:5%"><span id="wallLevel">{{city.walls_level}}</span></td>
@@ -295,11 +283,6 @@
                             <td><strong>Stones </strong></td>
                             <td><span id="stonesSpan">{{city.stones}}</span></td>
                         </tr>
-                        <tr>
-                            <td><strong>Food </strong></td>
-                            <td><span id="foodSpan">{{city.food}}</span></td>
-                        </tr>
-
 
                     </table>
 

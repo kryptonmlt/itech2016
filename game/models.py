@@ -50,8 +50,6 @@ class City(models.Model):
     gold = models.IntegerField(default=1000)
     lumber = models.IntegerField(default=100)
     stones = models.IntegerField(default=100)
-    food = models.IntegerField(default=100)
-    houses_level = models.IntegerField(default=1)
     farms = models.IntegerField(default=0)
     walls_level = models.IntegerField(default=0)
     lumber_mills = models.IntegerField(default=0)
@@ -66,7 +64,7 @@ class City(models.Model):
         return self.name
 
     def get_maximum_troops(self):
-        return 50 * self.houses_level
+        return 50 * self.farms
 
     def army_total(self):
         return self.footmen + self.bowmen + self.knights + self.war_machines
@@ -116,7 +114,6 @@ class Cost(models.Model):
     bowmen_price = models.IntegerField(default=15)
     knights_price = models.IntegerField(default=25)
     war_machines_price = models.IntegerField(default=50)
-    houses_price = models.IntegerField(default=100)
     wall_price = models.IntegerField(default=1000)
     farms_price = models.IntegerField(default=500)
     lumber_mills_price = models.IntegerField(default=500)
