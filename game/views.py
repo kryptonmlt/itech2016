@@ -136,7 +136,6 @@ def alliance_request(request, alliance_name):
         msg = None
         if request.method == 'GET':
             msg = request.GET['msg']
-        print str(datetime.datetime.now)
         all_req = AllianceRequest.objects.create(from_account=acc, alliance=alli, text=msg)
         all_req.save()
         create_log(acc, "You sent a request to join alliance " + alli.name)
@@ -330,14 +329,12 @@ def attack(request, opponent):
         tempgold = ecity.gold / rnggold
         lose_army(city, ecity, False, True, enemy, tempgold)
         lose_army(ecity, city, True, False, user, tempgold)
-        print "victory"
         return HttpResponse("victory")
     else:
         rnggold = randint(5, 10)
         tempgold = city.gold / rnggold
         lose_army(city, ecity, False, False, enemy, tempgold)
         lose_army(ecity, city, True, True, user, tempgold)
-        print "defeat"
         return HttpResponse("defeat")
 
 
