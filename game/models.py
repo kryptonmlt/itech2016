@@ -133,27 +133,27 @@ class Cost(models.Model):
         return "Cost stats"
 
     def calc_farms_price(self, level):
-        prices=self.farms_price.split()
+        prices=self.farms_price.split(',')
         return str(int(prices[0])* (level + 1))+","+str(int(prices[1])* (level + 1))+","+str(int(prices[2])* (level + 1))
 
     def calc_wall_price(self, level):
-        prices=self.wall_price.split()
+        prices=self.wall_price.split(',')
         return str(int(prices[0])* (level + 1))+","+str(int(prices[1])* (level + 1))+","+str(int(prices[2])* (level + 1))
 
     def calc_mills_price(self, level):
-        prices=self.lumber_mills_price.split()
+        prices=self.lumber_mills_price.split(',')
         return str(int(prices[0])* (level + 1))+","+str(int(prices[1])* (level + 1))+","+str(int(prices[2])* (level + 1))
 
     def calc_caves_price(self, level):
-        prices=self.stone_caves_price.split()
+        prices=self.stone_caves_price.split(',')
         return str(int(prices[0])* (level + 1))+","+str(int(prices[1])* (level + 1))+","+str(int(prices[2])* (level + 1))
 
     def calc_mines_price(self, level):
-        prices=self.gold_mines_price.split()
+        prices=self.gold_mines_price.split(',')
         return str(int(prices[0])* (level + 1))+","+str(int(prices[1])* (level + 1))+","+str(int(prices[2])* (level + 1))
 
     def calc_war_machines_price(self):
-        prices=self.war_machines_price.split()
+        prices=self.war_machines_price.split(',')
         return str(int(prices[0]))+","+str(int(prices[1]))+","+str(int(prices[2]))
 
 class CityGraphic(models.Model):
