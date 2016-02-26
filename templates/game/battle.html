@@ -14,7 +14,7 @@
 
         function get_messages(){
             message_text_area = document.getElementById("message_text_area");
-            $.get('/game/get_messages/',{'last_message_id':last_message_id}, function(data){
+            $.get('/game/get_messages/',{'last_message_id':last_message_id,'to_account_id':{{enemy_city.account.pk}}}, function(data){
 
                 messages = data.split('$$');
                 for(i=0; i < messages.length; i++){
