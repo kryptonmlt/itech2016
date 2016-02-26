@@ -1,29 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% if user.is_authenticated %}
-    <meta http-equiv="refresh" content="0; url=/game"/>
-    {% endif %}
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="static/home.js"></script>
-    <link rel="stylesheet" type="text/css" href="static/home.css">
-    <title>Rulers of the Kingdom</title>
-</head>
-<body>
-<!-- NAV BAR MUST BE PLACED IN A SEPARATE TEMPLATE FILE -->
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand nav-brand-container" href="#">
-                <img class="nav-brand-icon" alt="Brand" src="static/rotkicon.png">
-            </a>
-            <h5 class="nav-title">Rulers of the Kingdom</h5>
-        </div>
-    </div>
-</nav>
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}{{ category_name }}{% endblock %}
+
+{% block body_block %}
 
 <!-- Body of the Home page -->
 <div class="container">
@@ -105,5 +86,4 @@
     </div>
     {% endif %}
 </div>
-</body>
-</html>
+{% endblock %}
