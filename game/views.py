@@ -60,7 +60,7 @@ def get_logs(request):
     acc = Account.objects.get(user=user)
     try:
         last_log_id = request.GET['latest_log_id']
-        if last_log_id == -1:
+        if last_log_id == "-1":
             logs = Log.objects.all().filter(account=acc).order_by('date_occurred')[:10]
         else:
             logs = Log.objects.all().filter(account=acc, pk__gt=last_log_id).order_by('date_occurred')
@@ -77,7 +77,7 @@ def get_messages(request):
         to_account_id = request.GET['to_account_id']
         last_message_id = request.GET['last_message_id']
         other_account = Account.objects.get(pk=to_account_id)
-        if last_message_id == -1:
+        if last_message_id == "-1":
             messages = Message.objects.all().filter(
                 Q(from_account=other_account, to_account=acc) | Q(from_account=acc, to_account=other_account)).order_by(
                 'date_occurred')[:10]
@@ -133,7 +133,7 @@ def get_alliance_messages(request):
     acc = Account.objects.get(user=user)
     try:
         last_message_id = request.GET['last_message_id']
-        if last_message_id == -1:
+        if last_message_id == "-1":
             messages = AllianceMessage.objects.all().filter(Q(to_alliance=acc.alliance) | Q(from_account=acc)).order_by(
                 'date_occurred')[
                        :10]
