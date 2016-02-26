@@ -2,18 +2,12 @@
 
 {% load staticfiles %}
 
-{% block title %}{{ category_name }}{% endblock %}
-
 {% block body_block %}
 
     <div class="container">
-
-        <div class="col-md-12 text-center">
-            <img src="{% static "images/banner.png" %}" width="100%" class="img-responsive" />
-        </div>
         {% if user.is_authenticated %}
         <div class="row">
-            <h2>Lord <strong>{{acc.user}}</strong> of <strong>{{city.name}}</strong></h2>
+            <h3 class="lord-name">Lord <strong>{{acc.user}}</strong> of <strong>{{city.name}}</strong></h3>
         </div>
 
         <div class="row">
@@ -128,7 +122,7 @@
                             <td><span id="goldSpan">{{city.gold}}</span></td>
                         </tr>
                         <tr>
-                            <td><strong>Lumber<img src="{% static "images/lumber.png" %}" align="left" width="25%" class="img-responsive" /></strong></td>
+                            <td><strong>Lumber<img src="{% static "images/Lumber.png" %}" align="left" width="25%" class="img-responsive" /></strong></td>
                             <td><span id="lumberSpan">{{city.lumber}}</span></td>
                         </tr>
                         <tr>
@@ -209,16 +203,10 @@
                                   style="min-width: 100%; height: 100px; max-height: 100px;"></textarea>
             </div>
         </div>
-
-
-        <div class="row">
-            <a href="/game/logout/">Logout</a><br/>
-        </div>
     </div>
 
     {% else %}
-    <a href="/game/register/">Register Here</a><br/>
-    <a href="/game/login/">Login</a><br/>
+        <meta http-equiv="refresh" content="0; url=/"/>
     {% endif %}
 
 {% endblock %}
