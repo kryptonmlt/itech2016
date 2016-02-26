@@ -74,20 +74,26 @@ def get_messages(request):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
     try:
-        last_message_id = request.GET['last_message_id']
         to_account_id = request.GET['to_account_id']
+        last_message_id = request.GET['last_message_id']
         other_account = Account.objects.get(pk=to_account_id)
         if last_message_id == -1:
-            messages = Message.objects.all().filter(Q(Q(to_account=acc),
-                                                      Q(from_account=other_account)) | Q(Q(to_account=other_account),
-                                                                                         Q(from_account=acc))).order_by(
-                'date_occurred')[
-                       :10]
+            messages = Message.objects.all().filter(
+                Q(from_account=other_account, to_account=acc) | Q(from_account=acc, to_account=other_account)).order_by(
+                'date_occurred')[:10]
         else:
-            messages = Message.objects.all().filter(Q(to_account=acc), Q(from_account=acc),
-                                                    pk__gt=last_message_id).order_by('date_occurred')
+            messages = Message.objects.all().filter(
+                Q(from_account=other_account, to_account=acc) | Q(from_account=acc, to_account=other_account),
+                pk__gt=last_message_id).order_by('date_occurred')
     except MultiValueDictKeyError:
-        messages = Message.objects.all().filter(Q(to_account=acc), Q(from_account=acc)).order_by('date_occurred')[:10]
+        try:
+            to_account_id = request.GET['to_account_id']
+            other_account = Account.objects.get(pk=to_account_id)
+            messages = Message.objects.all().filter(
+                Q(from_account=other_account, to_account=acc) | Q(from_account=acc, to_account=other_account)).order_by(
+                'date_occurred')[:10]
+        except MultiValueDictKeyError:
+            return HttpResponse("-1")
     return HttpResponse(messages)
 
 
