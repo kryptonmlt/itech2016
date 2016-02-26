@@ -421,7 +421,7 @@ def buy(request):
             else:
                 return HttpResponse("-1")
         if element_type == 'war_machines':
-            temp_cost = cost.calc_war_machines_price(city.war_machines).split(',')
+            temp_cost = cost.calc_war_machines_price().split(',')
             if city.gold >= int(temp_cost[0]):
                 if city.lumber >= int(temp_cost[1]):
                     city.gold -= int(temp_cost[0])
