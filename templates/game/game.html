@@ -163,9 +163,8 @@
 
 
     </script>
-
 </head>
-<body>
+<body style="background-color:#DEB887">
 
 
 <div class="container">
@@ -175,7 +174,7 @@
     </div>
     {% if user.is_authenticated %}
     <div class="row">
-        <h2><strong>Lord {{acc.user}} - {{city.name}}</strong></h2>
+        <h2>Lord <strong>{{acc.user}}</strong> of <strong>{{city.name}}</strong></h2>
     </div>
 
     <div class="row">
@@ -184,9 +183,9 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <td>Structures</td>
-                        <td>Level</td>
-                        <td>Cost<img src="{% static "images/resources.png" %}" align="right" width=50% class="img-responsive" />
+                        <td><strong>Structures</strong></td>
+                        <td><strong>Level</strong></td>
+                        <td><strong>Cost</strong><img src="{% static "images/resources.png" %}" align="right" width=50% class="img-responsive" />
                         </td>
                     </tr>
                     </thead>
@@ -195,35 +194,35 @@
                         <td style="width:5%">Walls Level</td>
                         <td style="width:5%"><span id="wallLevel">{{city.walls_level}}</span></td>
                         <td style="width:5%"><span id="wallCost">{{cost.wall_price}}</span>
-                            <button id="wallButton" element_type="wall" type="button">+</button>
+                            <button id="wallButton" element_type="wall" type="button" style="background-color:#6495ED">+</button>
                         </td>
                     </tr>
                     <tr>
                         <td style="width:5%">Gold Mines</td>
                         <td style="width:5%"><span id="gold_mines">{{city.gold_mines}}</span></td>
                         <td style="width:5%"><span id="gold_mines_cost">{{cost.gold_mines_price}}</span>
-                            <button id="minesButton" element_type="gold_mines" type="button">+</button>
+                            <button id="minesButton" element_type="gold_mines" type="button" style="background-color:#6495ED">+</button>
                         </td>
                     </tr>
                     <tr>
                         <td style="width:5%">Stone Caves</td>
                         <td style="width:5%"><span id="stone_caves">{{city.stone_caves}}</span></td>
                         <td style="width:5%"><span id="stone_caves_cost">{{cost.stone_caves_price}}</span>
-                            <button id="cavesButton" element_type="stone_caves" type="button">+</button>
+                            <button id="cavesButton" element_type="stone_caves" type="button" style="background-color:#6495ED">+</button>
                         </td>
                     </tr>
                     <tr>
                         <td style="width:5%">Lumber Mills</td>
                         <td style="width:5%"><span id="lumber_mills">{{city.lumber_mills}}</span></td>
                         <td style="width:5%"><span id="lumber_mills_cost">{{cost.lumber_mills_price}}</span>
-                            <button id="millsButton" element_type="lumber_mills" type="button">+</button>
+                            <button id="millsButton" element_type="lumber_mills" type="button" style="background-color:#6495ED">+</button>
                         </td>
                     </tr>
                     <tr>
                         <td style="width:5%">Farms</td>
                         <td style="width:5%"><span id="farms">{{city.farms}}</span></td>
                         <td style="width:5%"><span id="farms_cost">{{cost.farms_price}}</span>
-                            <button id="farmsButton" element_type="farms" type="button">+</button>
+                            <button id="farmsButton" element_type="farms" type="button" style="background-color:#6495ED">+</button>
                         </td>
                     </tr>
                     </tbody>
@@ -233,9 +232,9 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>Troop Type</th>
-                        <th>Amount</th>
-                        <th>Hiring Cost</th>
+                        <td><strong>Troop Type</strong></td>
+                        <td><strong>Amount</strong></td>
+                        <td><strong>Cost</strong><img src="{% static "images/resources2.png" %}" align="right" width=50% class="img-responsive" /></td>
                     </tr>
                     </thead>
                     <tbody>
@@ -243,28 +242,28 @@
                         <td style="width:5%">Footmen</td>
                         <td style="width:5%"><span id="footmen">{{city.footmen}}</span></td>
                         <td style="width:5%">{{cost.footmen_price}}
-                            <button id="footmenButton" element_type="footmen" type="button">+</button>
+                            <button id="footmenButton" element_type="footmen" type="button" style="background-color:#6495ED">+</button>
                         </td>
                     </tr>
                     <tr>
                         <td style="width:5%">Bowmen</td>
                         <td style="width:5%"><span id="bowmen">{{city.bowmen}}</span></td>
                         <td style="width:5%">{{cost.bowmen_price}}
-                            <button id="bowmenButton" element_type="bowmen" type="button">+</button>
+                            <button id="bowmenButton" element_type="bowmen" type="button" style="background-color:#6495ED">+</button>
                         </td>
                     </tr>
                     <tr>
                         <td style="width:5%">Knights</td>
                         <td style="width:5%"><span id="knights">{{city.knights}}</span></td>
                         <td style="width:5%">{{cost.knights_price}}
-                            <button id="knightsButton" element_type="knights" type="button">+</button>
+                            <button id="knightsButton" element_type="knights" type="button" style="background-color:#6495ED">+</button>
                         </td>
                     </tr>
                     <tr>
                         <td style="width:5%">WarMachines</td>
                         <td style="width:5%"><span id="war_machines">{{city.war_machines}}</span></td>
                         <td style="width:5%">{{cost.war_machines_price}}
-                            <button id="war_machinesButton" element_type="war_machines" type="button">+</button>
+                            <button id="war_machinesButton" element_type="war_machines" type="button" style="background-color:#6495ED">+</button>
                         </td>
                     </tr>
                     </tbody>
