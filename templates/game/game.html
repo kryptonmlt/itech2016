@@ -10,6 +10,48 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <style>
+        .upgrade_button {
+            -moz-box-shadow:inset 0px 0px 0px 0px #bee2f9;
+            -webkit-box-shadow:inset 0px 0px 0px 0px #bee2f9;
+            box-shadow:inset 0px 0px 0px 0px #bee2f9;
+            background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf));
+            background:-moz-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background:-webkit-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background:-o-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background:-ms-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+            background:linear-gradient(to bottom, #63b8ee 5%, #468ccf 100%);
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#63b8ee', endColorstr='#468ccf',GradientType=0);
+            background-color:#63b8ee;
+            -moz-border-radius:5px;
+            -webkit-border-radius:5px;
+            border-radius:5px;
+            border:1px solid #3866a3;
+            display:inline-block;
+            cursor:pointer;
+            color:#14396a;
+            font-family:Arial;
+            font-size:15px;
+            font-weight:bold;
+            padding:2px 2px;
+            text-decoration:none;
+            text-shadow:0px 1px 0px #7cacde;
+            float: right;
+        }
+        .upgrade_button:hover {
+            background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #468ccf), color-stop(1, #63b8ee));
+            background:-moz-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+            background:-webkit-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+            background:-o-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+            background:-ms-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+            background:linear-gradient(to bottom, #468ccf 5%, #63b8ee 100%);
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#468ccf', endColorstr='#63b8ee',GradientType=0);
+            background-color:#468ccf;
+        }
+        .upgrade_button:active {
+            position:relative;
+            top:1px;
+        }
+
     </style>
     <script>
         latest_log_id = -1;
@@ -194,35 +236,35 @@
                         <td style="width:5%">Walls <img src="{% static "images/structures/walls.png" %}" align="right" width=25% class="img-responsive" /></td>
                         <td style="width:5%"><span id="wallLevel">{{city.walls_level}}</span></td>
                         <td style="width:5%"><span id="wallCost">{{cost.wall_price}}</span>
-                            <button id="wallButton" element_type="wall" type="button" style="background-color:#6495ED">+</button>
+                            <button id="wallButton" class="upgrade_button" element_type="wall" type="button">+</button>
                         </td>
                     </tr>
                     <tr>
                         <td style="width:5%">Gold Mines <img src="{% static "images/structures/gold_mine.png" %}" align="right" width=30% class="img-responsive" /></td>
                         <td style="width:5%"><span id="gold_mines">{{city.gold_mines}}</span></td>
                         <td style="width:5%"><span id="gold_mines_cost">{{cost.gold_mines_price}}</span>
-                            <button id="minesButton" element_type="gold_mines" type="button" style="background-color:#6495ED">+</button>
+                            <button id="minesButton" class="upgrade_button" element_type="gold_mines" type="button">+</button>
                         </td>
                     </tr>
                     <tr>
                         <td style="width:5%">Stone Caves <img src="{% static "images/structures/stone_mine.png" %}" align="right" width=30% class="img-responsive" /></td>
                         <td style="width:5%"><span id="stone_caves">{{city.stone_caves}}</span></td>
                         <td style="width:5%"><span id="stone_caves_cost">{{cost.stone_caves_price}}</span>
-                            <button id="cavesButton" element_type="stone_caves" type="button" style="background-color:#6495ED">+</button>
+                            <button id="cavesButton" class="upgrade_button" element_type="stone_caves" type="button">+</button>
                         </td>
                     </tr>
                     <tr>
                         <td style="width:5%">Lumber Mills <img src="{% static "images/structures/lumbermill.png" %}" align="right" width=30% class="img-responsive" /></td>
                         <td style="width:5%"><span id="lumber_mills">{{city.lumber_mills}}</span></td>
                         <td style="width:5%"><span id="lumber_mills_cost">{{cost.lumber_mills_price}}</span>
-                            <button id="millsButton" element_type="lumber_mills" type="button" style="background-color:#6495ED">+</button>
+                            <button id="millsButton" class="upgrade_button" element_type="lumber_mills" type="button">+</button>
                         </td>
                     </tr>
                     <tr>
                         <td style="width:5%">Farms <img src="{% static "images/structures/farm.png" %}" align="right" width=30% class="img-responsive" /></td>
                         <td style="width:5%"><span id="farms">{{city.farms}}</span></td>
                         <td style="width:5%"><span id="farms_cost">{{cost.farms_price}}</span>
-                            <button id="farmsButton" element_type="farms" type="button" style="background-color:#6495ED">+</button>
+                            <button id="farmsButton" class="upgrade_button" element_type="farms" type="button">+</button>
                         </td>
                     </tr>
                     </tbody>
@@ -242,28 +284,28 @@
                         <td style="width:5%">Footmen <img src="{% static "images/units/footmen.png" %}" align="right" width=25% class="img-responsive" /></td>
                         <td style="width:5%"><span id="footmen">{{city.footmen}}</span></td>
                         <td style="width:5%">{{cost.footmen_price}}
-                            <button id="footmenButton" element_type="footmen" type="button" style="background-color:#6495ED">+</button>
+                            <button id="footmenButton" class="upgrade_button" element_type="footmen" type="button">+</button>
                         </td>
                     </tr>
                     <tr>
                         <td style="width:5%">Bowmen <img src="{% static "images/units/bowmen.png" %}" align="right" width=30% class="img-responsive" /></td>
                         <td style="width:5%"><span id="bowmen">{{city.bowmen}}</span></td>
                         <td style="width:5%">{{cost.bowmen_price}}
-                            <button id="bowmenButton" element_type="bowmen" type="button" style="background-color:#6495ED">+</button>
+                            <button id="bowmenButton" class="upgrade_button" element_type="bowmen" type="button">+</button>
                         </td>
                     </tr>
                     <tr>
                         <td style="width:5%">Knights <img src="{% static "images/units/knights.png" %}" align="right" width=30% class="img-responsive" /></td>
                         <td style="width:5%"><span id="knights">{{city.knights}}</span></td>
                         <td style="width:5%">{{cost.knights_price}}
-                            <button id="knightsButton" element_type="knights" type="button" style="background-color:#6495ED">+</button>
+                            <button id="knightsButton" class="upgrade_button" element_type="knights" type="button">+</button>
                         </td>
                     </tr>
                     <tr>
                         <td style="width:5%">WarMachines <img src="{% static "images/units/war_machines.png" %}" align="right" width=30% class="img-responsive" /></td>
                         <td style="width:5%"><span id="war_machines">{{city.war_machines}}</span></td>
                         <td style="width:5%">{{cost.war_machines_price}}
-                            <button id="war_machinesButton" element_type="war_machines" type="button" style="background-color:#6495ED">+</button>
+                            <button id="war_machinesButton" class="upgrade_button" element_type="war_machines" type="button">+</button>
                         </td>
                     </tr>
                     </tbody>
