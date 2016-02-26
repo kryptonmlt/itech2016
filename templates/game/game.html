@@ -4,8 +4,8 @@
 
 {% block body_block %}
 
+{% if user.is_authenticated %}
     <div class="container">
-        {% if user.is_authenticated %}
         <div class="row">
             <h3 class="lord-name">Lord <strong>{{acc.user}}</strong> of <strong>{{city.name}}</strong></h3>
         </div>
@@ -205,8 +205,8 @@
         </div>
     </div>
 
-    {% else %}
-        <meta http-equiv="refresh" content="0; url=/"/>
-    {% endif %}
+{% else %}
+    <meta http-equiv="refresh" content="0; url=/"/>
+{% endif %}
 
 {% endblock %}
