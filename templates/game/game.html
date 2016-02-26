@@ -191,35 +191,35 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td style="width:5%">Walls</td>
+                        <td style="width:5%">Walls <img src="{% static "images/structures/walls.png" %}" align="right" width=25% class="img-responsive" /></td>
                         <td style="width:5%"><span id="wallLevel">{{city.walls_level}}</span></td>
                         <td style="width:5%"><span id="wallCost">{{cost.wall_price}}</span>
                             <button id="wallButton" element_type="wall" type="button" style="background-color:#6495ED">+</button>
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:5%">Gold Mines</td>
+                        <td style="width:5%">Gold Mines <img src="{% static "images/structures/gold_mine.png" %}" align="right" width=30% class="img-responsive" /></td>
                         <td style="width:5%"><span id="gold_mines">{{city.gold_mines}}</span></td>
                         <td style="width:5%"><span id="gold_mines_cost">{{cost.gold_mines_price}}</span>
                             <button id="minesButton" element_type="gold_mines" type="button" style="background-color:#6495ED">+</button>
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:5%">Stone Caves</td>
+                        <td style="width:5%">Stone Caves <img src="{% static "images/structures/stone_mine.png" %}" align="right" width=30% class="img-responsive" /></td>
                         <td style="width:5%"><span id="stone_caves">{{city.stone_caves}}</span></td>
                         <td style="width:5%"><span id="stone_caves_cost">{{cost.stone_caves_price}}</span>
                             <button id="cavesButton" element_type="stone_caves" type="button" style="background-color:#6495ED">+</button>
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:5%">Lumber Mills</td>
+                        <td style="width:5%">Lumber Mills <img src="{% static "images/structures/lumbermill.png" %}" align="right" width=30% class="img-responsive" /></td>
                         <td style="width:5%"><span id="lumber_mills">{{city.lumber_mills}}</span></td>
                         <td style="width:5%"><span id="lumber_mills_cost">{{cost.lumber_mills_price}}</span>
                             <button id="millsButton" element_type="lumber_mills" type="button" style="background-color:#6495ED">+</button>
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:5%">Farms</td>
+                        <td style="width:5%">Farms <img src="{% static "images/structures/farm.png" %}" align="right" width=30% class="img-responsive" /></td>
                         <td style="width:5%"><span id="farms">{{city.farms}}</span></td>
                         <td style="width:5%"><span id="farms_cost">{{cost.farms_price}}</span>
                             <button id="farmsButton" element_type="farms" type="button" style="background-color:#6495ED">+</button>
@@ -239,28 +239,28 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td style="width:5%">Footmen</td>
+                        <td style="width:5%">Footmen <img src="{% static "images/units/footmen.png" %}" align="right" width=25% class="img-responsive" /></td>
                         <td style="width:5%"><span id="footmen">{{city.footmen}}</span></td>
                         <td style="width:5%">{{cost.footmen_price}}
                             <button id="footmenButton" element_type="footmen" type="button" style="background-color:#6495ED">+</button>
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:5%">Bowmen</td>
+                        <td style="width:5%">Bowmen <img src="{% static "images/units/bowmen.png" %}" align="right" width=30% class="img-responsive" /></td>
                         <td style="width:5%"><span id="bowmen">{{city.bowmen}}</span></td>
                         <td style="width:5%">{{cost.bowmen_price}}
                             <button id="bowmenButton" element_type="bowmen" type="button" style="background-color:#6495ED">+</button>
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:5%">Knights</td>
+                        <td style="width:5%">Knights <img src="{% static "images/units/knights.png" %}" align="right" width=30% class="img-responsive" /></td>
                         <td style="width:5%"><span id="knights">{{city.knights}}</span></td>
                         <td style="width:5%">{{cost.knights_price}}
                             <button id="knightsButton" element_type="knights" type="button" style="background-color:#6495ED">+</button>
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:5%">WarMachines</td>
+                        <td style="width:5%">WarMachines <img src="{% static "images/units/war_machines.png" %}" align="right" width=30% class="img-responsive" /></td>
                         <td style="width:5%"><span id="war_machines">{{city.war_machines}}</span></td>
                         <td style="width:5%">{{cost.war_machines_price}}
                             <button id="war_machinesButton" element_type="war_machines" type="button" style="background-color:#6495ED">+</button>
@@ -281,19 +281,19 @@
             <div class="row">
                 <table class="table table-bordered">
                     <tr>
-                        <td><strong>Supply Capacity </strong></td>
+                        <td><strong>Supply <img src="{% static "images/structures/house.png" %}" align="right" width=25% class="img-responsive" /></strong></td>
                         <td><span id="maximumTroops">{{city.get_maximum_troops}}</span></td>
                     </tr>
                     <tr>
-                        <td><strong>Gold <img src="{% static "images/gold.png" %}" align="right" width=20% class="img-responsive" /></strong></td>
+                        <td><strong>Gold <img src="{% static "images/gold.png" %}" align="right" width=25% class="img-responsive" /></strong></td>
                         <td><span id="goldSpan">{{city.gold}}</span></td>
                     </tr>
                     <tr>
-                        <td><strong>Lumber <img src="{% static "images/lumber.png" %}" align="right" width=20% class="img-responsive" /></strong></td>
+                        <td><strong>Lumber <img src="{% static "images/lumber.png" %}" align="right" width=25% class="img-responsive" /></strong></td>
                         <td><span id="lumberSpan">{{city.lumber}}</span></td>
                     </tr>
                     <tr>
-                        <td><strong>Stones <img src="{% static "images/stones.png" %}" align="right" width=20% class="img-responsive" /></strong></td>
+                        <td><strong>Stones <img src="{% static "images/stones.png" %}" align="right" width=25% class="img-responsive" /></strong></td>
                         <td><span id="stonesSpan">{{city.stones}}</span></td>
                     </tr>
 
