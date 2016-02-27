@@ -1,10 +1,41 @@
 body {
     padding-top: 90px;
-	background-color:#FFE2C7;
+	background-color:#DEB887;
 }
 
+/* NAV BAR */
+.navbar-text{
+	color:#000000 !important;
+}
 .nav-title{
 	width:100%;
+}
+.navbar{
+	background-color:#FFE3BF;
+	margin-bottom: 0px !important;
+	padding-right: 20px;
+}
+.nav-brand-container{
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+.nav-brand-icon{
+	max-width: 100%;
+	max-height: 100%;
+}
+.brand-image{
+	max-width: 100%;
+	max-height: 100%;
+}
+
+
+/* Login and Register */
+.centered{
+	margin-left: auto;
+    margin-right: auto;
+}
+.login-register-bk{
+	background-color: #FFE3BF;
 }
 .panel-login {
 	border-color: #ccc;
@@ -13,14 +44,14 @@ body {
 	box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
 }
 .panel-login>.panel-heading {
-	color: #284E9E;
-	background-color: #fff;
-	border-color: #fff;
+	color: #67689B;
+	background-color: #FFE3BF;
+	border-color: #FFE3BF;
 	text-align:center;
 }
 .panel-login>.panel-heading a{
 	text-decoration: none;
-	color: #284E9E;
+	color: #67689B;
 	font-weight: bold;
 	font-size: 15px;
 	-webkit-transition: all 0.1s linear;
@@ -28,7 +59,7 @@ body {
 	transition: all 0.1s linear;
 }
 .panel-login>.panel-heading a.active{
-	color: #0A2868;
+	color: #444680;
 	font-size: 18px;
 }
 .panel-login>.panel-heading hr{
@@ -59,7 +90,7 @@ body {
 	border-color: #ccc;
 }
 .btn-login {
-	background-color: #6784C1;
+	background-color: #397F5F;
 	outline: none;
 	color: #fff;
 	font-size: 14px;
@@ -67,13 +98,13 @@ body {
 	font-weight: normal;
 	padding: 14px 0;
 	text-transform: uppercase;
-	border-color: #6784C1;
+	border-color: #397F5F;
 }
 .btn-login:hover,
 .btn-login:focus {
 	color: #fff;
-	background-color: #4263A8;
-	border-color: #4263A8;
+	background-color: #206847;
+	border-color: #206847;
 }
 .forgot-password {
 	text-decoration: underline;
@@ -86,7 +117,7 @@ body {
 }
 
 .btn-register {
-	background-color: #70DC6A;
+	background-color: #397F5F;
 	outline: none;
 	color: #fff;
 	font-size: 14px;
@@ -94,26 +125,13 @@ body {
 	font-weight: normal;
 	padding: 14px 0;
 	text-transform: uppercase;
-	border-color: #70DC6A;
+	border-color: #397F5F;
 }
 .btn-register:hover,
 .btn-register:focus {
 	color: #fff;
-	background-color: #49CC42;
-	border-color: #49CC42;
-}
-
-.navbar{
-	background-color:#FFB775;
-}
-
-.nav-brand-container{
-	padding-top: 5px;
-	padding-bottom: 5px;
-}
-.nav-brand-icon{
-	max-width: 100%;
-	max-height: 100%;
+	background-color: #206847;
+	border-color: #206847;
 }
 
 .register-form{

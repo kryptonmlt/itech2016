@@ -1,75 +1,8 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+
 {% load staticfiles %}
-<html lang="en">
-<head>
-    <title>Rulers of The Kingdom</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-    <script>
-        last_message_id = -1;
-
-        function get_messages(){
-            message_text_area = document.getElementById("message_text_area");
-            $.get('/game/get_messages/',{'last_message_id':last_message_id,'to_account_id':{{enemy_city.account.pk}}}, function(data){
-
-                messages = data.split('$$');
-                for(i=0; i < messages.length; i++){
-                    if(messages[i] != ""){
-                        real_message = messages[i].split('||');
-                        message_id = parseInt(real_message[0]);
-                        if(message_id>last_message_id){
-                            last_message_id=message_id;
-                        }
-                        message_text_area.value += real_message[1]+': '+real_message[2]+'\n'
-                        message_text_area.scrollTop = message_text_area.scrollHeight;
-                    }
-                }
-            });
-        }
-
-        function sendMessage() {
-            var x = document.getElementById("user_msg").value;
-            $.get('/game/add_message/', {'message': x,'to_account_id':{{enemy_city.account.pk}}}, function(data){
-                if(data == -1){
-                    $('#notif_span').html("Message was not delivered");
-                    $("#notif_alert").show();
-                }else{
-                    document.getElementById("user_msg").value="";
-                    get_messages();
-                }
-            });
-        }
-
-        $(document).ready(function(){
-            document.getElementById("message_text_area").readOnly=true;
-            $('#sendButton').click(function(){
-                sendMessage();
-            });
-
-            $('#user_msg').keyup(function(event){
-                if(event.keyCode == 13){
-                    $("#sendButton").click();
-                }
-            });
-
-            $('.alert .close').on('click', function(e) {
-                $(this).parent().hide();
-            });
-
-            //polling that gets the messages
-            get_messages();
-            setInterval(function() {get_messages()}, 1000);
-        });
-
-    </script>
-
-</head>
-<body style="background-color:#DEB887">
-
+{% block body_block %}
 
 {% if user.is_authenticated %}
 <div class="container">
@@ -153,13 +86,12 @@
                 <a href="/game/logout/">Logout</a><br/>
             </div>
 
-            {% else %}
-            <a href="/game/register/">Register Here</a><br/>
-            <a href="/game/login/">Login</a><br/>
-            {% endif %}
 
         </div>
     </div>
 </div>
-</body>
-</html>
+{% else %}
+    <meta http-equiv="refresh" content="0; url=/"/>
+{% endif %}
+
+{% endblock %}

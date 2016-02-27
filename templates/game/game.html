@@ -1,428 +1,212 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+
 {% load staticfiles %}
 
-<html lang="en">
-<head>
-    <title>Rulers of The Kingdom</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <style>
-        .upgrade_button {
-            -moz-box-shadow:inset 0px 0px 0px 0px #bee2f9;
-            -webkit-box-shadow:inset 0px 0px 0px 0px #bee2f9;
-            box-shadow:inset 0px 0px 0px 0px #bee2f9;
-            background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf));
-            background:-moz-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
-            background:-webkit-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
-            background:-o-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
-            background:-ms-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
-            background:linear-gradient(to bottom, #63b8ee 5%, #468ccf 100%);
-            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#63b8ee', endColorstr='#468ccf',GradientType=0);
-            background-color:#63b8ee;
-            -moz-border-radius:5px;
-            -webkit-border-radius:5px;
-            border-radius:5px;
-            border:1px solid #3866a3;
-            display:inline-block;
-            cursor:pointer;
-            color:#14396a;
-            font-family:Arial;
-            font-size:15px;
-            font-weight:bold;
-            padding:2px 2px;
-            text-decoration:none;
-            text-shadow:0px 1px 0px #7cacde;
-            float: right;
-        }
-        .upgrade_button:hover {
-            background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #468ccf), color-stop(1, #63b8ee));
-            background:-moz-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
-            background:-webkit-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
-            background:-o-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
-            background:-ms-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
-            background:linear-gradient(to bottom, #468ccf 5%, #63b8ee 100%);
-            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#468ccf', endColorstr='#63b8ee',GradientType=0);
-            background-color:#468ccf;
-        }
-        .upgrade_button:active {
-            position:relative;
-            top:1px;
-        }
+{% block body_block %}
 
-    </style>
-    <script>
-        latest_log_id = -1;
-
-        function populateLogBox(){
-            logs_text_area = document.getElementById("logs_text");
-            $.get('/game/get_logs/',{'latest_log_id':latest_log_id}, function(data){
-
-                logs = data.split('$$');
-                for(i=0; i < logs.length; i++){
-                    if(logs[i] != ""){
-                        real_log = logs[i].split('||');
-                        log_id = parseInt(real_log[0]);
-                        if(log_id>latest_log_id){
-                            latest_log_id=log_id;
-                        }
-                        logs_text_area.value += real_log[1]+': '+real_log[2]+'\n'
-                        logs_text_area.scrollTop = logs_text_area.scrollHeight;
-                    }
-                }
-            });
-        }
-
-        function updateResources(){
-            $.get('/game/get_resources/', function(data){
-                resources = data.split(',');
-                $('#goldSpan').html(resources[0]);
-                $('#lumberSpan').html(resources[1]);
-                $('#stonesSpan').html(resources[2]);
-            });
-        }
-
-        function getBuildingInfo(data){
-            index = data.indexOf(",");
-            var info = [data.substr(0, index), data.substr(index + 1)];
-            return info;a
-        }
-
-		$(document).ready(function(){
-		    document.getElementById("logs_text").readOnly = true;
-
-            $('#housesButton,#cavesButton,#minesButton,#millsButton,#wallButton,#footmenButton,#knightsButton,#bowmenButton,#war_machinesButton,#farmsButton').click(function(){
-                et = $(this).attr("element_type");
-                $.get('/game/buy', {element_type: et}, function(data){
-                    if(data == "-1"){
-                        //show alert
-                        $("#alertNoGold").show();
-                    }else if (data=="-2"){
-                    	//show alert
-                        $("#alertNoLumber").show();
-                    }else if (data=="-3"){
-                    	//show alert
-                        $("#alertNoStones").show();
-                    }else if (data=="-4"){
-                    	//show alert
-                        $("#alertInsufficientMaxTroops").show();
-                    }else {
-                       //increments stuff
-                       switch(et){
-                           case "farms":
-                                console.log(data)
-                                var res = data.split(",");
-                                $('#farms').html(res[0]);
-                                $('#maximumTroops').html(res[1]);
-                                $('#farms_cost').html(res[2]+","+res[3]+","+res[4]);
-                                try {
-                                    $.get('/game/city_img/'+res[0], function(data){
-                                        if(data!=-1){
-                                            document.getElementById("cityImg").src = data;
-                                        }
-                                    });
-                                }
-                                catch(err) {
-                                    console.log(err.message);
-                                }
-                                break;
-                           case "wall":
-                                console.log(data);
-                                var res = getBuildingInfo(data);
-                                $('#wallLevel').html(res[0]);
-                                $('#wallCost').html(res[1]);
-                                break;
-                           case "stone_caves":
-                                var res = getBuildingInfo(data);
-                                $('#stone_caves').html(res[0]);
-                                $('#stone_caves_cost').html(res[1]);
-                                break;
-                           case "gold_mines":
-                                var res = getBuildingInfo(data);
-                                $('#gold_mines').html(res[0]);
-                                $('#gold_mines_cost').html(res[1]);
-                                break;
-                           case "lumber_mills":
-                                var res = getBuildingInfo(data);
-                                $('#lumber_mills').html(res[0]);
-                                $('#lumber_mills_cost').html(res[1]);
-                                break;
-                           case "knights":
-                                $('#knights').html(data);
-                                break;
-                           case "footmen":
-                                $('#footmen').html(data);
-                                break;
-                           case "bowmen":
-                                $('#bowmen').html(data);
-                                break;
-                           case "knights":
-                                $('#knights').html(data);
-                                break;
-                           case "war_machines":
-                                $('#war_machines').html(data);
-                                break;
-                       }
-                       updateResources();
-                   }
-                 });
-            });
-
-            $('#createAllianceButton').click(function(){
-                name=document.getElementById("createAllianceName").value;
-                desc=document.getElementById("createDescName").value;
-                $.get('/game/create_alliance', {'name': name,'desc':desc}, function(data){
-                    if(data ==1){
-                        window.location.href = "/game/";
-                    }else{
-                        console.log(data);
-                    }
-                });
-            });
-
-
-            // when alert close
-            $('.alert .close').on('click', function(e) {
-                $(this).parent().hide();
-            });
-
-            //polling that gets the logs
-            populateLogBox()
-            setInterval(function() {populateLogBox()}, 5000);
-        });
-
-
-
-
-
-
-
-
-
-
-
-
-    </script>
-</head>
-<body style="background-color:#DEB887">
-
-
-<div class="container">
-
-    <div class="col-md-12 text-center">
-        <img src="{% static "images/banner.png" %}" width=100% class="img-responsive" />
-    </div>
-    {% if user.is_authenticated %}
-    <div class="row">
-        <h2>Lord <strong>{{acc.user}}</strong> of <strong>{{city.name}}</strong></h2>
-    </div>
-
-    <div class="row">
-        <div class="col-md-4 text-center">
-            <div class="row">
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <td><strong>Structures</strong></td>
-                        <td><strong>Level</strong></td>
-                        <td><strong>Cost</strong><img src="{% static "images/resources.png" %}" align="right" width=50% class="img-responsive" />
-                        </td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td style="width:5%">Walls<img src="{% static "images/structures/walls.png" %}" align="left" width=25% class="img-responsive" /></td>
-                        <td style="width:5%"><span id="wallLevel">{{city.walls_level}}</span></td>
-                        <td style="width:5%"><span id="wallCost">{{cost.wall_price}}</span>
-                            <button id="wallButton" class="upgrade_button" element_type="wall" type="button">+</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:5%">Gold Mines<img src="{% static "images/structures/gold_mine.png" %}" align="left" width=30% class="img-responsive" /></td>
-                        <td style="width:5%"><span id="gold_mines">{{city.gold_mines}}</span></td>
-                        <td style="width:5%"><span id="gold_mines_cost">{{cost.gold_mines_price}}</span>
-                            <button id="minesButton" class="upgrade_button" element_type="gold_mines" type="button">+</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:5%">Stone Caves<img src="{% static "images/structures/stone_mine.png" %}" align="left" width=30% class="img-responsive" /></td>
-                        <td style="width:5%"><span id="stone_caves">{{city.stone_caves}}</span></td>
-                        <td style="width:5%"><span id="stone_caves_cost">{{cost.stone_caves_price}}</span>
-                            <button id="cavesButton" class="upgrade_button" element_type="stone_caves" type="button">+</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:5%">Lumber Mills<img src="{% static "images/structures/lumbermill.png" %}" align="left" width=30% class="img-responsive" /></td>
-                        <td style="width:5%"><span id="lumber_mills">{{city.lumber_mills}}</span></td>
-                        <td style="width:5%"><span id="lumber_mills_cost">{{cost.lumber_mills_price}}</span>
-                            <button id="millsButton" class="upgrade_button" element_type="lumber_mills" type="button">+</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:5%">Farms<img src="{% static "images/structures/farm.png" %}" align="left" width=30% class="img-responsive" /></td>
-                        <td style="width:5%"><span id="farms">{{city.farms}}</span></td>
-                        <td style="width:5%"><span id="farms_cost">{{cost.farms_price}}</span>
-                            <button id="farmsButton" class="upgrade_button" element_type="farms" type="button">+</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="row">
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <td><strong>Troop Type</strong></td>
-                        <td><strong>Amount</strong></td>
-                        <td><strong>Cost</strong><img src="{% static "images/resources2.png" %}" align="right" width=50% class="img-responsive" /></td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td style="width:5%">Footmen<img src="{% static "images/units/footmen.png" %}" align="left" width=30% class="img-responsive" /></td>
-                        <td style="width:5%"><span id="footmen">{{city.footmen}}</span></td>
-                        <td style="width:5%">{{cost.footmen_price}}
-                            <button id="footmenButton" class="upgrade_button" element_type="footmen" type="button">+</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:5%">Bowmen<img src="{% static "images/units/bowmen.png" %}" align="left" width=30% class="img-responsive" /></td>
-                        <td style="width:5%"><span id="bowmen">{{city.bowmen}}</span></td>
-                        <td style="width:5%">{{cost.bowmen_price}}
-                            <button id="bowmenButton" class="upgrade_button" element_type="bowmen" type="button">+</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:5%">Knights<img src="{% static "images/units/knights.png" %}" align="left" width=25% class="img-responsive" /></td>
-                        <td style="width:5%"><span id="knights">{{city.knights}}</span></td>
-                        <td style="width:5%">{{cost.knights_price}}
-                            <button id="knightsButton" class="upgrade_button" element_type="knights" type="button">+</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:5%">War Machines<img src="{% static "images/units/war_machines.png" %}" align="left" width=25% class="img-responsive" /></td>
-                        <td style="width:5%"><span id="war_machines">{{city.war_machines}}</span></td>
-                        <td style="width:5%">{{cost.war_machines_price}}
-                            <button id="war_machinesButton" class="upgrade_button" element_type="war_machines" type="button">+</button>
-                        </td>
-                    </tr>
-                    </tbody>
-
-                </table>
-            </div>
+{% if user.is_authenticated %}
+    <div class="container">
+        <div class="row">
+            <h3 class="lord-name">Lord <strong>{{acc.user}}</strong> of <strong>{{city.name}}</strong></h3>
         </div>
-        <div class="col-md-6 text-center">
-            <img id="cityImg" src="/{{ city_pic.picture}}" width=100% class="img-thumbnail"/>
-        </div>
-        <div class="col-md-2 text-center">
-            <div class="row">
-                <img src="{{ MEDIA_URL }}/media/{{acc.picture}}" %}" width=90% class="img-thumbnail"/>
-            </div>
-            <div class="row">
-                <table class="table table-bordered">
-                    <tr>
-                        <td><strong>Supply<img src="{% static "images/structures/house.png" %}" align="left" width=25% class="img-responsive" /></strong></td>
-                        <td><span id="maximumTroops">{{city.get_maximum_troops}}</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Gold<img src="{% static "images/gold.png" %}" align="left" width=25% class="img-responsive" /></strong></td>
-                        <td><span id="goldSpan">{{city.gold}}</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Lumber<img src="{% static "images/lumber.png" %}" align="left" width=25% class="img-responsive" /></strong></td>
-                        <td><span id="lumberSpan">{{city.lumber}}</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Stones<img src="{% static "images/stones.png" %}" align="left" width=25% class="img-responsive" /></strong></td>
-                        <td><span id="stonesSpan">{{city.stones}}</span></td>
-                    </tr>
 
-                </table>
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <div class="row">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <td><strong>Structures</strong></td>
+                            <td><strong>Level</strong></td>
+                            <td><strong>Cost</strong><img src="{% static "images/resources.png" %}" align="right" width="50%" class="img-responsive" />
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td style="width:5%">Walls<img src="{% static "images/structures/walls.png" %}" align="left" width="25%" class="img-responsive" /></td>
+                            <td style="width:5%"><span id="wallLevel">{{city.walls_level}}</span></td>
+                            <td style="width:5%"><span id="wallCost">{{cost.wall_price}}</span>
+                                <button id="wallButton" class="upgrade_button" element_type="wall" type="button">+</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:5%">Gold Mines<img src="{% static "images/structures/gold_mine.png" %}" align="left" width="30%" class="img-responsive" /></td>
+                            <td style="width:5%"><span id="gold_mines">{{city.gold_mines}}</span></td>
+                            <td style="width:5%"><span id="gold_mines_cost">{{cost.gold_mines_price}}</span>
+                                <button id="minesButton" class="upgrade_button" element_type="gold_mines" type="button">+</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:5%">Stone Caves<img src="{% static "images/structures/stone_mine.png" %}" align="left" width="30%" class="img-responsive" /></td>
+                            <td style="width:5%"><span id="stone_caves">{{city.stone_caves}}</span></td>
+                            <td style="width:5%"><span id="stone_caves_cost">{{cost.stone_caves_price}}</span>
+                                <button id="cavesButton" class="upgrade_button" element_type="stone_caves" type="button">+</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:5%">Lumber Mills<img src="{% static "images/structures/lumbermill.png" %}" align="left" width="30%" class="img-responsive" /></td>
+                            <td style="width:5%"><span id="lumber_mills">{{city.lumber_mills}}</span></td>
+                            <td style="width:5%"><span id="lumber_mills_cost">{{cost.lumber_mills_price}}</span>
+                                <button id="millsButton" class="upgrade_button" element_type="lumber_mills" type="button">+</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:5%">Farms<img src="{% static "images/structures/farm.png" %}" align="left" width=30% class="img-responsive" /></td>
+                            <td style="width:5%"><span id="farms">{{city.farms}}</span></td>
+                            <td style="width:5%"><span id="farms_cost">{{cost.farms_price}}</span>
+                                <button id="farmsButton" class="upgrade_button" element_type="farms" type="button">+</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <td><strong>Troop Type</strong></td>
+                            <td><strong>Amount</strong></td>
+                            <td><strong>Cost</strong><img src="{% static "images/resources2.png" %}" align="right" width="50%" class="img-responsive" /></td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td style="width:5%">Footmen<img src="{% static "images/units/footmen.png" %}" align="left" width="30%" class="img-responsive" /></td>
+                            <td style="width:5%"><span id="footmen">{{city.footmen}}</span></td>
+                            <td style="width:5%">{{cost.footmen_price}}
+                                <button id="footmenButton" class="upgrade_button" element_type="footmen" type="button">+</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:5%">Bowmen<img src="{% static "images/units/bowmen.png" %}" align="left" width="30%" class="img-responsive" /></td>
+                            <td style="width:5%"><span id="bowmen">{{city.bowmen}}</span></td>
+                            <td style="width:5%">{{cost.bowmen_price}}
+                                <button id="bowmenButton" class="upgrade_button" element_type="bowmen" type="button">+</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:5%">Knights<img src="{% static "images/units/knights.png" %}" align="left" width="25%" class="img-responsive" /></td>
+                            <td style="width:5%"><span id="knights">{{city.knights}}</span></td>
+                            <td style="width:5%">{{cost.knights_price}}
+                                <button id="knightsButton" class="upgrade_button" element_type="knights" type="button">+</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:5%">War Machines<img src="{% static "images/units/war_machines.png" %}" align="left" width="25%" class="img-responsive" /></td>
+                            <td style="width:5%"><span id="war_machines">{{city.war_machines}}</span></td>
+                            <td style="width:5%">{{cost.war_machines_price}}
+                                <button id="war_machinesButton" class="upgrade_button" element_type="war_machines" type="button">+</button>
+                            </td>
+                        </tr>
+                        </tbody>
 
+                    </table>
+                </div>
             </div>
-            <div class="row">
-                {% if acc.alliance %}
-                {% if acc.alliance_owner %}
-                <strong>Leader of: </strong>
-                {% else %}
-                <strong>Member of: </strong>
-                {% endif %}
-                <a href="/game/alliance/{{acc.alliance.name}}">{{acc.alliance.name}}</a><br/>
-                {% else %}
-                <strong><a href="javascript:$('#createAllianceStep').show();">Create</a> or <a
-                        href="/game/alliance_search/">Join</a> an alliance</strong>
-                {% endif %}
+            <div class="col-md-6 text-center">
+                <img id="cityImg" src="/{{ city_pic.picture}}" width=100% class="img-thumbnail"/>
             </div>
+            <div class="col-md-2 text-center">
+                <div class="row">
+                    <img src="{{ MEDIA_URL }}/media/{{acc.picture}}" %} width="90%" class="img-thumbnail"/>
+                </div>
+                <div class="row">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td><strong>Supply<img src="{% static "images/structures/house.png" %}" align="left" width="25%" class="img-responsive" /></strong></td>
+                            <td><span id="maximumTroops">{{city.get_maximum_troops}}</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gold<img src="{% static "images/gold.png" %}" align="left" width="25%" class="img-responsive" /></strong></td>
+                            <td><span id="goldSpan">{{city.gold}}</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lumber<img src="{% static "images/Lumber.png" %}" align="left" width="25%" class="img-responsive" /></strong></td>
+                            <td><span id="lumberSpan">{{city.lumber}}</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Stones<img src="{% static "images/stones.png" %}" align="left" width="25%" class="img-responsive" /></strong></td>
+                            <td><span id="stonesSpan">{{city.stones}}</span></td>
+                        </tr>
 
-            <div class="row">
-                <div class="alert fade in alert-success" id="createAllianceStep" style="display:none;">
-                    <button type="button" class="close">×</button>
-                    <div class="input-group">
-                        <input id="createAllianceName" type="text" class="form-control"
-                               placeholder="Alliance Name...">
-                        <input id="createDescName" type="text" class="form-control"
-                               placeholder="Description...">
-                        <button id="createAllianceButton" class="btn btn-default" type="button">Create!</button>
+                    </table>
+
+                </div>
+                <div class="row">
+                    {% if acc.alliance %}
+                    {% if acc.alliance_owner %}
+                    <strong>Leader of: </strong>
+                    {% else %}
+                    <strong>Member of: </strong>
+                    {% endif %}
+                    <a href="/game/alliance/{{acc.alliance.name}}">{{acc.alliance.name}}</a><br/>
+                    {% else %}
+                    <strong><a href="javascript:$('#createAllianceStep').show();">Create</a> or <a
+                            href="/game/alliance_search/">Join</a> an alliance</strong>
+                    {% endif %}
+                </div>
+
+                <div class="row">
+                    <div class="alert fade in alert-success" id="createAllianceStep" style="display:none;">
+                        <button type="button" class="close">×</button>
+                        <div class="input-group">
+                            <input id="createAllianceName" type="text" class="form-control"
+                                   placeholder="Alliance Name...">
+                            <input id="createDescName" type="text" class="form-control"
+                                   placeholder="Description...">
+                            <button id="createAllianceButton" class="btn btn-default" type="button">Create!</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="list-group">
+                        <a class="list-group-item active">
+                            Opponents
+                        </a>
+                        {% for acc in userlist %}
+                        <li><a href="/game/battle/{{acc.user.username}}"><strong>{{acc.user.username}}</strong> </a>
+                        </li>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
+        </div>
 
+        <div class="alert fade in alert-danger" id="alertNoGold" style="display:none;">
+            <button type="button" class="close">×</button>
+            <strong>Not enough gold!</strong>
+        </div>
+
+        <div class="alert fade in alert-danger" id="alertNoLumber" style="display:none;">
+            <button type="button" class="close">×</button>
+            <strong>Not enough Lumber!</strong>
+        </div>
+
+        <div class="alert fade in alert-danger" id="alertNoStones" style="display:none;">
+            <button type="button" class="close">×</button>
+            <strong>Not enough stones!</strong>
+        </div>
+
+        <div class="alert fade in alert-danger" id="alertInsufficientMaxTroops" style="display:none;">
+            <button type="button" class="close">×</button>
+            <strong>Insufficient supplies!</strong>
+        </div>
+
+        <div class="row">
             <div class="row">
-                <div class="list-group">
-                    <a class="list-group-item active">
-                        Opponents
-                    </a>
-                    {% for acc in userlist %}
-                    <li><a href="/game/battle/{{acc.user.username}}"><strong>{{acc.user.username}}</strong> </a>
-                    </li>
-                    {% endfor %}
-                </div>
+                <label for="logs_text" id="LogsHeading">Account Logs</label>
+            </div>
+            <div class="row">
+                        <textarea id="logs_text"
+                                  style="min-width: 100%; height: 100px; max-height: 100px;"></textarea>
             </div>
         </div>
     </div>
 
-    <div class="alert fade in alert-danger" id="alertNoGold" style="display:none;">
-        <button type="button" class="close">×</button>
-        <strong>Not enough gold!</strong>
-    </div>
-
-    <div class="alert fade in alert-danger" id="alertNoLumber" style="display:none;">
-        <button type="button" class="close">×</button>
-        <strong>Not enough Lumber!</strong>
-    </div>
-
-    <div class="alert fade in alert-danger" id="alertNoStones" style="display:none;">
-        <button type="button" class="close">×</button>
-        <strong>Not enough stones!</strong>
-    </div>
-
-    <div class="alert fade in alert-danger" id="alertInsufficientMaxTroops" style="display:none;">
-        <button type="button" class="close">×</button>
-        <strong>Insufficient supplies!</strong>
-    </div>
-
-    <div class="row">
-        <div class="row">
-            <label for="logs_text" id="LogsHeading">Account Logs</label>
-        </div>
-        <div class="row">
-                    <textarea id="logs_text"
-                              style="min-width: 100%; height: 100px; max-height: 100px;"></textarea>
-        </div>
-    </div>
-
-
-    <div class="row">
-        <a href="/game/logout/">Logout</a><br/>
-    </div>
-</div>
-
 {% else %}
-<a href="/game/register/">Register Here</a><br/>
-<a href="/game/login/">Login</a><br/>
+    <meta http-equiv="refresh" content="0; url=/"/>
 {% endif %}
 
-</body>
-</html>
+{% endblock %}
