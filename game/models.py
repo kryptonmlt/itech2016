@@ -33,6 +33,17 @@ class Account(models.Model):
         now = timezone.now()
         return now - datetime.timedelta(hours=12) <= now - self.last_attacked
 
+    def received_resources_in(self, hours):
+        now = timezone.now()
+        delta = now - self.last_received_gold
+        hours_passed = delta.total_seconds() // 3600
+        print hours_passed
+        if hours_passed >= hours:
+            return 0
+        else:
+            time_remaining = datetime.timedelta(hours=hours) - delta
+            return time_remaining.total_seconds()
+
     def get_win_percentage(self):
         if self.defeats == 0 & self.wins == 0:
             return 0
@@ -122,39 +133,57 @@ class Cost(models.Model):
     footmen_price = models.IntegerField(default=10)
     bowmen_price = models.IntegerField(default=15)
     knights_price = models.IntegerField(default=25)
-    war_machines_price = models.CharField(max_length=100,default="40,10")
-    wall_price = models.CharField(max_length=100,default="1000,100,200")
-    farms_price = models.CharField(max_length=100,default="200,100,100")
-    lumber_mills_price = models.CharField(max_length=100,default="200,200,100")
-    stone_caves_price = models.CharField(max_length=100,default="200,150,150")
-    gold_mines_price = models.CharField(max_length=100,default="300,150,150")
+    war_machines_price = models.CharField(max_length=100, default="40,10")
+    wall_price = models.CharField(max_length=100, default="1000,100,200")
+    farms_price = models.CharField(max_length=100, default="200,100,100")
+    lumber_mills_price = models.CharField(max_length=100, default="200,200,100")
+    stone_caves_price = models.CharField(max_length=100, default="200,150,150")
+    gold_mines_price = models.CharField(max_length=100, default="300,150,150")
+    gold_income = models.IntegerField(default=100)
+    lumber_income = models.IntegerField(default=25)
+    stone_income = models.IntegerField(default=25)
 
     def __str__(self):
         return "Cost stats"
 
     def calc_farms_price(self, level):
-        prices=self.farms_price.split(',')
-        return str(int(prices[0])* (level + 1))+","+str(int(prices[1])* (level + 1))+","+str(int(prices[2])* (level + 1))
+        prices = self.farms_price.split(',')
+        return str(int(prices[0]) * (level + 1)) + "," + str(int(prices[1]) * (level + 1)) + "," + str(
+            int(prices[2]) * (level + 1))
 
     def calc_wall_price(self, level):
-        prices=self.wall_price.split(',')
-        return str(int(prices[0])* (level + 1))+","+str(int(prices[1])* (level + 1))+","+str(int(prices[2])* (level + 1))
+        prices = self.wall_price.split(',')
+        return str(int(prices[0]) * (level + 1)) + "," + str(int(prices[1]) * (level + 1)) + "," + str(
+            int(prices[2]) * (level + 1))
 
     def calc_mills_price(self, level):
-        prices=self.lumber_mills_price.split(',')
-        return str(int(prices[0])* (level + 1))+","+str(int(prices[1])* (level + 1))+","+str(int(prices[2])* (level + 1))
+        prices = self.lumber_mills_price.split(',')
+        return str(int(prices[0]) * (level + 1)) + "," + str(int(prices[1]) * (level + 1)) + "," + str(
+            int(prices[2]) * (level + 1))
 
     def calc_caves_price(self, level):
-        prices=self.stone_caves_price.split(',')
-        return str(int(prices[0])* (level + 1))+","+str(int(prices[1])* (level + 1))+","+str(int(prices[2])* (level + 1))
+        prices = self.stone_caves_price.split(',')
+        return str(int(prices[0]) * (level + 1)) + "," + str(int(prices[1]) * (level + 1)) + "," + str(
+            int(prices[2]) * (level + 1))
 
     def calc_mines_price(self, level):
-        prices=self.gold_mines_price.split(',')
-        return str(int(prices[0])* (level + 1))+","+str(int(prices[1])* (level + 1))+","+str(int(prices[2])* (level + 1))
+        prices = self.gold_mines_price.split(',')
+        return str(int(prices[0]) * (level + 1)) + "," + str(int(prices[1]) * (level + 1)) + "," + str(
+            int(prices[2]) * (level + 1))
 
     def calc_war_machines_price(self):
-        prices=self.war_machines_price.split(',')
-        return str(int(prices[0]))+","+str(int(prices[1]))
+        prices = self.war_machines_price.split(',')
+        return str(int(prices[0])) + "," + str(int(prices[1]))
+
+    def calc_gold_income(self, level):
+        return self.gold_income * level
+
+    def calc_stone_income(self, level):
+        return self.stone_income * level
+
+    def calc_lumber_income(self, level):
+        return self.lumber_income * level
+
 
 class CityGraphic(models.Model):
     level = models.IntegerField(default=0)

@@ -6,7 +6,7 @@ from game.models import Account, Alliance, AllianceRequest, City, Badge, Log, Me
     AllianceMessage
 from django.contrib.auth.models import User
 from game.forms import CityForm
-import datetime
+from django.utils import timezone
 from random import randint
 from django.db.models import Q
 from django.utils.datastructures import MultiValueDictKeyError
@@ -52,6 +52,36 @@ def user_logout(request):
     logout(request)
     # Take the user back to the homepage.
     return HttpResponseRedirect('/')
+
+
+@login_required
+def collect(request):
+    hours = 4
+    seconds = hours * 60 * 60
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
+    result = "DONE," + str(seconds)
+    time_left = acc.received_resources_in(hours)
+    if time_left > 0:
+        result = "WAIT," + str(time_left)
+    else:
+        cost = Cost.objects.all().get()
+        # account received resources now
+        acc.last_received_gold = timezone.now()
+        acc.save()
+        # update city resources
+        city = City.objects.get(account=acc)
+        gold_gained = cost.calc_gold_income(city.gold_mines)
+        lumber_gained = cost.calc_lumber_income(city.lumber_mills)
+        stone_gained = cost.calc_stone_income(city.stone_caves)
+        city.gold += gold_gained
+        city.lumber += lumber_gained
+        city.stones += stone_gained
+        create_log(acc, "Your structures have generated " + str(gold_gained) + " gold, " + str(
+            lumber_gained) + " lumber, " + str(
+            stone_gained) + " stones")
+        city.save()
+    return HttpResponse(result)
 
 
 @login_required
@@ -242,7 +272,7 @@ def leave_alliance(request):
                            "You became the new leader of the alliance " + next_leader.alliance.name + ", after" + acc.user.username + " left.")
                 reply = "Next in line (" + next_leader.user.username + ") now leader of alliance, "
             else:  # delete alliance since no one left to take it
-                extra_info = ", alliance was disbanded due to no successors";
+                extra_info = ", alliance was disbanded due to no successors"
                 acc.alliance.delete()
                 reply = "No one next in line, alliance collapsed, "
         create_log(acc,
@@ -576,7 +606,7 @@ def create_alliance(request):
     # alliance successfully created
     acc.alliance = created_alliance
     acc.alliance_owner = True
-    acc.save();
+    acc.save()
     create_log(acc, "Let it be known, " + acc.user.username + " just founded the alliance " + acc.alliance.name)
     return HttpResponse("1")
 
