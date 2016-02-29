@@ -2,8 +2,9 @@
 
         function get_messages(){
             message_text_area = document.getElementById("message_text_area");
-            $.get('/game/get_messages/',{'last_message_id':last_message_id,'to_account_id':{{enemy_city.account.pk}}}, function(data){
+            $.get('/game/get_messages/',{'last_message_id':last_message_id,'to_account_id':enemyId},
 
+            function(data){
                 messages = data.split('$$');
                 for(i=0; i < messages.length; i++){
                     if(messages[i] != ""){
@@ -21,7 +22,7 @@
 
         function sendMessage() {
             var x = document.getElementById("user_msg").value;
-            $.get('/game/add_message/', {'message': x,'to_account_id':{{enemy_city.account.pk}}}, function(data){
+            $.get('/game/add_message/', {'message': x,'to_account_id':enemyId}, function(data){
                 if(data == -1){
                     $('#notif_span').html("Message was not delivered");
                     $("#notif_alert").show();
@@ -33,6 +34,15 @@
         }
 
         $(document).ready(function(){
+        	logs_text_area = document.getElementById("logs_text");
+
+            $('#attackButton').click(function(){
+          	$.get('/game/attack/'+enemyUsername, function(data){
+                   console.log(data);
+            logs_text_area.value +=data
+            });
+            });
+
             document.getElementById("message_text_area").readOnly=true;
             $('#sendButton').click(function(){
                 sendMessage();

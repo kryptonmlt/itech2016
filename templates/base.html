@@ -17,7 +17,10 @@
 	    <script src="{% static "js/alliancesearch.js" %}"></script>
 	    <link rel="stylesheet" type="text/css" href="{% static "css/home.css" %}">
 	    <link rel="stylesheet" type="text/css" href="{% static "css/game.css" %}">
-	    
+	    <script>
+	    enemyId="{{enemy_city.account.pk}}";
+	    enemyUsername="{{enemy_city.account.user.username}}";
+	    </script>
 	</head>
 	<body>
 		
