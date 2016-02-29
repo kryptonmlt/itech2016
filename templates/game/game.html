@@ -2,6 +2,11 @@
 
 {% load staticfiles %}
 
+{% block content %}
+<script src="{% static " js/game.js" %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static "css/game.css" %}">
+{% endblock content %}
+
 {% block body_block %}
 
 {% if user.is_authenticated %}

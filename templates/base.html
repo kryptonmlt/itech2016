@@ -10,13 +10,9 @@
     	
 
     	{% load staticfiles %}
+		{% block content %}{% endblock content %}
     	<script src="{% static "js/home.js" %}"></script>
-	    <script src="{% static "js/game.js" %}"></script>
-	    <script src="{% static "js/battle.js" %}"></script>
-	    <script src="{% static "js/alliance.js" %}"></script>
-	    <script src="{% static "js/alliancesearch.js" %}"></script>
 	    <link rel="stylesheet" type="text/css" href="{% static "css/home.css" %}">
-	    <link rel="stylesheet" type="text/css" href="{% static "css/game.css" %}">
 	    <script>
 	    enemyId="{{enemy_city.account.pk}}";
 	    enemyUsername="{{enemy_city.account.user.username}}";
