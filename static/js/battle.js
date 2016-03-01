@@ -38,9 +38,10 @@
 
             $('#attackButton').click(function(){
           	$.get('/game/attack/'+enemyUsername, function(data){
-                   console.log(data);
-            logs_text_area.value +=data
-            });
+                    console.log(data);
+                    logs_text_area.value +=data
+                    logs_text_area.scrollTop = logs_text_area.scrollHeight;
+                });
             });
 
             document.getElementById("message_text_area").readOnly=true;
