@@ -37,7 +37,6 @@ class Account(models.Model):
         now = timezone.now()
         delta = now - self.last_received_gold
         hours_passed = delta.total_seconds() // 3600
-        print hours_passed
         if hours_passed >= hours:
             return 0
         else:
@@ -45,7 +44,7 @@ class Account(models.Model):
             return time_remaining.total_seconds()
 
     def get_win_percentage(self):
-        if self.defeats == 0 & self.wins == 0:
+        if self.defeats == 0 and self.wins == 0:
             return 0
         else:
             return int((self.wins / float((self.defeats + self.wins))) * 100)
