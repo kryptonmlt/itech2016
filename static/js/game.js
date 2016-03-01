@@ -1,4 +1,4 @@
-latest_log_id = -1;
+        var latest_log_id = -1;
 
         function populateLogBox(){
             logs_text_area = document.getElementById("logs_text");
@@ -33,6 +33,47 @@ latest_log_id = -1;
             var info = [data.substr(0, index), data.substr(index + 1)];
             return info;a
         }
+
+        function startTimer(duration, display) {
+            var timer = duration, minutes, seconds;
+            var ct = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(ct);
+                    collectTimer();
+                }
+            }, 1000);
+        }
+
+        function stopTimer(){
+
+        }
+
+        function collectTimer(){
+            display = document.querySelector('#timeSpan');
+            $.get('/game/collect', function(data){
+                if(data != "-1"){
+                    var res = data.split(",");
+                    if(res[0] == "DONE"){
+                        display.textContent="Ready! ";
+                        document.getElementById("collectButton").disabled = false;
+                    }else{
+                        var wholeMin = res[1].split(".");
+                        minutes = parseInt(wholeMin[0]);
+                        startTimer(minutes, display);
+                        document.getElementById("collectButton").disabled = true;
+                    }
+                }
+            });
+        }
+
 
 		$(document).ready(function(){
 		    document.getElementById("logs_text").readOnly = true;
@@ -126,6 +167,12 @@ latest_log_id = -1;
                 });
             });
 
+            $('#collectButton').click(function(){
+                document.getElementById("collectButton").disabled = true;
+                collectTimer();
+                updateResources();
+            });
+
 
             // when alert close
             $('.alert .close').on('click', function(e) {
@@ -133,6 +180,8 @@ latest_log_id = -1;
             });
 
             //polling that gets the logs
-            populateLogBox()
+            populateLogBox();
             setInterval(function() {populateLogBox()}, 5000);
+
+            collectTimer();
         });
