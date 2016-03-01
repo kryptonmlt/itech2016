@@ -510,12 +510,16 @@ def attack(request, opponent):
         tempgold = ecity.gold / rnggold
         result = lose_army(city, ecity, False, True, tempgold)
         lose_army(ecity, city, True, False, tempgold)
+        acc.wins += 1
+        acc.save()
         return HttpResponse(result)
     else:
         rnggold = randint(5, 10)
         tempgold = city.gold / rnggold
         result = lose_army(city, ecity, False, False, tempgold)
         lose_army(ecity, city, True, True, tempgold)
+        acc.defeats += 1
+        acc.defeats
         return HttpResponse(result)
 
 

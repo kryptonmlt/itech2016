@@ -138,7 +138,6 @@
                             <td><strong>Stones<img src="{% static "images/stones.png" %}" align="left" width="25%" class="img-responsive" /></strong></td>
                             <td><span id="stonesSpan">{{city.stones}}</span></td>
                         </tr>
-
                     </table>
 
                 </div>
@@ -169,6 +168,13 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <ul>
+                    <li>Win Percentage: {{acc.get_win_percentage}}%</li>
+                    <li>Wins: {{acc.wins}}</li>
+                    <li>Defeats: {{acc.defeats}}</li>
+                    </ul>
+                </div>
                 <div class="row">
                     <div class="list-group">
                         <a class="list-group-item active">
