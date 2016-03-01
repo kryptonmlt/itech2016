@@ -21,7 +21,7 @@ last_message_id = -1;
 
         function sendAllianceMessage() {
             var x = document.getElementById("user_msg").value;
-            $.get('/game/add_alliance_message/', {'message': x,'to_alliance_id':{{acc.alliance.pk}}}, function(data){
+            $.get('/game/add_alliance_message/', {'message': x,'to_alliance_id':accAllianceId}, function(data){
                 if(data == -1){
                     $('#requestResult').html("Message was not delivered");
                     $("#leaveNotifAlert").show();
@@ -34,7 +34,7 @@ last_message_id = -1;
 
         function sendAllianceRequest() {
             var x = document.getElementById("msg").value;
-            $.get('/game/alliance_request/{{ alliance.name}}', {msg: x}, function(data){
+            $.get('/game/alliance_request/'+allianceName, {msg: x}, function(data){
                 $('#requestResult').html(data);
                 if(data != -1){
                     $("#leaveNotifAlert").show();
@@ -68,11 +68,11 @@ last_message_id = -1;
 
 		$(document).ready(function(){
 
-            {% if acc.alliance == alliance %}
-                {% if request.user.username != leader %}
+            if(accAllianceName == allianceName){
+                if( requestUsername != leaderUsername){
                     document.getElementById("orders_text_area").readOnly = true;
-                {% endif %}
-            {% endif %}
+                }
+            }
 
             $('.acceptButton').click(function() {
                 reqAcc = $(this).attr("reqAcc");

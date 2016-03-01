@@ -14,13 +14,17 @@
     {% block content %}
     {% endblock content %}
 
-    <script src="{% static "js
-    /home.js" %}"></script>
-	    <link rel="stylesheet" type="text/css" href="{% static "css/home.css" %}">
-	    <script>
-	    enemyId="{{enemy_city.account.pk}}";
-	    enemyUsername="{{enemy_city.account.user.username}}";
-	    </script>
+    <script src="{% static "js/home.js" %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static "css/home.css" %}"/>
+    <script>
+        enemyId="{{enemy_city.account.pk}}";
+        enemyUsername="{{enemy_city.account.user.username}}";
+        accAllianceId="{{acc.alliance.pk}}";
+        allianceName="{{alliance.name}}";
+        accAllianceName="{{acc.alliance.name}}";
+        leaderUsername="{{leader}}";
+        requestUsername="{{request.user.username}}";
+    </script>
 </head>
 <body>
 
