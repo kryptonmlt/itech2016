@@ -52,10 +52,6 @@
             }, 1000);
         }
 
-        function stopTimer(){
-
-        }
-
         function collectTimer(){
             display = document.querySelector('#timeSpan');
             $.get('/game/collect', function(data){
@@ -76,6 +72,8 @@
 
 
 		$(document).ready(function(){
+
+            collectTimer();
 		    document.getElementById("logs_text").readOnly = true;
 
             $('#housesButton,#cavesButton,#minesButton,#millsButton,#wallButton,#footmenButton,#knightsButton,#bowmenButton,#war_machinesButton,#farmsButton').click(function(){
@@ -182,6 +180,4 @@
             //polling that gets the logs
             populateLogBox();
             setInterval(function() {populateLogBox()}, 5000);
-
-            collectTimer();
         });

@@ -85,6 +85,18 @@ def collect(request):
 
 
 @login_required
+def last_attacked(request, enemy_acc_id):
+    hours = 4
+    seconds = hours * 60 * 60
+    enemy = Account.objects.get(pk=enemy_acc_id)
+    result = "DONE," + str(seconds)
+    time_left = enemy.attacked_in_last(hours)
+    if time_left > 0:
+        result = "WAIT," + str(time_left)
+    return HttpResponse(result)
+
+
+@login_required
 def get_logs(request):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
@@ -503,6 +515,7 @@ def attack(request, opponent):
     acc = Account.objects.get(user=user)
     city = City.objects.all().get(account=acc)
 
+    enemyaccount.last_attacked = timezone.now()
     if city.footmen + (city.bowmen * 1.5) + (city.knights * 2) + (city.war_machines * 4) > (
                         ecity.footmen + (ecity.bowmen * 1.5) + (ecity.knights * 2) + (ecity.war_machines * 4)) * (
                 (10 + ecity.walls_level) / 10):
@@ -511,16 +524,17 @@ def attack(request, opponent):
         result = lose_army(city, ecity, False, True, tempgold)
         lose_army(ecity, city, True, False, tempgold)
         acc.wins += 1
-        acc.save()
-        return HttpResponse(result)
+        enemyaccount.defeats += 1
     else:
         rnggold = randint(5, 10)
         tempgold = city.gold / rnggold
         result = lose_army(city, ecity, False, False, tempgold)
         lose_army(ecity, city, True, True, tempgold)
         acc.defeats += 1
-        acc.defeats
-        return HttpResponse(result)
+        enemyaccount.wins += 1
+    enemyaccount.save()
+    acc.save()
+    return HttpResponse(result)
 
 
 def lose_army(city, ecity, defender, winner, tempgold):

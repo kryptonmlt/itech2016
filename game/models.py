@@ -29,9 +29,15 @@ class Account(models.Model):
     def __str__(self):
         return self.user.username
 
-    def was_attacked_recently(self):
+    def attacked_in_last(self, hours):
         now = timezone.now()
-        return now - datetime.timedelta(hours=12) <= now - self.last_attacked
+        delta = now - self.last_attacked
+        hours_passed = delta.total_seconds() // 3600
+        if hours_passed >= hours:
+            return 0
+        else:
+            time_remaining = datetime.timedelta(hours=hours) - delta
+            return time_remaining.total_seconds()
 
     def received_resources_in(self, hours):
         now = timezone.now()
@@ -48,10 +54,6 @@ class Account(models.Model):
             return 0
         else:
             return int((self.wins / float((self.defeats + self.wins))) * 100)
-
-    was_attacked_recently.admin_order_field = 'last_attacked'
-    was_attacked_recently.boolean = True
-    was_attacked_recently.short_description = 'Attacked recently?'
 
 
 class City(models.Model):

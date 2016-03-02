@@ -33,14 +33,53 @@
             });
         }
 
+        function startAttackTimer(duration, display) {
+            var timer = duration, minutes, seconds;
+            var ct = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(ct);
+                    attackTimer();
+                }
+            }, 1000);
+        }
+
+        function attackTimer(){
+            display = document.querySelector('#attackTimerSpan');
+            $.get('/game/last_attacked/'+enemyId, function(data){
+                if(data != "-1"){
+                    var res = data.split(",");
+                    if(res[0] == "DONE"){
+                        display.textContent="Ready! ";
+                        document.getElementById("attackButton").disabled = false;
+                    }else{
+                        var wholeMin = res[1].split(".");
+                        minutes = parseInt(wholeMin[0]);
+                        startAttackTimer(minutes, display);
+                        document.getElementById("attackButton").disabled = true;
+                    }
+                }
+            });
+        }
+
         $(document).ready(function(){
+            attackTimer();
         	logs_text_area = document.getElementById("logs_text");
 
             $('#attackButton').click(function(){
-          	$.get('/game/attack/'+enemyUsername, function(data){
+                document.getElementById("attackButton").disabled = true;
+          	    $.get('/game/attack/'+enemyUsername, function(data){
                     console.log(data);
                     logs_text_area.value +=data
                     logs_text_area.scrollTop = logs_text_area.scrollHeight;
+                    attackTimer();
                 });
             });
 
