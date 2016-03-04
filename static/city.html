@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+#canvas{
+	border: 1px solid black;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+</head>
+<body>
+<canvas id="canvas" ></canvas>
+<script>
+
+	var canvasX = 800;
+	var canvasY = 600;
+	var fitX = 6;
+	var fitY = 6;	
+	var halfFitX = fitX/2;
+	var halfFitY = fitY/2;		
+	var sizeX = parseInt(canvasX/fitX);
+	var sizeY = parseInt(canvasY/fitY);
+	
+	var grass = new Image();
+	var castle = new Image();
+	var farm = new Image();
+	var lumbermill = new Image();
+	var stoneMine = new Image();
+	var goldMine = new Image();
+	var house = new Image();
+	grass.src="images/structures/forest1.jpg";
+	castle.src="images/structures/castle1.png";
+	farm.src="images/structures/farm.png";
+	lumbermill.src="images/structures/lumbermill.png";
+	stoneMine.src="images/structures/stone_mine.png";
+	goldMine.src="images/structures/gold_mine.png";
+	house.src="images/structures/house.png";
+		
+	var centreX = 0;
+	var centreY = 0;
+	var oldMouseXTile = -1;
+	var oldMouseYTile = -1;
+	
+	var mapArray=
+		"000000000;"+
+		"002600060;"+
+		"006000220;"+
+		"003011000;"+
+		"000011000;"+
+		"000000000;"+
+		"000000000;"+
+		"004500000;"+
+		"000000000;"+
+		"000000000";
+		
+	var rows = mapArray.split(';');
+	var tilesX = rows[0].length;
+	var tilesY = rows.length;
+	
+	function moveRight(){
+		var fitX = canvasX/sizeX;
+		var halfFitX = fitX/2;		
+		var mapX = centreX - halfFitX;
+		
+		if(mapX < 0){
+			centreX+=halfFitX;			
+		}else{
+			if(centreX < tilesX){
+				centreX+=1;
+			}
+		}
+	}
+	
+	function moveLeft(){
+		var fitX = canvasX/sizeX;
+		var halfFitX = fitX/2;		
+		var mapX = centreX - halfFitX;
+		
+		if(mapX+fitX > tilesX){
+			centreX-=halfFitX;	
+		}else{
+			if(centreX > 0){
+				centreX-=1;
+			}
+		}
+	}
+	
+	function moveUp(){
+		var fitY = canvasY/sizeY;
+		var halfFitY = fitY/2;
+		var mapY = centreY - halfFitY;
+		
+		if(mapY+fitY > tilesY){
+			centreY-=halfFitY;			
+		}else{
+			if(centreY > 0){
+				centreY-=1;
+			}
+		}
+	}
+	function moveDown(){
+		var fitY = canvasY/sizeY;
+		var halfFitY = fitY/2;
+		var mapY = centreY - halfFitY;
+		
+		if(mapY < 0){	
+			centreY+=halfFitY;	
+		}else{
+			if(centreY < tilesY){
+				centreY+=1;
+			}
+		}
+	}
+	
+	function reDrawMap(){
+		
+		var canvas = document.getElementById('canvas');
+		var context = canvas.getContext('2d');
+		
+		var mapX = centreX - halfFitX;
+		var mapY = centreY - halfFitY;
+		
+		if(mapX < 0){
+			mapX = 0;
+		}else if(mapX+fitX > tilesX){
+			mapX = tilesX-fitX;
+		}
+		if(mapY < 0){
+			mapY = 0;
+		}else if(mapY+fitY > tilesY){
+			mapY = tilesY-fitY;
+		}
+		
+		var mapX = Math.floor(mapX);
+		var mapY = Math.floor(mapY);
+		
+		//draw positions
+		var posX = 0;
+		var posY = 0;
+		
+		for(var i=mapY;i<mapY+fitY;i++){
+			//console.log(rows[i]);
+			for(var j=mapX;j<mapX+fitX;j++){
+				switch(parseInt(rows[i][j])){
+					case 0:	
+					context.drawImage(grass,posX,posY,sizeX,sizeY);
+					break;
+					case 1:
+					context.drawImage(castle,posX,posY,sizeX,sizeY);
+					break;
+					case 2:
+					context.drawImage(farm,posX,posY,sizeX,sizeY);
+					break;
+					case 3:
+					context.drawImage(lumbermill,posX,posY,sizeX,sizeY);
+					break;
+					case 4:
+					context.drawImage(stoneMine,posX,posY,sizeX,sizeY);
+					break;
+					case 5:
+					context.drawImage(goldMine,posX,posY,sizeX,sizeY);
+					break;
+					case 6:
+					context.drawImage(house,posX,posY,sizeX,sizeY);
+					break;
+					default:
+					console.log("unknown case "+parseInt(rows[i][j])+" - "+i+" "+j);
+					break;
+				}
+				posX+=sizeX;
+			}
+			posX=0;
+			posY+=sizeY;		
+		}
+	}
+	
+	window.onload = function() {		
+		document.getElementById('canvas').onmousedown = function() {
+			this.style.position = 'relative'
+
+			var self = this
+
+			this.onmousemove = function(e) {
+				e = e || event
+				tileXPressed = parseInt(e.pageX/sizeX);
+				tileYPressed = parseInt(e.pageY/sizeY);
+				if(oldMouseXTile==-1){
+					oldMouseXTile=tileXPressed;
+					oldMouseYTile=tileYPressed;
+				}else{
+					var modification = false;
+					if(oldMouseXTile != tileXPressed){
+						if(tileXPressed > oldMouseXTile){
+							console.log("left");
+							moveLeft();
+						}else{
+							console.log("right");
+							moveRight();
+						}
+						modification=true;
+						oldMouseXTile=tileXPressed;					
+					}
+					if(oldMouseYTile != tileYPressed){
+						if(tileYPressed > oldMouseYTile){
+							console.log("up");
+							moveUp();
+						}else{
+							console.log("down");
+							moveDown();
+						}
+						modification=true;						
+						oldMouseYTile=tileYPressed;
+					}
+					if(modification){
+						reDrawMap();
+					}
+				}
+			}
+			this.onmouseup = function() {
+				this.onmousemove = null
+				oldMouseXTile=-1;
+				oldMouseYTile=-1;
+			}
+			document.onmouseup = function() {
+				document.getElementById('canvas').onmousemove = null
+				oldMouseXTile=-1;
+				oldMouseYTile=-1;
+			}
+		}
+		document.getElementById('canvas').ondragstart = function() { return false }
+		resizeCanvas();
+	}
+	
+	window.addEventListener('resize', resizeCanvas, false);
+	
+	function resizeCanvas() {
+		
+		var canvas = document.getElementById('canvas');
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+		canvasX = window.innerWidth;
+		canvasY = window.innerHeight;
+		sizeX = parseInt(canvasX/fitX);
+		sizeY = parseInt(canvasY/fitY);
+		reDrawMap();
+    }
+</script>
+</body>
+</html>
