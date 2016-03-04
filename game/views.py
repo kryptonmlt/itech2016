@@ -41,7 +41,7 @@ def index(request):
     cost.stone_caves_price = cost.calc_caves_price(city.stone_caves)
     cost.gold_mines_price = cost.calc_mines_price(city.gold_mines)
     cost.lumber_mills_price = cost.calc_mills_price(city.lumber_mills)
-    city_pic = CityGraphic.objects.get(level=get_correct_image(city.farms))
+    city_pic = CityGraphic.objects.get(level=get_correct_image(city.walls_level))
     context_dict = {'userlist': userlist, 'cost': cost, 'city': city, 'acc': acc, 'city_pic': city_pic}
     return render(request, 'game/game.html', context_dict)
 
@@ -643,13 +643,13 @@ def alliance_search_empty(request):
     return render(request, 'game/alliance_search.html', context_dict)
 
 
-def get_correct_image(farms):
-    return 1 + (int(farms) / 10)
+def get_correct_image(walls_level):
+    return 1 + (int(walls_level) / 10)
 
 
 @login_required
-def city_img(request, farms):
-    city_pic = CityGraphic.objects.get(level=get_correct_image(farms))
+def city_img(request, walls_level):
+    city_pic = CityGraphic.objects.get(level=get_correct_image(walls_level))
     return HttpResponse(str(city_pic.picture))
 
 
