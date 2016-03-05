@@ -18,8 +18,8 @@
 	var canvasY = 600;
 	var fitX = 9;
 	var fitY = 9;	
-	var halfFitX = fitX/2;
-	var halfFitY = fitY/2;		
+	var halfFitX = Math.floor(fitX/2);
+	var halfFitY = Math.floor(fitY/2);		
 	var sizeX = parseInt(canvasX/fitX);
 	var sizeY = parseInt(canvasY/fitY);
 	
@@ -38,12 +38,14 @@
 	goldMine.src="images/structures/gold_mine_merged.png";
 	house.src="images/structures/house_merged.png";
 		
-	var centreX = 0;
-	var centreY = 0;
+	var centreX = 4;
+	var centreY = 4;
+	var playerX = 0;
+	var playerY = 0;
 	var oldMouseXTile = -1;
 	var oldMouseYTile = -1;
 	
-	var mapArray=
+	var tileMap=
 		"0011100000111110000011111000001111100000111110000011111000001111100000111110000011111000001111100002;"+
 		"0100000000000001000000000000100000000000000000000000000000000000000000000000000000000000000000000012;"+
 		"0002306600010000003300220220500500001000100010001000100100100100000001000050100000000000000000000002;"+
@@ -77,60 +79,60 @@
 		"0000000000010000000000100000100100001000100010001111100100100100000000000000000000000000000000000012;"+
 		"0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002";
 		
-	var rows = mapArray.split(';');
+	var rows = tileMap.split(';');
 	var tilesX = rows[0].length;
 	var tilesY = rows.length;
 	
 	function moveRight(){
-		var fitX = canvasX/sizeX;
-		var halfFitX = fitX/2;		
+		//var fitX = canvasX/sizeX;
+		//var halfFitX = fitX/2;		
 		var mapX = centreX - halfFitX;
 		
 		if(mapX < 0){
 			centreX+=halfFitX;			
 		}else{
-			if(centreX < tilesX){
+			if(centreX < (tilesX-halfFitX)){
 				centreX+=1;
 			}
 		}
 	}
 	
 	function moveLeft(){
-		var fitX = canvasX/sizeX;
-		var halfFitX = fitX/2;		
+		//var fitX = canvasX/sizeX;
+		//var halfFitX = fitX/2;		
 		var mapX = centreX - halfFitX;
 		
 		if(mapX+fitX > tilesX){
 			centreX-=halfFitX;	
 		}else{
-			if(centreX > 0){
+			if(centreX > halfFitX){
 				centreX-=1;
 			}
 		}
 	}
 	
 	function moveUp(){
-		var fitY = canvasY/sizeY;
-		var halfFitY = fitY/2;
+		//var fitY = canvasY/sizeY;
+		//var halfFitY = fitY/2;
 		var mapY = centreY - halfFitY;
 		
 		if(mapY+fitY > tilesY){
 			centreY-=halfFitY;			
 		}else{
-			if(centreY > 0){
+			if(centreY > halfFitY){
 				centreY-=1;
 			}
 		}
 	}
 	function moveDown(){
-		var fitY = canvasY/sizeY;
-		var halfFitY = fitY/2;
+		//var fitY = canvasY/sizeY;
+		//var halfFitY = fitY/2;
 		var mapY = centreY - halfFitY;
 		
 		if(mapY < 0){	
 			centreY+=halfFitY;	
 		}else{
-			if(centreY < tilesY){
+			if(centreY < (tilesY-halfFitY)){
 				centreY+=1;
 			}
 		}
@@ -187,8 +189,7 @@
 					case 6:
 					context.drawImage(house,posX,posY,sizeX,sizeY);
 					break;
-					default:
-					console.log("unknown case "+parseInt(rows[i][j])+" - "+i+" "+j);
+					default: // username of players
 					break;
 				}
 				posX+=sizeX;
@@ -208,6 +209,7 @@
 
 			this.onmousemove = function(e) {
 				e = e || event
+				this.onclick=null;
 				tileXPressed = parseInt(e.pageX/sizeX);
 				tileYPressed = parseInt(e.pageY/sizeY);
 				if(oldMouseXTile==-1){
@@ -217,10 +219,8 @@
 					var modification = false;
 					if(oldMouseXTile != tileXPressed){
 						if(tileXPressed > oldMouseXTile){
-							console.log("left");
 							moveLeft();
 						}else{
-							console.log("right");
 							moveRight();
 						}
 						modification=true;
@@ -228,10 +228,8 @@
 					}
 					if(oldMouseYTile != tileYPressed){
 						if(tileYPressed > oldMouseYTile){
-							console.log("up");
 							moveUp();
 						}else{
-							console.log("down");
 							moveDown();
 						}
 						modification=true;						
@@ -241,6 +239,16 @@
 						reDrawMap();
 					}
 				}
+			}
+			this.onclick = function(e) {
+				e = e || event
+				tileXPressed = parseInt(e.pageX/sizeX);
+				tileYPressed = parseInt(e.pageY/sizeY);
+				mapXPressed = tileXPressed-halfFitX+centreX;
+				mapYPressed = tileYPressed-halfFitY+centreY;
+				console.log("Clicked tile: "+tileXPressed+" , "+tileYPressed);
+				console.log("Clicked Map: "+mapXPressed+" , "+mapYPressed);
+				tileMap
 			}
 			this.onmouseup = function() {
 				this.onmousemove = null

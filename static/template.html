@@ -9,424 +9,676 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
     <style>
-        body {
-        padding-top: 90px;
-        background-color:#DEB887;
-        }
-
-        /* NAV BAR */
-        .navbar-text{
-        color:#000000 !important;
-        }
-        .nav-title{
-        width:100%;
-        }
-        .navbar{
-        background-color:#FFE3BF;
-        margin-bottom: 0px !important;
-        padding-right: 20px;
-        }
-        .nav-brand-container{
-        padding-top: 5px;
-        padding-bottom: 5px;
-        }
-        .nav-brand-icon{
-        max-width: 100%;
-        max-height: 100%;
-        }
-        .brand-image{
-        max-width: 100%;
-        max-height: 100%;
-        }
+        @import url(https://fonts.googleapis.com/css?family=Slabo+27px);
+@import url(https://fonts.googleapis.com/css?family=Lobster);
+@import url(https://fonts.googleapis.com/css?family=Poiret+One);
+body {
+  padding-top: 60px;
+  background-color: rgba(205,196,167,0.4);
+  font-family: 'Slabo 27px', serif;
+}
 
 
-        /* Login and Register */
-        .centered{
-        margin-left: auto;
-        margin-right: auto;
-        }
-        .login-register-bk{
-        background-color: #FFE3BF;
-        }
-        .panel-login {
-        border-color: #ccc;
-        -webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
-        -moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
-        box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
-        }
-        .panel-login>.panel-heading {
-        color: #67689B;
-        background-color: #FFE3BF;
-        border-color: #FFE3BF;
-        text-align:center;
-        }
-        .panel-login>.panel-heading a{
-        text-decoration: none;
-        color: #67689B;
-        font-weight: bold;
-        font-size: 15px;
-        -webkit-transition: all 0.1s linear;
-        -moz-transition: all 0.1s linear;
-        transition: all 0.1s linear;
-        }
-        .panel-login>.panel-heading a.active{
-        color: #444680;
-        font-size: 18px;
-        }
-        .panel-login>.panel-heading hr{
-        margin-top: 10px;
-        margin-bottom: 0px;
-        clear: both;
-        border: 0;
-        height: 1px;
-        background-image: -webkit-linear-gradient(left,rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.15),rgba(0, 0, 0, 0));
-        background-image: -moz-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.15),rgba(0,0,0,0));
-        background-image: -ms-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.15),rgba(0,0,0,0));
-        background-image: -o-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.15),rgba(0,0,0,0));
-        }
-        .panel-login input[type="text"],.panel-login input[type="email"],.panel-login input[type="password"] {
-        height: 45px;
-        border: 1px solid #ddd;
-        font-size: 16px;
-        -webkit-transition: all 0.1s linear;
-        -moz-transition: all 0.1s linear;
-        transition: all 0.1s linear;
-        }
-        .panel-login input:hover,
-        .panel-login input:focus {
-        outline:none;
-        -webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-        border-color: #ccc;
-        }
-        .btn-login {
-        background-color: #397F5F;
-        outline: none;
-        color: #fff;
-        font-size: 14px;
-        height: auto;
-        font-weight: normal;
-        padding: 14px 0;
-        text-transform: uppercase;
-        border-color: #397F5F;
-        }
-        .btn-login:hover,
-        .btn-login:focus {
-        color: #fff;
-        background-color: #206847;
-        border-color: #206847;
-        }
-        .forgot-password {
-        text-decoration: underline;
-        color: #888;
-        }
-        .forgot-password:hover,
-        .forgot-password:focus {
-        text-decoration: underline;
-        color: #666;
-        }
+/* ADDED BY CHRIS */
 
-        .btn-register {
-        background-color: #397F5F;
-        outline: none;
-        color: #fff;
-        font-size: 14px;
-        height: auto;
-        font-weight: normal;
-        padding: 14px 0;
-        text-transform: uppercase;
-        border-color: #397F5F;
-        }
-        .btn-register:hover,
-        .btn-register:focus {
-        color: #fff;
-        background-color: #206847;
-        border-color: #206847;
-        }
+#structureShop {
+  background-color: rgba(206, 120, 89, 0.6);
+}
 
-        .register-form{
-        display: none;
-        }
-        /* User's name and city name */
-        .lord-name{
-        margin-top: 0px !important;
-        }
+#structureShop td {
+  text-align: center;
+  vertical-align: middle;
+  border: 0 !important;
+}
 
-        /* Upgrade button */
-        .upgrade_button {
-        -moz-box-shadow:inset 0px 0px 0px 0px #bee2f9;
-        -webkit-box-shadow:inset 0px 0px 0px 0px #bee2f9;
-        box-shadow:inset 0px 0px 0px 0px #bee2f9;
-        background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf));
-        background:-moz-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
-        background:-webkit-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
-        background:-o-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
-        background:-ms-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
-        background:linear-gradient(to bottom, #63b8ee 5%, #468ccf 100%);
-        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#63b8ee',
-        endColorstr='#468ccf',GradientType=0);
-        background-color:#63b8ee;
-        -moz-border-radius:5px;
-        -webkit-border-radius:5px;
-        border-radius:5px;
-        border:1px solid #3866a3;
-        display:inline-block;
-        cursor:pointer;
-        color:#14396a;
-        font-family:Arial;
-        font-size:15px;
-        font-weight:bold;
-        padding:2px 2px;
-        text-decoration:none;
-        text-shadow:0px 1px 0px #7cacde;
-        float: right;
-        }
-        .upgrade_button:hover {
-        background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #468ccf), color-stop(1, #63b8ee));
-        background:-moz-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
-        background:-webkit-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
-        background:-o-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
-        background:-ms-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
-        background:linear-gradient(to bottom, #468ccf 5%, #63b8ee 100%);
-        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#468ccf',
-        endColorstr='#63b8ee',GradientType=0);
-        background-color:#468ccf;
-        }
-        .upgrade_button:active {
-        position:relative;
-        top:1px;
-        }
+#structureShop tbody td:nth-of-type(2) {
+  font-family: 'Lobster', cursive;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+#structureShop thead tr {
+  /*font-family: 'Poiret One', cursive !important;*/
+  font-weight: bold;
+  font-size: 16px;
+}
+
+#structureShop img {
+  max-width: 30px;
+  max-height: 30px;
+  display: inline-block;
+  text-align: center;
+}
+
+#troopCosts {
+  background-color: rgba(172,136,102, 0.6);
+}
+
+#troopCosts td {
+  text-align: center;
+  vertical-align: middle;
+  border: 0 !important;
+}
+
+#troopCosts tbody td:nth-of-type(2) {
+  font-family: 'Lobster', cursive;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+#troopCosts thead tr {
+  /*font-family: 'Poiret One', cursive !important;*/
+  font-weight: bold;
+  font-size: 16px;
+}
+
+#troopCosts img {
+  max-width: 30px;
+  max-height: 30px;
+  display: inline-block;
+  text-align: center;
+}
+
+#cityStats {
+  background-color: rgba(172,136,102, 0.6);
+}
+
+#cityStats td {
+  text-align: center;
+  vertical-align: middle;
+  border: 0 !important;
+}
+
+#cityStats tbody td:nth-of-type(2) {
+  font-family: 'Lobster', cursive;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+#cityStats thead tr {
+  /*font-family: 'Poiret One', cursive !important;*/
+  font-weight: bold;
+  font-size: 16px;
+}
+
+#cityStats img {
+  max-width: 30px;
+  max-height: 30px;
+  display: inline-block;
+  text-align: center;
+}
+
+.noti_Container {
+    position:relative;     /* This is crucial for the absolutely positioned element */
+    width:30px;
+    height:30px;
+    display:inline-block;
+}
+
+.noti_Container img {
+  display:block;
+  max-width:100%;
+  max-height:100%;
+}
+.noti_bubble {
+    position:absolute;    /* This breaks the div from the normal HTML document. */
+    top: -6px;
+    right:-6px;
+    padding:1px 2px 1px 2px;
+    background-color:#3CB194; /* you could use a background image if you'd like as well */
+    color:white;
+    font-weight:bold;
+    font-size:10px;
+
+    /* The following is CSS3, but isn't crucial for this technique to work. */
+    /* Keep in mind that if a browser doesn't support CSS3, it's fine! They just won't have rounded borders and won't have a box shadow effect. */
+    /* You can always use a background image to produce the same effect if you want to, and you can use both together so browsers without CSS3 still have the rounded/shadow look. */
+    border-radius:30px;
+    box-shadow:1px 1px 1px gray;
+}
+
+
+/* NAV BAR */
+
+.navbar-text {
+  color: #000000 !important;
+}
+
+.navbar-default .navbar-nav>li>a {
+  color:#fff;
+  display:block;
+  width:100%;
+  height:100%;
+}
+
+.navbar-default .navbar-nav>li:last-of-type {
+  
+}
+
+.navbar-default .navbar-nav>li {
+  display:inline-block;
+  height:100%;
+  background-color:rgba(0,0,0,0.1);
+  margin-left:3px;
+  margin-right:3px;
+}
+
+.navbar-default .navbar-nav>li:hover {
+  background-color:rgba(255,255,255,0.1);
+}
+
+.nav-title {
+  width: 100%;
+}
+
+.navbar {
+  background-color: rgba(223,84,63,1);
+  margin-bottom: 0px !important;
+  padding-right: 20px;
+  border-bottom:5px solid #fff;
+}
+
+.nav-brand-container {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.nav-brand-icon {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.brand-image {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+
+/* Login and Register */
+
+.centered {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.login-register-bk {
+  background-color: #FFE3BF;
+}
+
+.panel-login {
+  border-color: #ccc;
+  -webkit-box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.2);
+}
+
+.panel-login>.panel-heading {
+  color: #67689B;
+  background-color: #FFE3BF;
+  border-color: #FFE3BF;
+  text-align: center;
+}
+
+.panel-login>.panel-heading a {
+  text-decoration: none;
+  color: #67689B;
+  font-weight: bold;
+  font-size: 15px;
+  -webkit-transition: all 0.1s linear;
+  -moz-transition: all 0.1s linear;
+  transition: all 0.1s linear;
+}
+
+.panel-login>.panel-heading a.active {
+  color: #444680;
+  font-size: 18px;
+}
+
+.panel-login>.panel-heading hr {
+  margin-top: 10px;
+  margin-bottom: 0px;
+  clear: both;
+  border: 0;
+  height: 1px;
+  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
+  background-image: -moz-linear-gradient(left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
+  background-image: -ms-linear-gradient(left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
+  background-image: -o-linear-gradient(left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
+}
+
+.panel-login input[type="text"],
+.panel-login input[type="email"],
+.panel-login input[type="password"] {
+  height: 45px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  -webkit-transition: all 0.1s linear;
+  -moz-transition: all 0.1s linear;
+  transition: all 0.1s linear;
+}
+
+.panel-login input:hover,
+.panel-login input:focus {
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  border-color: #ccc;
+}
+
+.btn-login {
+  background-color: #397F5F;
+  outline: none;
+  color: #fff;
+  font-size: 14px;
+  height: auto;
+  font-weight: normal;
+  padding: 14px 0;
+  text-transform: uppercase;
+  border-color: #397F5F;
+}
+
+.btn-login:hover,
+.btn-login:focus {
+  color: #fff;
+  background-color: #206847;
+  border-color: #206847;
+}
+
+.forgot-password {
+  text-decoration: underline;
+  color: #888;
+}
+
+.forgot-password:hover,
+.forgot-password:focus {
+  text-decoration: underline;
+  color: #666;
+}
+
+.btn-register {
+  background-color: #397F5F;
+  outline: none;
+  color: #fff;
+  font-size: 14px;
+  height: auto;
+  font-weight: normal;
+  padding: 14px 0;
+  text-transform: uppercase;
+  border-color: #397F5F;
+}
+
+.btn-register:hover,
+.btn-register:focus {
+  color: #fff;
+  background-color: #206847;
+  border-color: #206847;
+}
+
+.register-form {
+  display: none;
+}
+
+
+/* User's name and city name */
+
+.lord-name {
+  margin-top: 0px !important;
+}
+
+
+/* Upgrade button */
+
+.upgrade_button {
+  -moz-box-shadow: inset 0px 0px 0px 0px #bee2f9;
+  -webkit-box-shadow: inset 0px 0px 0px 0px #bee2f9;
+  box-shadow: inset 0px 0px 0px 0px #bee2f9;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf));
+  background: -moz-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+  background: -webkit-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+  background: -o-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+  background: -ms-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+  background: linear-gradient(to bottom, #63b8ee 5%, #468ccf 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#63b8ee', endColorstr='#468ccf', GradientType=0);
+  background-color: #63b8ee;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #3866a3;
+  display: inline-block;
+  cursor: pointer;
+  color: #14396a;
+  font-family: Arial;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 2px 2px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #7cacde;
+  float: right;
+}
+
+.upgrade_button:hover {
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #468ccf), color-stop(1, #63b8ee));
+  background: -moz-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+  background: -webkit-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+  background: -o-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+  background: -ms-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+  background: linear-gradient(to bottom, #468ccf 5%, #63b8ee 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#468ccf', endColorstr='#63b8ee', GradientType=0);
+  background-color: #468ccf;
+}
+
+.upgrade_button:active {
+  position: relative;
+  top: 1px;
+}
+
 
     </style>
 </head>
 <body>
-
-
 <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand nav-brand-container" href="/game/">
-                <img src="images/gold.png" class="img-responsive brand-image"/>
-            </a>
-            <a class="navbar-brand nav-brand-container" href="/game/">
-                <img alt="Brand" src="images/banner.png" class="img-responsive brand-image"/>
-            </a>
-            <a class="navbar-brand nav-brand-container" href="/game/">
-                <img src="images/gold.png" class="img-responsive brand-image"/>
-            </a>
-        </div>
-
-        <ul class="nav navbar-nav pull-right">
-            <li><a href="/game/" class="navbar-link">Castle</a></li>
-            <li><a href="/game/alliance/allianceName" class="navbar-link">Alliance</a></li>
-            <li><a href="/game/alliance_search/" class="navbar-link">Alliance</a></li>
-            <li><a href="/stats/" class="navbar-link">Stats</a></li>
-            <li><a href="/game/logout/" class="navbar-link">Logout</a></li>
-        </ul>
-
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand nav-brand-container" href="/game/">
+        <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" class="img-responsive brand-image" />
+      </a>
+      <a class="navbar-brand nav-brand-container" href="/game/">
+        <img alt="Brand" src="http://www.dazzlepanel.com/projects/kurt/images/banner.png" class="img-responsive brand-image" />
+      </a>
+      <a class="navbar-brand nav-brand-container" href="/game/">
+        <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" class="img-responsive brand-image" />
+      </a>
     </div>
+
+    <ul class="nav navbar-nav pull-right">
+      <li><a href="/game/" class="navbar-link">Castle</a></li>
+      <li><a href="/game/alliance/allianceName" class="navbar-link">Alliance</a></li>
+      <li><a href="/game/alliance_search/" class="navbar-link">Alliance</a></li>
+      <li><a href="/stats/" class="navbar-link">Stats</a></li>
+      <li><a href="/game/logout/" class="navbar-link">Logout</a></li>
+    </ul>
+
+  </div>
 </nav>
 
 <div class="container">
-        <div class="row">
-            <h3 class="lord-name">Lord <strong>Username</strong> of <strong>CityName</strong></h3>
-        </div>
+  <div class="row">
+    <h3 class="lord-name">Lord <strong>Username</strong> of <strong>CityName</strong></h3>
+  </div>
 
-        <div class="row">
-            <div class="col-md-4 text-center">
-                <div class="row">
-                    <table class="table table-bordered" style='border:5px solid #D99E30'>
-                        <thead>
-                        <tr>
-                            <td><strong>Structures</strong></td>
-                            <td><strong>Level</strong></td>
-                            <td><strong>Cost</strong><img src="images/resources.png" align="right" width="50%" class="img-responsive" />
-                            </td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td style="width:5%">Walls<img src="images/structures/walls.png" align="left" width="25%" class="img-responsive" /></td>
-                            <td style="width:5%"><span id="wallLevel">5</span></td>
-                            <td style="width:5%"><span id="wallCost">100,200,100</span>
-                                <button id="wallButton" class="upgrade_button" element_type="wall" type="button">+</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width:5%">Gold Mines<img src="images/structures/gold_mine.png" align="left" width="30%" class="img-responsive" /></td>
-                            <td style="width:5%"><span id="gold_mines">2</span></td>
-                            <td style="width:5%"><span id="gold_mines_cost">50,100,50</span>
-                                <button id="minesButton" class="upgrade_button" element_type="gold_mines" type="button">+</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width:5%">Stone Caves<img src="images/structures/stone_mine.png" align="left" width="30%" class="img-responsive" /></td>
-                            <td style="width:5%"><span id="stone_caves">1</span></td>
-                            <td style="width:5%"><span id="stone_caves_cost">10,50,10</span>
-                                <button id="cavesButton" class="upgrade_button" element_type="stone_caves" type="button">+</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width:5%">Lumber Mills<img src="images/structures/lumbermill.png" align="left" width="30%" class="img-responsive" /></td>
-                            <td style="width:5%"><span id="lumber_mills">7</span></td>
-                            <td style="width:5%"><span id="lumber_mills_cost">200,300,300</span>
-                                <button id="millsButton" class="upgrade_button" element_type="lumber_mills" type="button">+</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width:5%">Farms<img src="images/structures/farm.png" align="left" width=30% class="img-responsive" /></td>
-                            <td style="width:5%"><span id="farms">10</span></td>
-                            <td style="width:5%"><span id="farms_cost">1000,300,500</span>
-                                <button id="farmsButton" class="upgrade_button" element_type="farms" type="button">+</button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+  <div class="row">
+    <div class="col-md-3 text-center">
+      <div class="row">
+        <table class="table table-bordered" id="structureShop">
+          <thead>
+            <tr>
+              <td rowspan="2"><strong>Structures</strong></td>
+              <td rowspan="2"><strong>Level</strong></td>
+              <td>Cost</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><img alt="Walls" src="http://www.dazzlepanel.com/projects/kurt/images/structures/walls.png" class="img-responsive" /></td>
+              <td><span id="wallLevel">5</span></td>
+              <td><div class="noti_Container">
+                  <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" align="left" class="img-responsive"/>
+                  <div class="noti_bubble"><span id="walls_gold_cost" >20</span></div>
+              </div>
+              <div class="noti_Container">
+                  <img src="http://www.dazzlepanel.com/projects/kurt/images/Lumber.png" align="left" class="img-responsive"/>
+                  <div  class="noti_bubble"><span id="walls_lumber_cost" >500</span></div>
+              </div>
+              <div class="noti_Container">
+                  <img src="http://www.dazzlepanel.com/projects/kurt/images/stones.png" align="left" class="img-responsive"/>
+                  <div class="noti_bubble"><span id="walls_stone_cost" >100</span></div>
+              </div>
+                <button id="wallButton" class="upgrade_button" element_type="wall" type="button">+</button>
+              </td>
+            </tr>
+            <tr>
+              <td><img alt="Gold Mines" src="http://www.dazzlepanel.com/projects/kurt/images/structures/gold_mine.png" class="img-responsive" /></td>
+              <td><span id="gold_mines">2</span></td>
+              <td>
+              <div class="noti_Container">
+                  <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" align="left" class="img-responsive"/>
+                  <div class="noti_bubble"><span id="gold_mine_gold_cost">50</span></div>
+              </div>
+              <div class="noti_Container">
+                  <img src="http://www.dazzlepanel.com/projects/kurt/images/Lumber.png" align="left" class="img-responsive"/>
+                  <div class="noti_bubble"><span id="gold_lumber_lumber_cost">100</span></div>
+              </div>
+              <div class="noti_Container">
+                  <img src="http://www.dazzlepanel.com/projects/kurt/images/stones.png" align="left" class="img-responsive"/>
+                  <div class="noti_bubble"><span id="gold_stone_stone_cost">100</span></div>
+              </div>
+                <button id="minesButton" class="upgrade_button" element_type="gold_mines" type="button">+</button>
+              </td>
+            </tr>
+            <tr>
+              <td><img alt="Stone Caves" src="http://www.dazzlepanel.com/projects/kurt/images/structures/stone_mine.png" class="img-responsive" /></td>
+              <td><span id="stone_caves">1</span></td>
+              <td>
+                <div class="noti_Container">
+                    <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" align="left" class="img-responsive"/>
+                    <div class="noti_bubble"><span id="stone_mine_gold_cost">50</span></div>
                 </div>
-                <div class="row">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <td><strong>Troop Type</strong></td>
-                            <td><strong>Amount</strong></td>
-                            <td><strong>Cost</strong><img src="images/resources2.png" align="right" width="50%" class="img-responsive" /></td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td style="width:5%">Footmen<img src="images/units/footmen.png" align="left" width="30%" class="img-responsive" /></td>
-                            <td style="width:5%"><span id="footmen">50</span></td>
-                            <td style="width:5%">10
-                                <button id="footmenButton" class="upgrade_button" element_type="footmen" type="button">+</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width:5%">Bowmen<img src="images/units/bowmen.png" align="left" width="30%" class="img-responsive" /></td>
-                            <td style="width:5%"><span id="bowmen">100</span></td>
-                            <td style="width:5%">20
-                                <button id="bowmenButton" class="upgrade_button" element_type="bowmen" type="button">+</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width:5%">Knights<img src="images/units/knights.png" align="left" width="25%" class="img-responsive" /></td>
-                            <td style="width:5%"><span id="knights">5</span></td>
-                            <td style="width:5%">35
-                                <button id="knightsButton" class="upgrade_button" element_type="knights" type="button">+</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width:5%">War Machines<img src="images/units/war_machines.png" align="left" width="25%" class="img-responsive" /></td>
-                            <td style="width:5%"><span id="war_machines">1</span></td>
-                            <td style="width:5%">30,10
-                                <button id="war_machinesButton" class="upgrade_button" element_type="war_machines" type="button">+</button>
-                            </td>
-                        </tr>
-                        </tbody>
-
-                    </table>
+                <div class="noti_Container">
+                    <img src="http://www.dazzlepanel.com/projects/kurt/images/Lumber.png" align="left" class="img-responsive"/>
+                    <div class="noti_bubble"><span id="stone_mine_lumber_cost">100</span></div>
                 </div>
-            </div>
-            <div class="col-md-6 text-center">
-                <img id="cityImg" src="images/city.png" width=100% class="img-thumbnail"/>
-            </div>
-            <div class="col-md-2 text-center">
-                <div class="row">
-                    <img src="images/acc.png" %} width="90%" class="img-thumbnail"/>
+                <div class="noti_Container">
+                    <img src="http://www.dazzlepanel.com/projects/kurt/images/stones.png" align="left" class="img-responsive"/>
+                    <div class="noti_bubble"><span id="stone_mine_stone_cost">100</span></div>
                 </div>
-                <div class="row">
-                    <span id="timeSpan"></span>
-                    <button id="collectButton" class="btn btn-default" type="button">Collect</button>
+                <button id="cavesButton" class="upgrade_button" element_type="stone_caves" type="button">+</button>
+              </td>
+            </tr>
+            <tr>
+              <td><img alt="Luber Millis" src="http://www.dazzlepanel.com/projects/kurt/images/structures/lumbermill.png" class="img-responsive" /></td>
+              <td><span id="lumber_mills">7</span></td>
+              <td>
+                <div class="noti_Container">
+                    <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" align="left" class="img-responsive"/>
+                    <div class="noti_bubble"><span id="lumber_mill_gold_cost">50</span></div>
                 </div>
-                <div class="row">
-                    <table class="table table-bordered">
-                        <tr>
-                            <td><strong>Supply<img src="images/structures/house.png" align="left" width="25%" class="img-responsive" /></strong></td>
-                            <td><span id="maximumTroops">300</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Gold<img src="images/gold.png" align="left" width="25%" class="img-responsive" /></strong></td>
-                            <td><span id="goldSpan">56000</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Lumber<img src="images/Lumber.png" align="left" width="25%" class="img-responsive" /></strong></td>
-                            <td><span id="lumberSpan">5000</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Stones<img src="images/stones.png" align="left" width="25%" class="img-responsive" /></strong></td>
-                            <td><span id="stonesSpan">7000</span></td>
-                        </tr>
-                    </table>
-
+                <div class="noti_Container">
+                    <img src="http://www.dazzlepanel.com/projects/kurt/images/Lumber.png" align="left" class="img-responsive"/>
+                    <div class="noti_bubble"><span id="lumber_mill_lumber_cost">100</span></div>
                 </div>
-                <div class="row">
-                    <strong>Leader of: </strong>
-                    <a href="/game/alliance/AllianceName">AllianceName</a>
+                <div class="noti_Container">
+                    <img src="http://www.dazzlepanel.com/projects/kurt/images/stones.png" align="left" class="img-responsive"/>
+                    <div class="noti_bubble"><span id="lumber_mill_stone_cost">100</span></div>
                 </div>
-
-                <div class="row">
-                    <div class="alert fade in alert-success" id="createAllianceStep" style="display:none;">
-                        <button type="button" class="close">×</button>
-                        <div class="input-group">
-                            <input id="createAllianceName" type="text" class="form-control"
-                                   placeholder="Alliance Name...">
-                            <input id="createDescName" type="text" class="form-control"
-                                   placeholder="Description...">
-                            <button id="createAllianceButton" class="btn btn-default" type="button">Create!</button>
-                        </div>
-                    </div>
+                <button id="millsButton" class="upgrade_button" element_type="lumber_mills" type="button">+</button>
+              </td>
+            </tr>
+            <tr>
+              <td><img alt="Farms" src="http://www.dazzlepanel.com/projects/kurt/images/structures/farm.png" class="img-responsive" /></td>
+              <td><span id="farms">10</span></td>
+              <td>
+                <div class="noti_Container">
+                  <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" align="left" class="img-responsive"/>
+                  <div class="noti_bubble"><span id="farms_mill_gold_cost">50</span></div>
                 </div>
-
-                <div class="row">
-                    <ul>
-                    <li>Win Percentage: 50%</li>
-                    <li>Wins: 10</li>
-                    <li>Defeats: 10</li>
-                    </ul>
+                <div class="noti_Container">
+                  <img src="http://www.dazzlepanel.com/projects/kurt/images/Lumber.png" align="left" class="img-responsive"/>
+                  <div class="noti_bubble"><span id="farms_mill_lumber_cost">100</span></div>
                 </div>
-                <div class="row">
-                    <div class="list-group">
-                        <a class="list-group-item active">
-                            Opponents
-                        </a>
-                        <li><a href="/game/battle/Opponent1"><strong>Opponent1</strong></a></li>
-                        <li><a href="/game/battle/Opponent2"><strong>Opponent2</strong></a></li>
-                        <li><a href="/game/battle/Opponent3"><strong>Opponent3</strong></a></li>
-                    </div>
+                <div class="noti_Container">
+                  <img src="http://www.dazzlepanel.com/projects/kurt/images/stones.png" align="left" class="img-responsive"/>
+                  <div class="noti_bubble"><span id="farms_stone_cost">100</span></div>
                 </div>
-            </div>
-        </div>
+                <button id="farmsButton" class="upgrade_button" element_type="farms" type="button">+</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row">
+        <table id="troopCosts" class="table table-bordered">
+          <thead>
+            <tr>
+              <td><strong>Troop Type</strong></td>
+              <td><strong>Amount</strong></td>
+              <td><strong>Cost</strong><img src="http://www.dazzlepanel.com/projects/kurt/images/resources2.png" align="right" class="img-responsive" /></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td ><img alt="Footmen" src="http://www.dazzlepanel.com/projects/kurt/images/units/footmen.png" class="img-responsive" /></td>
+              <td ><span id="footmen">50</span></td>
+              <td >
+                <div class="noti_Container">
+                  <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" align="left" class="img-responsive"/>
+                  <div class="noti_bubble"><span id="footmen_gold_cost">10</span></div>
+                </div>
+                <button id="footmenButton" class="upgrade_button" element_type="footmen" type="button">+</button>
+              </td>
+            </tr>
+            <tr>
+              <td ><img alt="Bowmen" src="http://www.dazzlepanel.com/projects/kurt/images/units/bowmen.png" class="img-responsive" /></td>
+              <td ><span id="bowmen">100</span></td>
+              <td >
+                <div class="noti_Container">
+                  <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" align="left" class="img-responsive"/>
+                  <div class="noti_bubble"><span id="bowmen_gold_cost">20</span></div>
+                </div>
+                <button id="bowmenButton" class="upgrade_button" element_type="bowmen" type="button">+</button>
+              </td>
+            </tr>
+            <tr>
+              <td ><img alt="Knights" src="http://www.dazzlepanel.com/projects/kurt/images/units/knights.png" class="img-responsive" /></td>
+              <td ><span id="knights">5</span></td>
+              <td >
+                <div class="noti_Container">
+                  <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" align="left" class="img-responsive"/>
+                  <div class="noti_bubble"><span id="knight_gold_cost">35</span></div>
+                </div>
+                <button id="knightsButton" class="upgrade_button" element_type="knights" type="button">+</button>
+              </td>
+            </tr>
+            <tr>
+              <td ><img alt="War Machines" src="http://www.dazzlepanel.com/projects/kurt/images/units/war_machines.png" class="img-responsive" /></td>
+              <td ><span id="war_machines">1</span></td>
+              <td >
+                <div class="noti_Container">
+                  <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" align="left" class="img-responsive"/>
+                  <div class="noti_bubble"><span id="war_machine_mill_gold_cost">30</span></div>
+                </div>
+                <div class="noti_Container">
+                  <img src="http://www.dazzlepanel.com/projects/kurt/images/Lumber.png" align="left" class="img-responsive"/>
+                  <div class="noti_bubble"><span id="war_machine_lumber_cost">10</span></div>
+                </div>
+                <button id="war_machinesButton" class="upgrade_button" element_type="war_machines" type="button">+</button>
+              </td>
+            </tr>
+          </tbody>
 
-        <div class="alert fade in alert-danger" id="alertNoGold" style="display:none;">
-            <button type="button" class="close">×</button>
-            <strong>Not enough gold!</strong>
-        </div>
-
-        <div class="alert fade in alert-danger" id="alertNoLumber" style="display:none;">
-            <button type="button" class="close">×</button>
-            <strong>Not enough Lumber!</strong>
-        </div>
-
-        <div class="alert fade in alert-danger" id="alertNoStones" style="display:none;">
-            <button type="button" class="close">×</button>
-            <strong>Not enough stones!</strong>
-        </div>
-
-        <div class="alert fade in alert-danger" id="alertInsufficientMaxTroops" style="display:none;">
-            <button type="button" class="close">×</button>
-            <strong>Insufficient supplies!</strong>
-        </div>
-
-        <div class="row">
-            <div class="row">
-                <label for="logs_text" id="LogsHeading">Account Logs</label>
-            </div>
-            <div class="row">
-                        <textarea id="logs_text"
-                                  style="min-width: 100%; height: 100px; max-height: 100px;"></textarea>
-            </div>
-        </div>
+        </table>
+      </div>
     </div>
+    <div class="col-md-7 text-center">
+      <img id="cityImg" src="http://www.dazzlepanel.com/projects/kurt/images/city.png" class="img-thumbnail" />
+    </div>
+    <div class="col-md-2 text-center">
+      <div class="row">
+        <img src="http://www.dazzlepanel.com/projects/kurt/images/acc.png" class="img-thumbnail" />
+      </div>
+      <div class="row">
+        <span id="timeSpan"></span>
+        <button id="collectButton" class="btn btn-default" type="button">Collect</button>
+      </div>
+      <div class="row">
+        <table id="cityStats" class="table table-bordered">
+          <tr>
+            <td><strong>Supply<img src="http://www.dazzlepanel.com/projects/kurt/images/structures/house.png" align="left" class="img-responsive" /></strong></td>
+            <td><span id="maximumTroops">300</span></td>
+          </tr>
+          <tr>
+            <td><strong>Gold<img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" align="left" class="img-responsive"/></strong></td>
+            <td><span id="goldSpan">56000</span></td>
+          </tr>
+          <tr>
+            <td><strong>Lumber<img src="http://www.dazzlepanel.com/projects/kurt/images/Lumber.png" align="left" class="img-responsive" /></strong></td>
+            <td><span id="lumberSpan">5000</span></td>
+          </tr>
+          <tr>
+            <td><strong>Stones<img src="http://www.dazzlepanel.com/projects/kurt/images/stones.png" align="left" class="img-responsive" /></strong></td>
+            <td><span id="stonesSpan">7000</span></td>
+          </tr>
+        </table>
+
+      </div>
+      <div class="row">
+        <strong>Leader of: </strong>
+        <a href="/game/alliance/AllianceName">AllianceName</a>
+      </div>
+
+      <div class="row">
+        <div class="alert fade in alert-success" id="createAllianceStep" style="display:none;">
+          <button type="button" class="close">×</button>
+          <div class="input-group">
+            <input id="createAllianceName" type="text" class="form-control" placeholder="Alliance Name...">
+            <input id="createDescName" type="text" class="form-control" placeholder="Description...">
+            <button id="createAllianceButton" class="btn btn-default" type="button">Create!</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <ul>
+          <li>Win Percentage: 50%</li>
+          <li>Wins: 10</li>
+          <li>Defeats: 10</li>
+        </ul>
+      </div>
+      <div class="row">
+        <div class="list-group">
+          <a class="list-group-item active">
+                                Opponents
+                            </a>
+          <ul>
+            <li><a href="/game/battle/Opponent1"><strong>Opponent1</strong></a></li>
+            <li><a href="/game/battle/Opponent2"><strong>Opponent2</strong></a></li>
+            <li><a href="/game/battle/Opponent3"><strong>Opponent3</strong></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert fade in alert-danger" id="alertNoGold" style="display:none;">
+    <button type="button" class="close">×</button>
+    <strong>Not enough gold!</strong>
+  </div>
+
+  <div class="alert fade in alert-danger" id="alertNoLumber" style="display:none;">
+    <button type="button" class="close">×</button>
+    <strong>Not enough Lumber!</strong>
+  </div>
+
+  <div class="alert fade in alert-danger" id="alertNoStones" style="display:none;">
+    <button type="button" class="close">×</button>
+    <strong>Not enough stones!</strong>
+  </div>
+
+  <div class="alert fade in alert-danger" id="alertInsufficientMaxTroops" style="display:none;">
+    <button type="button" class="close">×</button>
+    <strong>Insufficient supplies!</strong>
+  </div>
+
+  <div class="row">
+    <div class="row">
+      <label for="logs_text" id="LogsHeading">Account Logs</label>
+    </div>
+    <div class="row">
+      <textarea id="logs_text" style="min-width: 100%; height: 100px; max-height: 100px;"></textarea>
+    </div>
+  </div>
+</div>
+
 
 </body>
 </html>
