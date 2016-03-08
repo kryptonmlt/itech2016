@@ -422,8 +422,8 @@
 
             var canvasX = 800;
             var canvasY = 600;
-            var fitX = 6;
-            var fitY = 6;
+            var fitX = 10;
+            var fitY = 10;
             var halfFitX = Math.floor(fitX / 2);
             var halfFitY = Math.floor(fitY / 2);
             var sizeX = parseInt(canvasX / fitX);
@@ -444,8 +444,8 @@
             goldMine.src = "http://kurtportelli.com/kurtftp/resources/gold_mine_merged.png";
             house.src = "http://kurtportelli.com/kurtftp/resources/house_merged.png";
 
-            var centreX = 4;
-            var centreY = 4;
+            var centreX = 5;
+            var centreY = 5;
             var playerX = 0;
             var playerY = 0;
             var oldMouseXTile = -1;
@@ -608,9 +608,10 @@
             }
 
             window.onload = function () {
+                document.getElementById('canvas').style.cursor= 'url("http://www.arttime.ge/images/sc-graphics/openhand.png"), auto';
                 document.getElementById('canvas').onmousedown = function () {
+                    document.getElementById('canvas').style.cursor= 'url("http://www.arttime.ge/images/sc-graphics/closedhand.png"), auto';
                     this.style.position = 'relative';
-
                     this.onmousemove = function (e) {
                         e = e || event;
                         this.onclick = null;
@@ -662,14 +663,17 @@
                     };
 
                     document.onmouseup = function () {
+                        document.getElementById('canvas').style.cursor= 'url("http://www.arttime.ge/images/sc-graphics/openhand.png"), auto';
                         document.getElementById('canvas').onmousemove = null;
                         oldMouseXTile = -1;
                         oldMouseYTile = -1;
                     };
                 };
+                
                 document.getElementById('canvas').ondragstart = function () {
                     return false;
                 };
+                
                 resizeCanvas();
             };
 
@@ -917,7 +921,7 @@
                 <div class="col-md-2 text-center">
                     <div class="row accFrame">
                         <img class="accountPicture" src="http://www.dazzlepanel.com/projects/kurt/images/acc.png" alt="Account Picture" />
-                        <img class="accPictureFrame" src="images/columnFrame.png" alt="Account Picture Frame"/>
+                        <img class="accPictureFrame" src="http://kurtportelli.com/kurtftp/resources/columnFrame.png" alt="Account Picture Frame"/>
                     </div>
                     <div class="row">
                         <span id="timeSpan"></span>
