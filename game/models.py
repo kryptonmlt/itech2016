@@ -82,41 +82,48 @@ class City(models.Model):
 
             map_size_interval = 100
             minimum_distance_x = 3
-            minimum_distance_y = 0
+            minimum_distance_y = 1
             maximum_distance_x = 6
-            maximum_distance_y = 4
+            maximum_distance_y = 5
             row_separator = 6
 
             # first city check
             try:
                 max_x = City.objects.all().order_by("-x")[0].x
-                max_y = City.objects.all().order_by("-y")[0].y
             except IndexError:
                 max_x = 0
-                max_y = row_separator
 
             dist_x = randint(minimum_distance_x, maximum_distance_x)
             dist_y = randint(minimum_distance_y, maximum_distance_y) - 2
 
-            map_proportion_x = (max_x / map_size_interval) + map_size_interval
-            map_proportion_y = (max_y / map_size_interval) + map_size_interval
+            map_proportion = (max_x / map_size_interval) + 1
 
-            current_row = (max_y / row_separator) + 1
+            map_info = MapInfo.objects.get(pk=1)
 
-            if (max_x + dist_x) < (map_proportion_x * map_size_interval):
+            if (map_info.current_x_in_row + dist_x + 2) < (map_proportion * map_size_interval):
                 # less than max width
-                chosen_x = max_x + dist_x
-                chosen_y = max_y + dist_y
-            else:  # greater than max width
-                if (max_y + row_separator) < (map_proportion_y * map_size_interval):
+                chosen_x = map_info.current_x_in_row + dist_x
+                chosen_y = map_info.current_y_row + dist_y
+
+                map_info.current_x_in_row += dist_x
+            else:
+                # greater than max width
+                if (map_info.current_y_row + row_separator) < (map_proportion * map_size_interval):
                     # new row
                     chosen_x = dist_x
-                    chosen_y = max_y + row_separator + dist_y
+                    chosen_y = map_info.current_y_row + row_separator + dist_y
+
+                    map_info.current_x_in_row = dist_x
+                    map_info.current_y_row += row_separator
                 else:
-                    # increase map size
-                    chosen_x = max_x + dist_x
+                    # increase map width size
+                    chosen_x = map_info.current_x_in_row + dist_x
                     chosen_y = row_separator + dist_y
 
+                    map_info.current_x_in_row += dist_x
+                    map_info.current_y_row = row_separator
+
+            map_info.save()
             self.x = chosen_x
             self.y = chosen_y
         super(City, self).save(*args, **kwargs)
@@ -129,6 +136,14 @@ class City(models.Model):
 
     def army_total(self):
         return self.footmen + self.bowmen + self.knights + self.war_machines
+
+
+class MapInfo(models.Model):
+    current_x_in_row = models.IntegerField(default=0)
+    current_y_row = models.IntegerField(default=5)
+
+    def __str__(self):
+        return "(" + str(self.current_x_in_row) + "," + str(self.current_y_row) + ")"
 
 
 class AllianceRequest(models.Model):

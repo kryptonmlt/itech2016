@@ -9,10 +9,12 @@ django.setup()
 from django.contrib.auth.models import User
 from datetime import datetime
 
-from game.models import Alliance, Account, City, AllianceRequest, Message, Badge, Log, Cost
+from game.models import Alliance, Account, City, AllianceRequest, Message, Badge, Log, Cost, MapInfo
 
 
 def populate():
+    add_map_info()
+
     devs = add_alliance('the devs', 'developers', 100)
     kurt = add_user_account_city_log_badge('Kurt', 'kurtporteli@gmail.com', '1234', devs, True)
     ruben = add_user_account_city_log_badge('Ruben', 'ruben.giaquinta@gmail.com', '1234', devs, False)
@@ -131,6 +133,10 @@ def add_message(from_account, to_account, text):
 def add_costs():
     c = Cost.objects.get_or_create()[0]
     return c
+
+def add_map_info():
+    m = MapInfo.objects.get_or_create()[0]
+    return m
 
 
 # Start execution here!

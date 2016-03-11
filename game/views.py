@@ -654,8 +654,6 @@ def get_map(request):
     map_max_x = ((max_x / map_size_interval) * map_size_interval) + map_size_interval
     map_max_y = ((max_y / map_size_interval) * map_size_interval) + map_size_interval
 
-    print max_x, max_y
-    print map_max_x, map_max_y
     matrix = [[0 for y in range(map_max_y)] for x in range(map_max_x)]
 
     cities = City.objects.all()
