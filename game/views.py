@@ -2,8 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
-from game.models import Account, Alliance, AllianceRequest, City, Badge, Log, Message, Cost, CityGraphic, \
-    AllianceMessage
+from game.models import Account, Alliance, AllianceRequest, City, Badge, Log, Message, Cost, AllianceMessage
 from django.contrib.auth.models import User
 from game.forms import CityForm
 from django.utils import timezone
@@ -41,8 +40,7 @@ def index(request):
     cost.stone_caves_price = cost.calc_caves_price(city.stone_caves)
     cost.gold_mines_price = cost.calc_mines_price(city.gold_mines)
     cost.lumber_mills_price = cost.calc_mills_price(city.lumber_mills)
-    city_pic = CityGraphic.objects.get(level=get_correct_image(city.walls_level))
-    context_dict = {'userlist': userlist, 'cost': cost, 'city': city, 'acc': acc, 'city_pic': city_pic}
+    context_dict = {'userlist': userlist, 'cost': cost, 'city': city, 'acc': acc}
     return render(request, 'game/game.html', context_dict)
 
 
@@ -643,16 +641,6 @@ def alliance_search_empty(request):
     return render(request, 'game/alliance_search.html', context_dict)
 
 
-def get_correct_image(walls_level):
-    return 1 + (int(walls_level) / 10)
-
-
-@login_required
-def city_img(request, walls_level):
-    city_pic = CityGraphic.objects.get(level=get_correct_image(walls_level))
-    return HttpResponse(str(city_pic.picture))
-
-
 def create_log(account, text):
     log = Log.objects.create(account=account, text=text)
     log.save()
@@ -670,12 +658,20 @@ def get_map(request):
 
     cities = City.objects.all()
     for city in cities:
-        print city
-        matrix[city.x][city.y] = city.account.user.username
-
+        i = 1
+        print city.x,city.y
+        for city_y in range(city.y - 1, city.y + 2):
+            for city_x in range(city.x - 1, city.x + 2):
+                print city_x, city_y, i
+                matrix[city_x][city_y] = i
+                i += 1
+        print " "
+        print " "
+        print " "
     tile_map = ""
     for y in range(map_proportion_y):
         for x in range(map_proportion_x):
             tile_map += str(matrix[x][y]);
-        tile_map += ";";
+        if y + 1 != map_proportion_y:
+            tile_map += ";";
     return HttpResponse(tile_map)

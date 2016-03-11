@@ -100,16 +100,6 @@
                                 $('#farms').html(res[0]);
                                 $('#maximumTroops').html(res[1]);
                                 $('#farms_cost').html(res[2]+","+res[3]+","+res[4]);
-                                try {
-                                    $.get('/game/city_img/'+res[0], function(data){
-                                        if(data!=-1){
-                                            document.getElementById("cityImg").src = data;
-                                        }
-                                    });
-                                }
-                                catch(err) {
-                                    console.log(err.message);
-                                }
                                 break;
                            case "wall":
                                 console.log(data);
@@ -181,3 +171,260 @@
             populateLogBox();
             setInterval(function() {populateLogBox()}, 5000);
         });
+
+        var canvasX = 800;
+        var canvasY = 600;
+        var fitX = 10;
+        var fitY = 10;
+        var halfFitX = Math.floor(fitX / 2);
+        var halfFitY = Math.floor(fitY / 2);
+        var sizeX = parseInt(canvasX / fitX);
+        var sizeY = parseInt(canvasY / fitY);
+
+        var grass = new Image();
+        var castle = new Image();
+        var farm = new Image();
+        var lumbermill = new Image();
+        var stoneMine = new Image();
+        var goldMine = new Image();
+        var house = new Image();
+        grass.src = "http://kurtportelli.com/kurtftp/resources/forest1.jpg";
+        castle.src = "http://kurtportelli.com/kurtftp/resources/castle1_merged.png";
+        farm.src = "http://kurtportelli.com/kurtftp/resources/farm_merged.png";
+        lumbermill.src = "http://kurtportelli.com/kurtftp/resources/lumbermill_merged.png";
+        stoneMine.src = "http://kurtportelli.com/kurtftp/resources/stone_mine_merged.png";
+        goldMine.src = "http://kurtportelli.com/kurtftp/resources/gold_mine_merged.png";
+        house.src = "http://kurtportelli.com/kurtftp/resources/house_merged.png";
+
+        var centreX = 5;
+        var centreY = 5;
+        var playerX = 0;
+        var playerY = 0;
+        var oldMouseXTile = -1;
+        var oldMouseYTile = -1;
+
+        var tileMap =""
+        var rows = ""
+        var tilesX = 0;
+        var tilesY = 0;
+
+        function getMap(){
+            $.get('/game/get_map', function(data){
+                tileMap = data;
+                rows = tileMap.split(';');
+                tilesX = rows[0].length;
+                tilesY = rows.length;
+                resizeCanvas();
+            });
+        }
+
+        function moveRight() {
+            //var fitX = canvasX/sizeX;
+            //var halfFitX = fitX/2;
+            var mapX = centreX - halfFitX;
+
+            if (mapX < 0) {
+                centreX += halfFitX;
+            } else {
+                if (centreX < (tilesX - halfFitX)) {
+                    centreX += 1;
+                }
+            }
+        }
+
+        function moveLeft() {
+            //var fitX = canvasX/sizeX;
+            //var halfFitX = fitX/2;
+            var mapX = centreX - halfFitX;
+
+            if (mapX + fitX > tilesX) {
+                centreX -= halfFitX;
+            } else {
+                if (centreX > halfFitX) {
+                    centreX -= 1;
+                }
+            }
+        }
+
+        function moveUp() {
+            //var fitY = canvasY/sizeY;
+            //var halfFitY = fitY/2;
+            var mapY = centreY - halfFitY;
+
+            if (mapY + fitY > tilesY) {
+                centreY -= halfFitY;
+            } else {
+                if (centreY > halfFitY) {
+                    centreY -= 1;
+                }
+            }
+        }
+
+        function moveDown() {
+            //var fitY = canvasY/sizeY;
+            //var halfFitY = fitY/2;
+            var mapY = centreY - halfFitY;
+
+            if (mapY < 0) {
+                centreY += halfFitY;
+            } else {
+                if (centreY < (tilesY - halfFitY)) {
+                    centreY += 1;
+                }
+            }
+        }
+
+        function reDrawMap() {
+
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext('2d');
+
+            var mapX = centreX - halfFitX;
+            var mapY = centreY - halfFitY;
+
+            if (mapX < 0) {
+                mapX = 0;
+            } else if (mapX + fitX > tilesX) {
+                mapX = tilesX - fitX;
+            }
+            if (mapY < 0) {
+                mapY = 0;
+            } else if (mapY + fitY > tilesY) {
+                mapY = tilesY - fitY;
+            }
+
+            var mapX = Math.floor(mapX);
+            var mapY = Math.floor(mapY);
+
+            //draw positions
+            var posX = 0;
+            var posY = 0;
+
+            for (var i = mapY; i < mapY + fitY; i++) {
+                //console.log(rows[i]);
+                for (var j = mapX; j < mapX + fitX; j++) {
+                    switch (parseInt(rows[i][j])) {
+                        case 0:
+                            context.drawImage(grass, posX, posY, sizeX, sizeY);
+                            break;
+                        case 1:
+                            context.drawImage(house, posX, posY, sizeX, sizeY);
+                            break;
+                        case 2:
+                            context.drawImage(castle, posX, posY, sizeX, sizeY);
+                            break;
+                        case 3:
+                            context.drawImage(castle, posX, posY, sizeX, sizeY);
+                            break;
+                        case 4:
+                            context.drawImage(farm, posX, posY, sizeX, sizeY);
+                            break;
+                        case 5:
+                            context.drawImage(castle, posX, posY, sizeX, sizeY);
+                            break;
+                        case 6:
+                            context.drawImage(castle, posX, posY, sizeX, sizeY);
+                            break;
+                        case 7:
+                            context.drawImage(lumbermill, posX, posY, sizeX, sizeY);
+                            break;
+                        case 8:
+                            context.drawImage(stoneMine, posX, posY, sizeX, sizeY);
+                            break;
+                        case 9:
+                            context.drawImage(goldMine, posX, posY, sizeX, sizeY);
+                            break;
+                        default:
+                            break;
+                    }
+                    posX += sizeX;
+                }
+                posX = 0;
+                posY += sizeY;
+            }
+            context.font = "50px Arial";
+            context.fillText("X:" + parseInt(centreX) + ", Y: " + parseInt(centreY), 10, 50);
+        }
+
+        window.onload = function () {
+            getMap();
+            document.getElementById('canvas').style.cursor= 'url("http://www.arttime.ge/images/sc-graphics/openhand.png"), auto';
+            document.getElementById('canvas').onmousedown = function () {
+                document.getElementById('canvas').style.cursor= 'url("http://www.arttime.ge/images/sc-graphics/closedhand.png"), auto';
+                this.style.position = 'relative';
+                this.onmousemove = function (e) {
+                    e = e || event;
+                    this.onclick = null;
+                    tileXPressed = parseInt(e.offsetX / sizeX);
+                    tileYPressed = parseInt(e.offsetY / sizeY);
+                    if (oldMouseXTile === -1) {
+                        oldMouseXTile = tileXPressed;
+                        oldMouseYTile = tileYPressed;
+                    } else {
+                        var modification = false;
+                        if (oldMouseXTile !== tileXPressed) {
+                            if (tileXPressed > oldMouseXTile) {
+                                moveLeft();
+                            } else {
+                                moveRight();
+                            }
+                            modification = true;
+                            oldMouseXTile = tileXPressed;
+                        }
+                        if (oldMouseYTile !== tileYPressed) {
+                            if (tileYPressed > oldMouseYTile) {
+                                moveUp();
+                            } else {
+                                moveDown();
+                            }
+                            modification = true;
+                            oldMouseYTile = tileYPressed;
+                        }
+                        if (modification) {
+                            reDrawMap();
+                        }
+                    }
+                };
+
+                this.onclick = function (e) {
+                    e = e || event;
+                    tileXPressed = parseInt(e.offsetX / sizeX);
+                    tileYPressed = parseInt(e.offsetY / sizeY);
+                    mapXPressed = tileXPressed - halfFitX + centreX;
+                    mapYPressed = tileYPressed - halfFitY + centreY;
+                    console.log("Clicked tile: " + tileXPressed + " , " + tileYPressed);
+                    console.log("Clicked Map: " + mapXPressed + " , " + mapYPressed);
+                };
+
+                this.onmouseup = function () {
+                    this.onmousemove = null;
+                    oldMouseXTile = -1;
+                    oldMouseYTile = -1;
+                };
+
+                document.onmouseup = function () {
+                    document.getElementById('canvas').style.cursor= 'url("http://www.arttime.ge/images/sc-graphics/openhand.png"), auto';
+                    document.getElementById('canvas').onmousemove = null;
+                    oldMouseXTile = -1;
+                    oldMouseYTile = -1;
+                };
+            };
+
+            document.getElementById('canvas').ondragstart = function () {
+                return false;
+            };
+        };
+
+        window.addEventListener('resize', resizeCanvas, false);
+
+        function resizeCanvas() {
+
+            var canvas = document.getElementById('canvas');
+            canvas.width = $("#canvas").parent().width();
+            canvas.height = $("#canvas").parent().height();
+            canvasX = canvas.width;
+            canvasY = canvas.height;
+            sizeX = parseInt(canvasX / fitX);
+            sizeY = parseInt(canvasY / fitY);
+            reDrawMap();
+        }

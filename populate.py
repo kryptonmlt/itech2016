@@ -9,7 +9,7 @@ django.setup()
 from django.contrib.auth.models import User
 from datetime import datetime
 
-from game.models import Alliance, Account, City, AllianceRequest, Message, Badge, Log, Cost, CityGraphic
+from game.models import Alliance, Account, City, AllianceRequest, Message, Badge, Log, Cost
 
 
 def populate():
@@ -55,9 +55,6 @@ def populate():
     add_message(a3, a2, 'what was that')
     add_message(a1, a4, 'you are good')
 
-    for x in range(0, 50):
-        add_city_graphic(x, 'media/city/' + str(x) + '.png')
-
     add_costs()
 
 
@@ -80,11 +77,6 @@ def add_account(user, wins, defeats, alliance_owner, alliance, picture):
     a.picture = 'media/' + picture
     a.save()
     return a
-
-
-def add_city_graphic(level, picture):
-    cg = CityGraphic.objects.create(level=level, picture=picture)
-    cg.save()
 
 
 def add_alliance(name, description, all_time_score):
