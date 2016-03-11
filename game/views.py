@@ -651,27 +651,24 @@ def get_map(request):
     max_x = City.objects.all().order_by("-x")[0].x
     max_y = City.objects.all().order_by("-y")[0].y
     map_size_interval = 100
-    map_proportion_x = (max_x / map_size_interval) + map_size_interval
-    map_proportion_y = (max_y / map_size_interval) + map_size_interval
+    map_max_x = ((max_x / map_size_interval) * map_size_interval) + map_size_interval
+    map_max_y = ((max_y / map_size_interval) * map_size_interval) + map_size_interval
 
-    matrix = [[0 for x in range(map_proportion_x)] for y in range(map_proportion_y)]
+    print max_x, max_y
+    print map_max_x, map_max_y
+    matrix = [[0 for y in range(map_max_y)] for x in range(map_max_x)]
 
     cities = City.objects.all()
     for city in cities:
         i = 1
-        print city.x,city.y
         for city_y in range(city.y - 1, city.y + 2):
             for city_x in range(city.x - 1, city.x + 2):
-                print city_x, city_y, i
                 matrix[city_x][city_y] = i
                 i += 1
-        print " "
-        print " "
-        print " "
     tile_map = ""
-    for y in range(map_proportion_y):
-        for x in range(map_proportion_x):
+    for y in range(map_max_y):
+        for x in range(map_max_x):
             tile_map += str(matrix[x][y]);
-        if y + 1 != map_proportion_y:
+        if y + 1 != map_max_y:
             tile_map += ";";
     return HttpResponse(tile_map)

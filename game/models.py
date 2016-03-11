@@ -63,11 +63,11 @@ class City(models.Model):
     gold = models.IntegerField(default=1000)
     lumber = models.IntegerField(default=100)
     stones = models.IntegerField(default=100)
-    farms = models.IntegerField(default=0)
+    farms = models.IntegerField(default=1)
     walls_level = models.IntegerField(default=0)
-    lumber_mills = models.IntegerField(default=0)
-    stone_caves = models.IntegerField(default=0)
-    gold_mines = models.IntegerField(default=0)
+    lumber_mills = models.IntegerField(default=1)
+    stone_caves = models.IntegerField(default=1)
+    gold_mines = models.IntegerField(default=1)
     footmen = models.IntegerField(default=0)
     bowmen = models.IntegerField(default=0)
     knights = models.IntegerField(default=0)
@@ -100,6 +100,8 @@ class City(models.Model):
 
             map_proportion_x = (max_x / map_size_interval) + map_size_interval
             map_proportion_y = (max_y / map_size_interval) + map_size_interval
+
+            current_row = (max_y / row_separator) + 1
 
             if (max_x + dist_x) < (map_proportion_x * map_size_interval):
                 # less than max width

@@ -13,49 +13,52 @@ from game.models import Alliance, Account, City, AllianceRequest, Message, Badge
 
 
 def populate():
-    u1 = add_user('Ruben', 'Ruben@gmail.com', '1234')
-    u2 = add_user('Florian', 'Florian@gmail.com', '1234')
-    u3 = add_user('Kurt', 'Kurt@gmail.com', '1234')
-    u4 = add_user('Pedro', 'Pedro@gmail.com', '1234')
+    devs = add_alliance('the devs', 'developers', 100)
+    kurt = add_user_account_city_log_badge('Kurt', 'kurtporteli@gmail.com', '1234', devs, True)
+    ruben = add_user_account_city_log_badge('Ruben', 'ruben.giaquinta@gmail.com', '1234', devs, False)
+    florian = add_user_account_city_log_badge('Florian', 'florian.deuerlein@gmail.com', '1234', devs, False)
+    pedro = add_user_account_city_log_badge('Pedro', 'phoquintas@gmail.com', '1234', devs, False)
 
-    al1 = add_alliance('Rubens_alliance', 'this is rubens alliance', 100)
-    al2 = add_alliance('Kurtman_rules', 'this is kurts alliance', 300)
+    lecs = add_alliance('itech2016', 'lecturers and tutors', 0)
+    leifos = add_user_account_city_log_badge('leifos', 'Leif.Azzopardi@glasgow.ac.uk', 'leifos', lecs, True)
+    laura = add_user_account_city_log_badge('laura', 'laura@gmail.com', 'laura', lecs, False)
+    david = add_user_account_city_log_badge('david', 'david@gmail.com', 'david', lecs, False)
 
-    a1 = add_account(u1, 7, 15, True, al1, 'Ruben')
-    a2 = add_account(u2, 40, 10, False, al1, 'Florian')
-    a3 = add_account(u3, 20, 1, True, al2, 'Kurt')
-    a4 = add_account(u4, 10, 10, False, al1, 'Pedro')
+    f = open('usernames', 'r')
+    current_alliance_count = 0
+    for username in f:
+        if current_alliance_count == 0:
+            alls = add_alliance(username + '_alliance', 'another awesome alliance', 0)
+            add_user_account_city_log_badge(username, username + '@gmail.com', '1234', alls, True)
+        else:
+            add_user_account_city_log_badge(username, username + '@gmail.com', '1234', alls, False)
+            current_alliance_count += 1
+            if current_alliance_count == 30:
+                current_alliance_count = 0
 
-    add_city(a1, 'Rubens Kingdom', 40, 5, 2, 7, 10, 10, 10, 10)
-    add_city(a2, 'Florians Kingdom', 1000, 10, 0, 2, 20, 40, 10, 10)
-    add_city(a3, 'Kurtmans Kigndom', 9993923, 5, 3, 2, 10, 20, 0, 10)
-    add_city(a4, 'Pedros Kingdom', 1234, 100, 2, 0, 2, 10, 10, 50)
-
-    add_log(a1, 'you got attacked by kurtman')
-    add_log(a1, 'kurtman won!')
-    add_log(a1, 'you lost 100 gold')
-
-    add_log(a2, 'you attacked ruben')
-    add_log(a2, 'you won!')
-    add_log(a2, 'you won 100 gold')
-
-    add_log(a3, 'welcome to the game')
-    add_log(a4, 'welcome to the game')
-
-    add_badge(a1, 'Lost 10 games in a row!')
-    add_badge(a1, 'Won 5 games in a row!')
-
-    add_badge(a2, 'Played 10 days in a row')
-
-    add_badge(a3, 'Won 10 games in a row!')
-
-    add_badge(a4, 'Lost all of his army in battle')
-
-    add_message(a1, a3, 'good game')
-    add_message(a3, a2, 'what was that')
-    add_message(a1, a4, 'you are good')
+    add_message(leifos, laura, 'good game')
+    add_message(laura, leifos, 'what was that')
+    add_message(david, leifos, 'you are good')
+    add_message(leifos, david, 'yeah!')
+    add_message(kurt, ruben, 'close fight')
+    add_message(florian, kurt, 'damn')
+    add_message(ruben, florian, 'amazing')
+    add_message(florian, ruben, 'lets fight!')
+    add_message(pedro, ruben, 'lets fight!')
+    add_message(ruben, pedro, 'Yes!')
 
     add_costs()
+
+
+def add_user_account_city_log_badge(username, email, password, alliance, alliance_owner):
+    u = add_user(username, email, password)
+    a = add_account(u, 10, 10, alliance_owner, alliance, username)
+    add_city(a, username + ' Kingdom', 10000, 1, 1, 1, 0, 0, 0, 0)
+    add_log(a, 'Welcome to the game !')
+    add_log(a, 'Your citizens awarded you with 10,000 gold to start building the city!')
+    add_log(a, 'The rest is up to you .. upgrade city structures, recruit troops, make alliances, invade ..')
+    add_badge(a, 'Joined the game !')
+    return a
 
 
 def add_user(name, email, password):
@@ -87,12 +90,12 @@ def add_alliance(name, description, all_time_score):
     return a
 
 
-def add_city(account, name, gold,farms, walls_level,stone_caves, footmen, bowmen, knights, war_machines):
+def add_city(account, name, gold, farms, walls_level, stone_caves, footmen, bowmen, knights, war_machines):
     c = City.objects.get_or_create(account=account)[0]
     c.name = name
     c.gold = gold
     c.farms = farms
-    c.stone_caves
+    c.stone_caves = stone_caves
     c.walls_level = walls_level
     c.footmen = footmen
     c.bowmen = bowmen
