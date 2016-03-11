@@ -656,3 +656,26 @@ def city_img(request, walls_level):
 def create_log(account, text):
     log = Log.objects.create(account=account, text=text)
     log.save()
+
+
+@login_required
+def get_map(request):
+    max_x = City.objects.all().order_by("-x")[0].x
+    max_y = City.objects.all().order_by("-y")[0].y
+    map_size_interval = 100
+    map_proportion_x = (max_x / map_size_interval) + map_size_interval
+    map_proportion_y = (max_y / map_size_interval) + map_size_interval
+
+    matrix = [[0 for x in range(map_proportion_x)] for y in range(map_proportion_y)]
+
+    cities = City.objects.all()
+    for city in cities:
+        print city
+        matrix[city.x][city.y] = city.account.user.username
+
+    tile_map = ""
+    for y in range(map_proportion_y):
+        for x in range(map_proportion_x):
+            tile_map += str(matrix[x][y]);
+        tile_map += ";";
+    return HttpResponse(tile_map)

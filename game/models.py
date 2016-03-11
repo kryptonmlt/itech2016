@@ -4,6 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils import formats
 from django.contrib.auth.models import User
+from random import randint
 
 
 class Alliance(models.Model):
@@ -71,9 +72,53 @@ class City(models.Model):
     bowmen = models.IntegerField(default=0)
     knights = models.IntegerField(default=0)
     war_machines = models.IntegerField(default=0)
+    x = models.IntegerField(default=0)
+    y = models.IntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+
+        # place city somewhere on map
+        if self.id is None:
+
+            # first city check
+            try:
+                max_x = City.objects.all().order_by("-x")[0].x
+                max_y = City.objects.all().order_by("-y")[0].y
+            except IndexError:
+                max_x = 0
+                max_y = 3
+
+            map_size_interval = 100
+            minimum_distance_x = 3
+            minimum_distance_y = 4
+            maximum_distance_x = 6
+            maximum_distance_y = 7
+            dist_x = randint(minimum_distance_x, maximum_distance_x)
+            dist_y = randint(minimum_distance_y, maximum_distance_y)
+
+            map_proportion_x = (max_x / map_size_interval) + map_size_interval
+            map_proportion_y = (max_y / map_size_interval) + map_size_interval
+
+            if (max_x + dist_x) < (map_proportion_x * map_size_interval):
+                # less than max width
+                chosen_x = max_x + dist_x
+                chosen_y = max_y
+            else:  # greater than max width
+                if (max_y + dist_y) < (map_proportion_y * map_size_interval):
+                    # new row
+                    chosen_x = dist_x
+                    chosen_y = max_y + dist_y
+                else:
+                    # increase map size
+                    chosen_x = max_x + dist_x
+                    chosen_y = dist_y
+
+            self.x = chosen_x
+            self.y = chosen_y
+        super(City, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return self.name + "(" + str(self.x) + "," + str(self.y) + ")"
 
     def get_maximum_troops(self):
         return 50 * self.farms
