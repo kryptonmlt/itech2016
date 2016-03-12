@@ -29,12 +29,6 @@
             });
         }
 
-        function getBuildingInfo(data){
-            index = data.indexOf(",");
-            var info = [data.substr(0, index), data.substr(index + 1)];
-            return info;a
-        }
-
         function startTimer(duration, display) {
             var timer = duration, minutes, seconds;
             var ct = setInterval(function () {
@@ -100,28 +94,38 @@
                                 var res = data.split(",");
                                 $('#farms').html(res[0]);
                                 $('#maximumTroops').html(res[1]);
-                                $('#farms_cost').html(res[2]+","+res[3]+","+res[4]);
+                                $('#farms_gold_cost').html(res[2]);
+                                $('#farms_lumber_cost').html(res[3]);
+                                $('#farms_stone_cost').html(res[4]);
                                 break;
                            case "wall":
                                 console.log(data);
-                                var res = getBuildingInfo(data);
+                                var res = data.split(",");
                                 $('#wallLevel').html(res[0]);
-                                $('#wallCost').html(res[1]);
+                                $('#walls_gold_cost').html(res[1]);
+                                $('#walls_lumber_cost').html(res[2]);
+                                $('#walls_stone_cost').html(res[3]);
                                 break;
                            case "stone_caves":
-                                var res = getBuildingInfo(data);
+                                var res = data.split(",");
                                 $('#stone_caves').html(res[0]);
-                                $('#stone_caves_cost').html(res[1]);
+                                $('#stone_mine_gold_cost').html(res[1]);
+                                $('#stone_mine_lumber_cost').html(res[2]);
+                                $('#stone_mine_stone_cost').html(res[3]);
                                 break;
                            case "gold_mines":
-                                var res = getBuildingInfo(data);
+                                var res = data.split(",");
                                 $('#gold_mines').html(res[0]);
-                                $('#gold_mines_cost').html(res[1]);
+                                $('#gold_mine_gold_cost').html(res[1]);
+                                $('#gold_mine_lumber_cost').html(res[2]);
+                                $('#gold_mine_stone_cost').html(res[3]);
                                 break;
                            case "lumber_mills":
-                                var res = getBuildingInfo(data);
+                                var res = data.split(",");
                                 $('#lumber_mills').html(res[0]);
-                                $('#lumber_mills_cost').html(res[1]);
+                                $('#lumber_mill_gold_cost').html(res[1]);
+                                $('#lumber_mill_lumber_cost').html(res[2]);
+                                $('#lumber_mill_stone_cost').html(res[3]);
                                 break;
                            case "knights":
                                 $('#knights').html(data);

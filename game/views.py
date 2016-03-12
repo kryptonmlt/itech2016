@@ -35,14 +35,29 @@ def index(request):
             return render(request, 'game/create_city.html', {'city_form': city_form, 'acc': acc, 'err_msg': err_msg})
 
     userlist = Account.objects.exclude(user=request.user)
-    wall_price = cost.calc_wall_price(city.walls_level)
-    farms_price = cost.calc_farms_price(city.farms)
-    stone_caves_price = cost.calc_caves_price(city.stone_caves)
-    gold_mines_price = cost.calc_mines_price(city.gold_mines)
-    lumber_mills_price = cost.calc_mills_price(city.lumber_mills)
-    cost.wall_gold_price = wall_price.split(",")[0]
-    cost.wall_lumber_price = wall_price.split(",")[1]
-    cost.wall_stone_price = wall_price.split(",")[2]
+    wall_price = cost.calc_wall_price(city.walls_level).split(",")
+    farms_price = cost.calc_farms_price(city.farms).split(",")
+    stone_caves_price = cost.calc_caves_price(city.stone_caves).split(",")
+    gold_mines_price = cost.calc_mines_price(city.gold_mines).split(",")
+    lumber_mills_price = cost.calc_mills_price(city.lumber_mills).split(",")
+    cost.wall_gold_price = wall_price[0]
+    cost.wall_lumber_price = wall_price[1]
+    cost.wall_stone_price = wall_price[2]
+    cost.farms_gold_price = farms_price[0]
+    cost.farms_lumber_price = farms_price[1]
+    cost.farms_stone_price = farms_price[2]
+    cost.stone_caves_gold_price = stone_caves_price[0]
+    cost.stone_caves_lumber_price = stone_caves_price[1]
+    cost.stone_caves_stone_price = stone_caves_price[2]
+    cost.gold_mines_gold_price = gold_mines_price[0]
+    cost.gold_mines_lumber_price = gold_mines_price[1]
+    cost.gold_mines_stone_price = gold_mines_price[2]
+    cost.lumber_mill_gold_price = lumber_mills_price[0]
+    cost.lumber_mill_lumber_price = lumber_mills_price[1]
+    cost.lumber_mill_stone_price = lumber_mills_price[2]
+    war_machine_price = cost.calc_war_machines_price().split(",")
+    cost.war_machines_gold_cost = war_machine_price[0]
+    cost.war_machines_lumber_cost = war_machine_price[1]
     context_dict = {'userlist': userlist, 'cost': cost, 'city': city, 'acc': acc}
     return render(request, 'game/game.html', context_dict)
 
