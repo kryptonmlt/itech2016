@@ -29,6 +29,7 @@ def populate():
     f = open('usernames', 'r')
     current_alliance_count = 0
     for username in f:
+        username = username.strip()
         if current_alliance_count == 0:
             alls = add_alliance(username + '_alliance', 'another awesome alliance', 0)
             add_user_account_city_log_badge(username, username + '@gmail.com', '1234', alls, True)
@@ -133,6 +134,7 @@ def add_message(from_account, to_account, text):
 def add_costs():
     c = Cost.objects.get_or_create()[0]
     return c
+
 
 def add_map_info():
     m = MapInfo.objects.get_or_create()[0]

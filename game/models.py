@@ -81,10 +81,10 @@ class City(models.Model):
         if self.id is None:
 
             map_size_interval = 100
-            minimum_distance_x = 3
-            minimum_distance_y = 1
+            minimum_distance_x = 4
+            minimum_distance_y = 0
             maximum_distance_x = 6
-            maximum_distance_y = 5
+            maximum_distance_y = 2
             row_separator = 6
 
             # first city check
@@ -94,7 +94,7 @@ class City(models.Model):
                 max_x = 0
 
             dist_x = randint(minimum_distance_x, maximum_distance_x)
-            dist_y = randint(minimum_distance_y, maximum_distance_y) - 2
+            dist_y = randint(minimum_distance_y, maximum_distance_y)-2
 
             map_proportion = (max_x / map_size_interval) + 1
 

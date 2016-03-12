@@ -45,3 +45,9 @@
     position:relative;
     top:1px;
 }
+
+#opponents_list{
+		overflow: scroll;
+        overflow-x:hidden;
+		height:150px;
+	}
