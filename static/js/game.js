@@ -213,13 +213,44 @@
         var tilesX = 0;
         var tilesY = 0;
 
+        function setInitialPlayerLoc( x , y ){
+            var tempX = x - halfFitX;
+            var tempY = y - halfFitY;
+
+            if (tempX < 0) {
+                playerX = halfFitX;
+            } else {
+                if ( x + halfFitX > tilesX) {
+                    playerX = tilesX - halfFitX;
+                }else{
+                    playerX = x;
+                }
+            }
+
+            if (tempY < 0) {
+                playerY = halfFitY;
+            } else {
+                if (y + halfFitY > tilesY) {
+                    playerY = tilesY - halfFitY;
+                }else{
+                    playerY = y;
+                }
+            }
+            centreX = playerX
+            centreY = playerY
+        }
+
         function getMap(){
             $.get('/game/get_map', function(data){
                 tileMap = data;
                 rows = tileMap.split(';');
                 tilesX = rows[0].length;
                 tilesY = rows.length;
-                resizeCanvas();
+                $.get('/game/get_map_details', function(data){
+                    xy = data.split(',');
+                    setInitialPlayerLoc( parseInt(xy[0]) , parseInt(xy[1]) );
+                    resizeCanvas();
+                });
             });
         }
 

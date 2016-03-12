@@ -685,7 +685,16 @@ def get_map(request):
     tile_map = ""
     for y in range(map_max_y):
         for x in range(map_max_x):
-            tile_map += str(matrix[x][y]);
+            tile_map += str(matrix[x][y])
         if y + 1 != map_max_y:
-            tile_map += ";";
+            tile_map += ";"
     return HttpResponse(tile_map)
+
+
+@login_required
+def get_map_details(request):
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
+    city = City.objects.get(account=acc)
+    details = str(city.x) + "," + str(city.y)
+    return HttpResponse(details)
