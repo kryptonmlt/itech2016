@@ -33,6 +33,7 @@ def populate():
         if current_alliance_count == 0:
             alls = add_alliance(username + '_alliance', 'another awesome alliance', 0)
             add_user_account_city_log_badge(username, username + '@gmail.com', '1234', alls, True)
+            current_alliance_count += 1
         else:
             add_user_account_city_log_badge(username, username + '@gmail.com', '1234', alls, False)
             current_alliance_count += 1
