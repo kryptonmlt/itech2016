@@ -94,7 +94,7 @@ class City(models.Model):
                 max_x = 0
 
             dist_x = randint(minimum_distance_x, maximum_distance_x)
-            dist_y = randint(minimum_distance_y, maximum_distance_y)-2
+            dist_y = randint(minimum_distance_y, maximum_distance_y) - 2
 
             map_proportion = (max_x / map_size_interval) + 1
 
@@ -133,6 +133,9 @@ class City(models.Model):
 
     def get_maximum_troops(self):
         return 50 * self.farms
+
+    def get_total_troops(self):
+        return self.footmen + self.knights + self.bowmen + self.war_machines
 
     def army_total(self):
         return self.footmen + self.bowmen + self.knights + self.war_machines

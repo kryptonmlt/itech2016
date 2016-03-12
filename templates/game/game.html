@@ -10,214 +10,296 @@
 {% block body_block %}
 
 {% if user.is_authenticated %}
-    <div class="container">
-        <div class="row">
-            <h3 class="lord-name">Lord <strong>{{acc.user}}</strong> of <strong>{{city.name}}</strong></h3>
-        </div>
+<div class="container">
+    <div class="row">
+        <h3 class="lord-name">Lord <strong>{{acc.user}}</strong> of <strong>{{city.name}}</strong></h3>
+        <ul id="supplyViewer">
+            <li class="supply">
+                <img alt="house icon" src="http://www.dazzlepanel.com/projects/kurt/images/structures/house.png" class="img-responsive"/>
+                <span id="maximumTroops">{{city.get_total_troops}} / {{city.get_maximum_troops}}</span>
+            </li>
+            <li class="supply">
+                <img alt="gold icon" src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" class="img-responsive"/>
+                <span id="goldSpan">{{city.gold}}</span>
+            </li>
+            <li class="supply">
+                <img alt="lumber icon" src="http://www.dazzlepanel.com/projects/kurt/images/Lumber.png"   class="img-responsive"/>
+                <span id="lumberSpan">{{city.lumber}}</span>
+            </li>
+            <li class="supply">
+                <img alt="stone icon" src="http://www.dazzlepanel.com/projects/kurt/images/stones.png"   class="img-responsive"/>
+                <span id="stonesSpan">{{city.stones}}</span>
+            </li>
+        </ul>
+    </div>
 
-        <div class="row">
-            <div class="col-md-4 text-center">
-                <div class="row">
-                    <table class="table table-bordered">
-                        <thead>
+    <div class="row">
+        <div class="col-md-3 text-center">
+            <div class="row backgroundRow">
+                <table class="table table-bordered" id="structureShop">
+                    <thead>
                         <tr>
-                            <td><strong>Structures</strong></td>
-                            <td><strong>Level</strong></td>
-                            <td><strong>Cost</strong><img src="{% static "images/resources.png" %}" align="right" width="50%" class="img-responsive" />
-                            </td>
+                            <td rowspan="2"><strong>Structures</strong></td>
+                            <td rowspan="2"><strong>Level</strong></td>
+                            <td>Cost</td>
                         </tr>
-                        </thead>
-                        <tbody>
+                    </thead>
+                    <tbody>
                         <tr>
-                            <td style="width:5%">Walls<img src="{% static "images/structures/walls.png" %}" align="left" width="25%" class="img-responsive" /></td>
-                            <td style="width:5%"><span id="wallLevel">{{city.walls_level}}</span></td>
-                            <td style="width:5%"><span id="wallCost">{{cost.wall_price}}</span>
+                            <td><img alt="Walls" src="{% static "images/structures/walls.png" %}" class="img-responsive" /></td>
+                            <td><span id="wallLevel">{{city.walls_level}}</span></td>
+                            <td>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="walls_gold_cost">{{cost.wall_gold_price}}</span></div>
+                                </div>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/Lumber.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="walls_lumber_cost">{{cost.wall_lumber_price}}</span></div>
+                                </div>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/stones.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="walls_stone_cost">{{cost.wall_stone_price}}</span></div>
+                                </div>
                                 <button id="wallButton" class="upgrade_button" element_type="wall" type="button">+</button>
                             </td>
                         </tr>
                         <tr>
-                            <td style="width:5%">Gold Mines<img src="{% static "images/structures/gold_mine.png" %}" align="left" width="30%" class="img-responsive" /></td>
-                            <td style="width:5%"><span id="gold_mines">{{city.gold_mines}}</span></td>
-                            <td style="width:5%"><span id="gold_mines_cost">{{cost.gold_mines_price}}</span>
+                            <td><img alt="Gold Mines" src="{% static "images/structures/gold_mine.png" %}" class="img-responsive" /></td>
+                            <td><span id="gold_mines">{{city.gold_mines}}</span></td>
+                            <td>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="gold_mine_gold_cost">{{cost.gold_mines_gold_price}}</span></div>
+                                </div>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/Lumber.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="gold_lumber_lumber_cost">{{cost.gold_mines_lumber_price}}</span></div>
+                                </div>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/stones.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="gold_stone_stone_cost">{{cost.gold_mines_stone_price}}</span></div>
+                                </div>
                                 <button id="minesButton" class="upgrade_button" element_type="gold_mines" type="button">+</button>
                             </td>
                         </tr>
                         <tr>
-                            <td style="width:5%">Stone Caves<img src="{% static "images/structures/stone_mine.png" %}" align="left" width="30%" class="img-responsive" /></td>
-                            <td style="width:5%"><span id="stone_caves">{{city.stone_caves}}</span></td>
-                            <td style="width:5%"><span id="stone_caves_cost">{{cost.stone_caves_price}}</span>
+                            <td><img alt="Stone Caves" src="http://www.dazzlepanel.com/projects/kurt/images/structures/stone_mine.png" class="img-responsive" /></td>
+                            <td><span id="stone_caves">{{city.stone_caves}}</span></td>
+                            <td>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="stone_mine_gold_cost">{{cost.stone_caves_gold_price}}</span></div>
+                                </div>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/Lumber.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="stone_mine_lumber_cost">{{cost.stone_caves_lumber_price}}</span></div>
+                                </div>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/stones.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="stone_mine_stone_cost">{{cost.stone_caves_stones_price}}</span></div>
+                                </div>
                                 <button id="cavesButton" class="upgrade_button" element_type="stone_caves" type="button">+</button>
                             </td>
                         </tr>
                         <tr>
-                            <td style="width:5%">Lumber Mills<img src="{% static "images/structures/lumbermill.png" %}" align="left" width="30%" class="img-responsive" /></td>
-                            <td style="width:5%"><span id="lumber_mills">{{city.lumber_mills}}</span></td>
-                            <td style="width:5%"><span id="lumber_mills_cost">{{cost.lumber_mills_price}}</span>
+                            <td><img alt="Luber Millis" src="http://www.dazzlepanel.com/projects/kurt/images/structures/lumbermill.png" class="img-responsive" /></td>
+                            <td><span id="lumber_mills">{{city.lumber_mills}}</span></td>
+                            <td>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="lumber_mill_gold_cost">{{cost.lumber_mills_gold_price}}</span></div>
+                                </div>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/Lumber.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="lumber_mill_lumber_cost">{{cost.lumber_mills_lumber_price}}</span></div>
+                                </div>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/stones.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="lumber_mill_stone_cost">{{cost.lumber_mills_stone_price}}</span></div>
+                                </div>
                                 <button id="millsButton" class="upgrade_button" element_type="lumber_mills" type="button">+</button>
                             </td>
                         </tr>
                         <tr>
-                            <td style="width:5%">Farms<img src="{% static "images/structures/farm.png" %}" align="left" width=30% class="img-responsive" /></td>
-                            <td style="width:5%"><span id="farms">{{city.farms}}</span></td>
-                            <td style="width:5%"><span id="farms_cost">{{cost.farms_price}}</span>
+                            <td><img alt="Farms" src="{% static "images/structures/farm.png" %}" class="img-responsive" /></td>
+                            <td><span id="farms">{{city.farms}}</span></td>
+                            <td>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="farms_mill_gold_cost">{{cost.farms_gold_price}}</span></div>
+                                </div>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/Lumber.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="farms_mill_lumber_cost">{{cost.farms_lumber_price}}</span></div>
+                                </div>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/stones.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="farms_stone_cost">{{cost.farms_stone_price}}</span></div>
+                                </div>
                                 <button id="farmsButton" class="upgrade_button" element_type="farms" type="button">+</button>
                             </td>
                         </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="row">
-                    <table class="table table-bordered">
-                        <thead>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row backgroundRow">
+                <table id="troopCosts" class="table table-bordered">
+                    <thead>
                         <tr>
                             <td><strong>Troop Type</strong></td>
                             <td><strong>Amount</strong></td>
-                            <td><strong>Cost</strong><img src="{% static "images/resources2.png" %}" align="right" width="50%" class="img-responsive" /></td>
+                            <td><strong>Cost</strong></td>
                         </tr>
-                        </thead>
-                        <tbody>
+                    </thead>
+                    <tbody>
                         <tr>
-                            <td style="width:5%">Footmen<img src="{% static "images/units/footmen.png" %}" align="left" width="30%" class="img-responsive" /></td>
-                            <td style="width:5%"><span id="footmen">{{city.footmen}}</span></td>
-                            <td style="width:5%">{{cost.footmen_price}}
+                            <td><img alt="Footmen" src="{% static "images/units/footmen.png" %}" class="img-responsive" /></td>
+                            <td><span id="footmen">{{city.footmen}}</span></td>
+                            <td>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="footmen_gold_cost">{{cost.footmen_price}}</span></div>
+                                </div>
                                 <button id="footmenButton" class="upgrade_button" element_type="footmen" type="button">+</button>
                             </td>
                         </tr>
                         <tr>
-                            <td style="width:5%">Bowmen<img src="{% static "images/units/bowmen.png" %}" align="left" width="30%" class="img-responsive" /></td>
-                            <td style="width:5%"><span id="bowmen">{{city.bowmen}}</span></td>
-                            <td style="width:5%">{{cost.bowmen_price}}
+                            <td><img alt="Bowmen" src="{% static "images/units/bowmen.png" %}"class="img-responsive" /></td>
+                            <td><span id="bowmen">{{city.bowmen}}</span></td>
+                            <td>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="bowmen_gold_cost">{{cost.bowmen_price}}</span></div>
+                                </div>
                                 <button id="bowmenButton" class="upgrade_button" element_type="bowmen" type="button">+</button>
                             </td>
                         </tr>
                         <tr>
-                            <td style="width:5%">Knights<img src="{% static "images/units/knights.png" %}" align="left" width="25%" class="img-responsive" /></td>
-                            <td style="width:5%"><span id="knights">{{city.knights}}</span></td>
-                            <td style="width:5%">{{cost.knights_price}}
+                            <td><img alt="Knights" src="{% static "images/units/knights.png" %}"class="img-responsive" /></td>
+                            <td><span id="knights">{{city.knights}}</span></td>
+                            <td>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="knight_gold_cost">{{cost.knights_price}}</span></div>
+                                </div>
                                 <button id="knightsButton" class="upgrade_button" element_type="knights" type="button">+</button>
                             </td>
                         </tr>
                         <tr>
-                            <td style="width:5%">War Machines<img src="{% static "images/units/war_machines.png" %}" align="left" width="25%" class="img-responsive" /></td>
-                            <td style="width:5%"><span id="war_machines">{{city.war_machines}}</span></td>
-                            <td style="width:5%">{{cost.war_machines_price}}
+                            <td><img alt="War Machines" src="{% static "images/units/war_machines.png" %}" class="img-responsive" /></td>
+                            <td><span id="war_machines">{{city.war_machines}}</span></td>
+                            <td>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/gold.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="war_machine_mill_gold_cost">{{cost.war_machines_gold_price}}</span></div>
+                                </div>
+                                <div class="noti_Container">
+                                    <img src="http://www.dazzlepanel.com/projects/kurt/images/Lumber.png" align="left" class="img-responsive" />
+                                    <div class="noti_bubble"><span id="war_machine_lumber_cost">{{cost.war_machines_lumber_price}}</span></div>
+                                </div>
                                 <button id="war_machinesButton" class="upgrade_button" element_type="war_machines" type="button">+</button>
                             </td>
                         </tr>
-                        </tbody>
+                    </tbody>
 
-                    </table>
-                </div>
+                </table>
             </div>
-            <div class="col-md-6 text-center" style="height:550px">
-                <canvas id="canvas" ></canvas>
+        </div>
+
+        <div class="col-md-7 text-center" style="height:550px">
+            <canvas id="canvas" ></canvas>
+        </div>
+
+        <div class="col-md-2 text-center">
+
+            <div class="row accFrame">
+                <img class="accountPicture" src="{{ MEDIA_URL }}/media/{{acc.picture}}" %} alt="Account Picture" />
+                <img class="accPictureFrame" src="http://kurtportelli.com/kurtftp/resources/columnFrame.png" alt="Account Picture Frame"/>
             </div>
-            <div class="col-md-2 text-center">
-                <div class="row">
-                    <img src="{{ MEDIA_URL }}/media/{{acc.picture}}" %} width="90%" class="img-thumbnail"/>
-                </div>
-                <div class="row">
-                    <span id="timeSpan"></span>
-                    <button id="collectButton" class="btn btn-default" type="button">Collect</button>
-                </div>
-                <div class="row">
-                    <table class="table table-bordered">
-                        <tr>
-                            <td><strong>Supply<img src="{% static "images/structures/house.png" %}" align="left" width="25%" class="img-responsive" /></strong></td>
-                            <td><span id="maximumTroops">{{city.get_maximum_troops}}</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Gold<img src="{% static "images/gold.png" %}" align="left" width="25%" class="img-responsive" /></strong></td>
-                            <td><span id="goldSpan">{{city.gold}}</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Lumber<img src="{% static "images/Lumber.png" %}" align="left" width="25%" class="img-responsive" /></strong></td>
-                            <td><span id="lumberSpan">{{city.lumber}}</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Stones<img src="{% static "images/stones.png" %}" align="left" width="25%" class="img-responsive" /></strong></td>
-                            <td><span id="stonesSpan">{{city.stones}}</span></td>
-                        </tr>
-                    </table>
 
-                </div>
-                <div class="row">
-                    {% if acc.alliance %}
-                    {% if acc.alliance_owner %}
-                    <strong>Leader of: </strong>
-                    {% else %}
-                    <strong>Member of: </strong>
-                    {% endif %}
-                    <a href="/game/alliance/{{acc.alliance.name}}">{{acc.alliance.name}}</a><br/>
-                    {% else %}
-                    <strong><a href="javascript:$('#createAllianceStep').show();">Create</a> or <a
-                            href="/game/alliance_search/">Join</a> an alliance</strong>
-                    {% endif %}
-                </div>
+            <div class="row">
+                <span id="timeSpan"></span>
+                <button id="collectButton" class="btn btn-default" type="button">Collect</button>
+            </div>
 
-                <div class="row">
-                    <div class="alert fade in alert-success" id="createAllianceStep" style="display:none;">
-                        <button type="button" class="close">×</button>
-                        <div class="input-group">
-                            <input id="createAllianceName" type="text" class="form-control"
-                                   placeholder="Alliance Name...">
-                            <input id="createDescName" type="text" class="form-control"
-                                   placeholder="Description...">
-                            <button id="createAllianceButton" class="btn btn-default" type="button">Create!</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="row">
+                {% if acc.alliance %}
+                {% if acc.alliance_owner %}
+                <strong>Leader of: </strong>
+                {% else %}
+                <strong>Member of: </strong>
+                {% endif %}
+                <a href="/game/alliance/{{acc.alliance.name}}">{{acc.alliance.name}}</a><br/>
+                {% else %}
+                <strong><a href="javascript:$('#createAllianceStep').show();">Create</a> or <a
+                        href="/game/alliance_search/">Join</a> an alliance</strong>
+                {% endif %}
+            </div>
 
-                <div class="row">
-                    <ul>
-                    <li>Win Percentage: {{acc.get_win_percentage}}%</li>
-                    <li>Wins: {{acc.wins}}</li>
-                    <li>Defeats: {{acc.defeats}}</li>
-                    </ul>
-                </div>
-                <div class="row">
-                    <div class="list-group">
-                        <a class="nav-header disabled"><p class="secondary-heading list-group-item active">Opponents</p></a>
-                        <div id="opponents_list">
-                        {% for acc in userlist %}
-                        <a href="/game/battle/{{acc.user.username}}" class="list-group-item"><strong>{{acc.user.username}}</strong></a>
-                        {% endfor %}
-                        </div>
+            <div class="row">
+                <div class="alert fade in alert-success" id="createAllianceStep" style="display:none;">
+                    <button type="button" class="close">×</button>
+                    <div class="input-group">
+                        <input id="createAllianceName" type="text" class="form-control" placeholder="Alliance Name...">
+                        <input id="createDescName" type="text" class="form-control" placeholder="Description...">
+                        <button id="createAllianceButton" class="btn btn-default" type="button">Create!</button>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="alert fade in alert-danger" id="alertNoGold" style="display:none;">
-            <button type="button" class="close">×</button>
-            <strong>Not enough gold!</strong>
-        </div>
-
-        <div class="alert fade in alert-danger" id="alertNoLumber" style="display:none;">
-            <button type="button" class="close">×</button>
-            <strong>Not enough Lumber!</strong>
-        </div>
-
-        <div class="alert fade in alert-danger" id="alertNoStones" style="display:none;">
-            <button type="button" class="close">×</button>
-            <strong>Not enough stones!</strong>
-        </div>
-
-        <div class="alert fade in alert-danger" id="alertInsufficientMaxTroops" style="display:none;">
-            <button type="button" class="close">×</button>
-            <strong>Insufficient supplies!</strong>
-        </div>
-
-        <div class="row">
             <div class="row">
-                <label for="logs_text" id="LogsHeading">Account Logs</label>
+                <ul>
+                <li>Win Percentage: {{acc.get_win_percentage}}%</li>
+                <li>Wins: {{acc.wins}}</li>
+                <li>Defeats: {{acc.defeats}}</li>
+                </ul>
             </div>
+
             <div class="row">
-                        <textarea id="logs_text"
-                                  style="min-width: 100%; height: 100px; max-height: 100px;"></textarea>
+                <div class="list-group">
+                    <a class="nav-header disabled"><p class="secondary-heading list-group-item active">Opponents</p></a>
+                    <div id="opponents_list">
+                    {% for acc in userlist %}
+                    <a href="/game/battle/{{acc.user.username}}" class="list-group-item"><strong>{{acc.user.username}}</strong></a>
+                    {% endfor %}
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
+
+    <div class="alert fade in alert-danger" id="alertNoGold" style="display:none;">
+        <button type="button" class="close">×</button>
+        <strong>Not enough gold!</strong>
+    </div>
+
+    <div class="alert fade in alert-danger" id="alertNoLumber" style="display:none;">
+        <button type="button" class="close">×</button>
+        <strong>Not enough Lumber!</strong>
+    </div>
+
+    <div class="alert fade in alert-danger" id="alertNoStones" style="display:none;">
+        <button type="button" class="close">×</button>
+        <strong>Not enough stones!</strong>
+    </div>
+
+    <div class="alert fade in alert-danger" id="alertInsufficientMaxTroops" style="display:none;">
+        <button type="button" class="close">×</button>
+        <strong>Insufficient supplies!</strong>
+    </div>
+
+    <div class="row">
+        <div class="row">
+            <label for="logs_text" id="LogsHeading">Account Logs</label>
+        </div>
+        <div class="row">
+                    <textarea id="logs_text"
+                              style="min-width: 100%; height: 100px; max-height: 100px;"></textarea>
+        </div>
+    </div>
+</div>
 
 {% else %}
     <meta http-equiv="refresh" content="0; url=/"/>

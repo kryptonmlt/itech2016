@@ -1,49 +1,347 @@
+
+.accountPicture{
+    width: 80%;
+    height: 90%;
+    position: relative; top: 15px;
+}
+
+.accPictureFrame{
+    width: 100%;
+    height: 100%;
+    position: absolute; top: 0; left: 0;
+}
+
+.accFrame{
+    width:200px;
+    height:250px;
+    position: relative;
+    left: 0;
+    top: 0;
+}
+
+/* ADDED BY CHRIS */
+.table {
+    border:0;
+}
+
+.backgroundRow {
+    background: url(http://www.pageresource.com/wallpapers/wallpaper/crumpled-brown-paper-texture-high-resolution-pixels_3511836.jpg);
+    background-size:100%;
+    background-position:center;
+    border:0;
+}
+
+.backgroundRow:first-of-type {
+    border-top-left-radius:5px;
+    border-top-right-radius:5px;
+    overflow:hidden;
+}
+
+.backgroundRow:last-of-type {
+    border-bottom-left-radius:5px;
+    border-bottom-right-radius:5px;
+    overflow:hidden;
+}
+
+.backgroundRow:last-of-type table {
+    margin-bottom:0 !important;
+}
+
+#supplyViewer {
+    border-radius: 20px;
+    border: 2px solid #fff;
+    box-sizing: border-box;
+    background-color: rgba(69, 59, 47, 0.5);
+    margin: 0;
+    padding: 0;
+    margin-bottom:10px;
+}
+
+#supplyViewer > li {
+    display: inline;
+    height: 20px;
+    vertical-align: middle;
+    text-align: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-right: 2px solid #fff;
+    color:#fff;
+    font-weight:bold;
+}
+
+#supplyViewer li img {
+    max-height:20px;
+    display:inline-block;
+    padding-right:10px;
+}
+
+#structureShop {
+    background-color: rgba(206, 120, 89, 0.6);
+}
+
+#structureShop td {
+    text-align: center;
+    vertical-align: middle;
+    border: 0 !important;
+}
+
+#structureShop tbody td:nth-of-type(2) {
+    font-family: 'Lobster', cursive;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+#structureShop thead tr {
+    /*font-family: 'Poiret One', cursive !important;*/
+    font-weight: bold;
+    font-size: 16px;
+}
+
+#structureShop img {
+    max-width: 30px;
+    max-height: 30px;
+    display: inline-block;
+    text-align: center;
+}
+
+#troopCosts {
+    background-color: rgba(172, 136, 102, 0.6);
+}
+
+#troopCosts td {
+    text-align: center;
+    vertical-align: middle;
+    border: 0 !important;
+}
+
+#troopCosts tbody td:nth-of-type(2) {
+    font-family: 'Lobster', cursive;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+#troopCosts thead tr {
+    /*font-family: 'Poiret One', cursive !important;*/
+    font-weight: bold;
+    font-size: 16px;
+}
+
+#troopCosts img {
+    max-width: 30px;
+    max-height: 30px;
+    display: inline-block;
+    text-align: center;
+}
+
+.noti_Container {
+    position: relative;
+    /* This is crucial for the absolutely positioned element */
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+}
+
+.noti_Container img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.noti_bubble {
+    position: absolute;
+    /* This breaks the div from the normal HTML document. */
+    top: -6px;
+    right: -6px;
+    padding: 1px 2px 1px 2px;
+    background-color: #3CB194;
+    /* you could use a background image if you'd like as well */
+    color: white;
+    font-weight: bold;
+    font-size: 10px;
+    /* The following is CSS3, but isn't crucial for this technique to work. */
+    /* Keep in mind that if a browser doesn't support CSS3, it's fine! They just won't have rounded borders and won't have a box shadow effect. */
+    /* You can always use a background image to produce the same effect if you want to, and you can use both together so browsers without CSS3 still have the rounded/shadow look. */
+    border-radius: 30px;
+    box-shadow: 1px 1px 1px gray;
+}
+
+/* Login and Register */
+
+.centered {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-register-bk {
+    background-color: #FFE3BF;
+}
+
+.panel-login {
+    border-color: #ccc;
+    -webkit-box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.2);
+}
+
+.panel-login>.panel-heading {
+    color: #67689B;
+    background-color: #FFE3BF;
+    border-color: #FFE3BF;
+    text-align: center;
+}
+
+.panel-login>.panel-heading a {
+    text-decoration: none;
+    color: #67689B;
+    font-weight: bold;
+    font-size: 15px;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+}
+
+.panel-login>.panel-heading a.active {
+    color: #444680;
+    font-size: 18px;
+}
+
+.panel-login>.panel-heading hr {
+    margin-top: 10px;
+    margin-bottom: 0px;
+    clear: both;
+    border: 0;
+    height: 1px;
+    background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
+    background-image: -moz-linear-gradient(left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
+    background-image: -ms-linear-gradient(left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
+    background-image: -o-linear-gradient(left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
+}
+
+.panel-login input[type="text"],
+.panel-login input[type="email"],
+.panel-login input[type="password"] {
+    height: 45px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+}
+
+.panel-login input:hover,
+.panel-login input:focus {
+    outline: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    border-color: #ccc;
+}
+
+.btn-login {
+    background-color: #397F5F;
+    outline: none;
+    color: #fff;
+    font-size: 14px;
+    height: auto;
+    font-weight: normal;
+    padding: 14px 0;
+    text-transform: uppercase;
+    border-color: #397F5F;
+}
+
+.btn-login:hover,
+.btn-login:focus {
+    color: #fff;
+    background-color: #206847;
+    border-color: #206847;
+}
+
+.forgot-password {
+    text-decoration: underline;
+    color: #888;
+}
+
+.forgot-password:hover,
+.forgot-password:focus {
+    text-decoration: underline;
+    color: #666;
+}
+
+.btn-register {
+    background-color: #397F5F;
+    outline: none;
+    color: #fff;
+    font-size: 14px;
+    height: auto;
+    font-weight: normal;
+    padding: 14px 0;
+    text-transform: uppercase;
+    border-color: #397F5F;
+}
+
+.btn-register:hover,
+.btn-register:focus {
+    color: #fff;
+    background-color: #206847;
+    border-color: #206847;
+}
+
+.register-form {
+    display: none;
+}
+
+
 /* User's name and city name */
-.lord-name{
+
+.lord-name {
     margin-top: 0px !important;
 }
 
+
 /* Upgrade button */
+
 .upgrade_button {
-    -moz-box-shadow:inset 0px 0px 0px 0px #bee2f9;
-    -webkit-box-shadow:inset 0px 0px 0px 0px #bee2f9;
-    box-shadow:inset 0px 0px 0px 0px #bee2f9;
-    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf));
-    background:-moz-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
-    background:-webkit-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
-    background:-o-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
-    background:-ms-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
-    background:linear-gradient(to bottom, #63b8ee 5%, #468ccf 100%);
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#63b8ee', endColorstr='#468ccf',GradientType=0);
-    background-color:#63b8ee;
-    -moz-border-radius:5px;
-    -webkit-border-radius:5px;
-    border-radius:5px;
-    border:1px solid #3866a3;
-    display:inline-block;
-    cursor:pointer;
-    color:#14396a;
-    font-family:Arial;
-    font-size:15px;
-    font-weight:bold;
-    padding:2px 2px;
-    text-decoration:none;
-    text-shadow:0px 1px 0px #7cacde;
+    -moz-box-shadow: inset 0px 0px 0px 0px #bee2f9;
+    -webkit-box-shadow: inset 0px 0px 0px 0px #bee2f9;
+    box-shadow: inset 0px 0px 0px 0px #bee2f9;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf));
+    background: -moz-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+    background: -webkit-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+    background: -o-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+    background: -ms-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+    background: linear-gradient(to bottom, #63b8ee 5%, #468ccf 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#63b8ee', endColorstr='#468ccf', GradientType=0);
+    background-color: #63b8ee;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #3866a3;
+    display: inline-block;
+    cursor: pointer;
+    color: #14396a;
+    font-family: Arial;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 2px 2px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #7cacde;
     float: right;
 }
+
 .upgrade_button:hover {
-    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #468ccf), color-stop(1, #63b8ee));
-    background:-moz-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
-    background:-webkit-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
-    background:-o-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
-    background:-ms-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
-    background:linear-gradient(to bottom, #468ccf 5%, #63b8ee 100%);
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#468ccf', endColorstr='#63b8ee',GradientType=0);
-    background-color:#468ccf;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #468ccf), color-stop(1, #63b8ee));
+    background: -moz-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+    background: -webkit-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+    background: -o-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+    background: -ms-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+    background: linear-gradient(to bottom, #468ccf 5%, #63b8ee 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#468ccf', endColorstr='#63b8ee', GradientType=0);
+    background-color: #468ccf;
 }
+
 .upgrade_button:active {
-    position:relative;
-    top:1px;
+    position: relative;
+    top: 1px;
 }
 
 #opponents_list{
