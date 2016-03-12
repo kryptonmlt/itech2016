@@ -22,9 +22,10 @@
         function updateResources(){
             $.get('/game/get_resources/', function(data){
                 resources = data.split(',');
-                $('#goldSpan').html(resources[0]);
-                $('#lumberSpan').html(resources[1]);
-                $('#stonesSpan').html(resources[2]);
+                $('#totalTroops').html(resources[0]);
+                $('#goldSpan').html(resources[1]);
+                $('#lumberSpan').html(resources[2]);
+                $('#stonesSpan').html(resources[3]);
             });
         }
 

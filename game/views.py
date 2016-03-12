@@ -35,11 +35,14 @@ def index(request):
             return render(request, 'game/create_city.html', {'city_form': city_form, 'acc': acc, 'err_msg': err_msg})
 
     userlist = Account.objects.exclude(user=request.user)
-    cost.wall_price = cost.calc_wall_price(city.walls_level)
-    cost.farms_price = cost.calc_farms_price(city.farms)
-    cost.stone_caves_price = cost.calc_caves_price(city.stone_caves)
-    cost.gold_mines_price = cost.calc_mines_price(city.gold_mines)
-    cost.lumber_mills_price = cost.calc_mills_price(city.lumber_mills)
+    wall_price = cost.calc_wall_price(city.walls_level)
+    farms_price = cost.calc_farms_price(city.farms)
+    stone_caves_price = cost.calc_caves_price(city.stone_caves)
+    gold_mines_price = cost.calc_mines_price(city.gold_mines)
+    lumber_mills_price = cost.calc_mills_price(city.lumber_mills)
+    cost.wall_gold_price = wall_price.split(",")[0]
+    cost.wall_lumber_price = wall_price.split(",")[1]
+    cost.wall_stone_price = wall_price.split(",")[2]
     context_dict = {'userlist': userlist, 'cost': cost, 'city': city, 'acc': acc}
     return render(request, 'game/game.html', context_dict)
 
@@ -342,7 +345,8 @@ def get_resources(request):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
     city = City.objects.all().get(account=acc)
-    return HttpResponse(str(city.gold) + "," + str(city.lumber) + "," + str(city.stones))
+    return HttpResponse(
+        str(city.get_total_troops()) + "," + str(city.gold) + "," + str(city.lumber) + "," + str(city.stones))
 
 
 @login_required
