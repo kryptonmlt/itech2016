@@ -33,7 +33,7 @@
             <ul>
                 {% for alliance in similar_alliances %}
                 <!-- Following line changed to add an HTML hyperlink -->
-                <li><a href="/game/alliance/{{ alliance.name }}">{{alliance.name}}</a> - Score:{{ alliance.all_time_score }}
+                <li><a href="/game/alliance/{{ alliance.slug }}">{{alliance.name}}</a> - Score:{{ alliance.all_time_score }}
                 </li>
                 {% endfor %}
             </ul>

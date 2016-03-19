@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.utils import formats
 from django.contrib.auth.models import User
 from random import randint
+from django.template.defaultfilters import slugify
 
 
 class Alliance(models.Model):
@@ -12,6 +13,11 @@ class Alliance(models.Model):
     description = models.CharField(max_length=300)
     all_time_score = models.IntegerField(default=0)
     orders = models.CharField(max_length=300)
+    slug = models.SlugField()
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Alliance, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name

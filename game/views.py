@@ -234,10 +234,10 @@ def change_orders(request):
 
 
 @login_required
-def alliance(request, alliance_name):
+def alliance(request, alliance_slug):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
-    alli = Alliance.objects.get(name=alliance_name)
+    alli = Alliance.objects.get(slug=alliance_slug)
     allies = Account.objects.all().filter(alliance=alli).order_by('-wins')
     owner = False
     try:
@@ -257,16 +257,16 @@ def alliance(request, alliance_name):
 
 
 @login_required
-def alliance_request(request, alliance_name):
+def alliance_request(request, alliance_slug):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
     if acc.alliance:
-        if acc.alliance.name == alliance_name:
+        if acc.alliance.slug == alliance_slug:
             return HttpResponse("You are already in this alliance!")
         else:
             return HttpResponse("Leave alliance first!")
 
-    alli = Alliance.objects.get(name=alliance_name)
+    alli = Alliance.objects.get(slug=alliance_slug)
 
     already_exists = AllianceRequest.objects.filter(from_account=acc, alliance=alli)
     if already_exists:
