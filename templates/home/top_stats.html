@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>High Scores</title>
+{% extends 'base.html' %}
 
-</head>
-<body>
+{% load staticfiles %}
+
+{% block body_block %}
 
 <h2>Highest Wins</h2>
 {% if account_highest_wins %}
@@ -42,6 +39,4 @@
 {% else %}
 <strong>There are no alliances present.</strong>
 {% endif %}
-
-</body>
-</html>
+{% endblock %}
