@@ -186,3 +186,8 @@ body {
 .submit-button-margin{
 	margin-top: 15px;
 }
+
+.centered{
+	 margin: auto !important;
+	 width: 66% !important;
+}

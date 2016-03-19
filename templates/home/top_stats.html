@@ -3,40 +3,47 @@
 {% load staticfiles %}
 
 {% block body_block %}
+<div class="col-md-12">
+    <div class="centered">
+        <h2>Highest Wins</h2>
+        {% if account_highest_wins %}
+        <ul class="list-group">
+            {% for acc in account_highest_wins %}
+            <!-- Following line changed to add an HTML hyperlink -->
+            <li class="list-group-item">{{ acc.user.username }} - {{ acc.wins }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <strong>There are no players present.</strong>
+        {% endif %}
+    </div>
 
-<h2>Highest Wins</h2>
-{% if account_highest_wins %}
-<ul>
-    {% for acc in account_highest_wins %}
-    <!-- Following line changed to add an HTML hyperlink -->
-    <li>{{ acc.user.username }} - {{ acc.wins }}</li>
-    {% endfor %}
-</ul>
-{% else %}
-<strong>There are no players present.</strong>
-{% endif %}
+    <div class="centered">
+        <h2>Highest Win Percentage</h2>
+        {% if account_highest_wins_percentage %}
+        <ul class="list-group">
+            {% for acc in account_highest_wins_percentage %}
+            <!-- Following line changed to add an HTML hyperlink -->
+            <li class="list-group-item">{{ acc.user.username }} - {{ acc.get_win_percentage }} %</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <strong>There are no players present.</strong>
+        {% endif %}
+    </div>
 
-<h2>Highest Win Percentage</h2>
-{% if account_highest_wins_percentage %}
-<ul>
-    {% for acc in account_highest_wins_percentage %}
-    <!-- Following line changed to add an HTML hyperlink -->
-    <li>{{ acc.user.username }} - {{ acc.get_win_percentage }} %</li>
-    {% endfor %}
-</ul>
-{% else %}
-<strong>There are no players present.</strong>
-{% endif %}
-
-<h2>Highest Alliance Score</h2>
-{% if alliance_score %}
-<ul>
-    {% for alliance in alliance_score %}
-    <!-- Following line changed to add an HTML hyperlink -->
-    <li><a href="/game/alliance/{{ alliance.slug }}">{{alliance.name}}</a> - {{ alliance.all_time_score }}</li>
-    {% endfor %}
-</ul>
-{% else %}
-<strong>There are no alliances present.</strong>
-{% endif %}
+    <div class="centered">
+        <h2>Highest Alliance Score</h2>
+        {% if alliance_score %}
+        <ul class="list-group">
+            {% for alliance in alliance_score %}
+            <!-- Following line changed to add an HTML hyperlink -->
+            <li class="list-group-item"><a href="/game/alliance/{{ alliance.slug }}">{{alliance.name}}</a> - {{ alliance.all_time_score }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <strong>There are no alliances present.</strong>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
