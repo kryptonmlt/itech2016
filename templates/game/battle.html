@@ -2,12 +2,61 @@
 
 {% load staticfiles %}
 {% block content %}
-<script src="{% static "js/battle.js" %}"></script>
+<script src="{% static " js/battle.js" %}"></script>
+<script>
 {% endblock content %}
-
 {% block body_block %}
 
 {% if user.is_authenticated %}
+
+{% if city.account.alliance %}
+{% if city.account.alliance == enemy_city.account.alliance %}
+<div class="col-md-5">
+</div>
+<div class="col-md-2">
+            <div class="text-center">
+                <h1>{{enemy_city.account.user.username}}</h1>
+                <div class="row">
+                    <img src="{{ MEDIA_URL }}/media/{{enemy_city.account.picture}}" %}" width=90%
+                    class="img-thumbnail"/>
+                </div>
+                <div class="row">
+                    <li><strong>Supply Capacity: </strong><span
+                            id="maximumTroops">{{city.get_maximum_troops}}</span></li>
+                    <li><strong>Walls Level: </strong><span
+                            id="walls_level">{{city.walls_level}}</span></li>
+                    <li><strong>Gold Mines: </strong><span
+                            id="gold_mines">{{city.gold_mines}}</span></li>
+                    <li><strong>Stone Caves: </strong><span
+                            id="stone_caves">{{city.stone_caves}}</span></li>
+                    <li><strong>Lumber Mills: </strong><span
+                            id="lumber_mills">{{city.lumber_mills}}</span></li>
+                    <li><strong>Farms: </strong><span
+                            id="farms">{{city.farms}}</span></li>
+                </div>
+            </div>
+            <div class="row">
+                <label for="message_text_area" id="message_chat_heading">Chat</label>
+            </div>
+            <div class="row">
+                    <textarea id="message_text_area"
+                              style="min-width: 100%; height: 100px; max-height: 100px;"></textarea>
+            </div>
+            <div class="row">
+                <input type="text" id="user_msg">
+                <button id="sendButton" class="btn btn-default" type="button">Send</button>
+            </div>
+            <div class="row">
+                <div class="alert fade in alert-danger" id="notif_alert" style="display:none;">
+                    <button type="button" class="close">x</button>
+                    <strong><span id="notif_span"></span></strong>
+                </div>
+            </div>
+</div>
+<div class="col-md-5">
+</div>
+{% else %}
+{% block battle_block %}
 <div class="container">
     <div class="row">
         <div class="col-md-2 text-center">
@@ -85,6 +134,13 @@
         </div>
     </div>
 </div>
+</body>
+</html>
+{% endblock battle_block %}
+{% endif %}
+{% else %}
+battle_block
+{% endif %}
 {% else %}
     <meta http-equiv="refresh" content="0; url=/"/>
 {% endif %}

@@ -215,7 +215,6 @@ def battle(request, user_name):
     context_dict = {'enemy_city': enemy_city, 'city': city}
     return render(request, 'game/battle.html', context_dict)
 
-
 @login_required
 def change_orders(request):
     user = User.objects.get(pk=request.user.pk)
