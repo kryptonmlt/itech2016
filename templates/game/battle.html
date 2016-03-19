@@ -2,9 +2,14 @@
 
 {% load staticfiles %}
 {% block content %}
-<script src="{% static " js/battle.js" %}"></script>
+<script src="{% static "js/battle.js" %}"></script>
 <script>
+{% if user == city.account.user %}
+window.location.href = "/game";
+{% endif %}
+</script>
 {% endblock content %}
+
 {% block body_block %}
 
 {% if user.is_authenticated %}
