@@ -680,12 +680,36 @@ def get_map(request):
         i = 1
         for city_y in range(city.y - 1, city.y + 2):
             for city_x in range(city.x - 1, city.x + 2):
-                matrix[city_x][city_y] = i
+                if i == 1:
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.walls_level)
+                elif i == 2:
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.walls_level)
+                elif i == 3:
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.walls_level)
+                elif i == 4:
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.farms)
+                elif i == 5:
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)
+                elif i == 6:
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.walls_level)
+                elif i == 7:
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.lumber_mills)
+                elif i == 8:
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.stone_caves)
+                elif i == 9:
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.gold_mines)
+
                 i += 1
     tile_map = ""
     for y in range(map_max_y):
         for x in range(map_max_x):
-            tile_map += str(matrix[x][y])
+            contents = str(matrix[x][y])
+            if contents == "0":
+                tile_map += "0-0"
+            else:
+                tile_map += contents
+            if x + 1 != map_max_x:
+                tile_map += ","
         if y + 1 != map_max_y:
             tile_map += ";"
     return HttpResponse(tile_map)

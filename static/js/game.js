@@ -179,8 +179,8 @@
 
         var canvasX = 800;
         var canvasY = 600;
-        var fitX = 10;
-        var fitY = 10;
+        var fitX = 9;
+        var fitY = 9;
         var halfFitX = Math.floor(fitX / 2);
         var halfFitY = Math.floor(fitY / 2);
         var sizeX = parseInt(canvasX / fitX);
@@ -241,11 +241,23 @@
         }
 
         function getMap(){
+            console.log("requesting map data");
             $.get('/game/get_map', function(data){
+                console.log("received map data");
                 tileMap = data;
-                rows = tileMap.split(';');
-                tilesX = rows[0].length;
-                tilesY = rows.length;
+                temp_rows = tileMap.split(';');
+                tilesX = temp_rows[0].split(',').length;
+                tilesY = temp_rows.length;
+                rows = [tilesY];
+                for(var i=0; i<tilesY; i++) {
+                    rows[i] = new Array(tilesX);
+                }
+                for(var i=0;i<tilesY;i++){
+                    row_contents = temp_rows[i].split(',');
+                    for(var j=0;j<tilesX;j++){
+                        rows[i][j]=row_contents[j];
+                    }
+                }
                 $.get('/game/get_map_details', function(data){
                     xy = data.split(',');
                     setInitialPlayerLoc( parseInt(xy[0]) , parseInt(xy[1]) );
@@ -309,6 +321,27 @@
                 }
             }
         }
+        /// expand with color, background etc.
+        function drawTextBG(ctx, txt, x, y) {
+            /// lets save current state as we make a lot of changes
+            ctx.save();
+            /// set font
+            ctx.font = "Arial";
+            /// draw text from top - makes life easier at the moment
+            ctx.textBaseline = 'top';
+            /// color for background
+            ctx.fillStyle = '#468ccf';
+            /// get width of text
+            var width = ctx.measureText(txt).width;
+            /// draw background rect assuming height of font
+            ctx.fillRect(x, y, width, 15);
+            /// text color
+            ctx.fillStyle = '#000';
+            /// draw text on top
+            ctx.fillText(txt, x, y);
+            /// restore original state
+            ctx.restore();
+        }
 
         function reDrawMap() {
 
@@ -336,10 +369,17 @@
             var posX = 0;
             var posY = 0;
 
+            context.font = "bold 15px Arial";
+            context.fillStyle = "#ffb9af";
+            // draw map
             for (var i = mapY; i < mapY + fitY; i++) {
                 //console.log(rows[i]);
                 for (var j = mapX; j < mapX + fitX; j++) {
-                    switch (parseInt(rows[i][j])) {
+                    contents = rows[i][j];
+                    contents = contents.split("-");
+                    land_type = contents[0];
+                    level = contents[1];
+                    switch (parseInt(land_type)) {
                         case 0:
                             context.drawImage(grass, posX, posY, sizeX, sizeY);
                             break;
@@ -373,13 +413,35 @@
                         default:
                             break;
                     }
+                    if(land_type != 0){
+                    }
                     posX += sizeX;
                 }
                 posX = 0;
                 posY += sizeY;
             }
-            context.font = "50px Arial";
-            context.fillText("X:" + parseInt(centreX) + ", Y: " + parseInt(centreY), 10, 50);
+
+            posX = 0;
+            posY = 0;
+            for (var i = mapY; i < mapY + fitY; i++) {
+                for (var j = mapX; j < mapX + fitX; j++) {
+                    contents = rows[i][j];
+                    contents = contents.split("-");
+                    land_type = contents[0];
+                    level = contents[1];
+                    if (land_type == "1"||land_type == "4"||land_type == "7"||land_type == "8"||land_type == "9") {
+                        drawTextBG(context,level,posX+(sizeX*0.8), posY+(sizeY*0.8));
+                    }
+                    if (land_type == "5") {
+                        drawTextBG(context,level,posX+(sizeX*0.8), posY+(sizeY*0.8));
+                    }
+                    posX += sizeX;
+                }
+                posX = 0;
+                posY += sizeY;
+            }
+            context.font = "20px Arial";
+            context.fillText("X:" + parseInt(centreX) + ", Y: " + parseInt(centreY), fitX*sizeX*0.81, fitY*sizeY*0.97);
         }
 
         window.onload = function () {

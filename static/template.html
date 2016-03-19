@@ -582,6 +582,9 @@
                                 break;
                             case 2:
                                 context.drawImage(farm, posX, posY, sizeX, sizeY);
+                                context.font = "bold 15px Arial";
+                                context.fillStyle = "#ffffff";
+                                context.fillText("1", posX+(sizeX*0.8), posY+(sizeY*0.8));
                                 break;
                             case 3:
                                 context.drawImage(lumbermill, posX, posY, sizeX, sizeY);
@@ -603,8 +606,8 @@
                     posX = 0;
                     posY += sizeY;
                 }
-                context.font = "50px Arial";
-                context.fillText("X:" + parseInt(centreX) + ", Y: " + parseInt(centreY), 10, 50);
+                context.font = "20px Arial";
+                context.fillText("X:" + parseInt(centreX) + ", Y: " + parseInt(centreY), fitX*sizeX*0.85, fitY*sizeY*0.97);
             }
 
             window.onload = function () {
