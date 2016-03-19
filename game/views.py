@@ -655,9 +655,22 @@ def alliance_search(request, query):
 
 @login_required
 def alliance_search_empty(request):
-    similar_alliances = Alliance.objects.order_by('-all_time_score')[:10]
+    similar_alliances = Alliance.objects.order_by('-all_time_score')
     context_dict = {'similar_alliances': similar_alliances, 'query': ""}
     return render(request, 'game/alliance_search.html', context_dict)
+
+@login_required
+def user_search(request, query):
+    users = Account.objects.filter(Q(user__username__icontains=query))
+    context_dict = {'users': users, 'query': query}
+    return render(request, 'game/user_search.html', context_dict)
+
+
+@login_required
+def user_search_empty(request):
+    users = Account.objects.order_by('-wins')
+    context_dict = {'users': users, 'query': ""}
+    return render(request, 'game/user_search.html', context_dict)
 
 
 def create_log(account, text):

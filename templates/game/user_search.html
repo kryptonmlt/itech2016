@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+<script src="{% static "js/usersearch.js" %}"></script>
+{% endblock content %}
+
+{% block body_block %}
+
+{% if user.is_authenticated %}
+<div class="container">
+    <div class="row">
+        <h1>Search Users:</h1>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <input id="searchText" type="text" class="form-control">
+                  <span class="input-group-btn">
+                    <button id="searchButton" class="btn btn-default" type="button">Search</button>
+                  </span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        {% if users %}
+            {% if query %}
+                <h2> {{ users | length }} results for search: {{query}}</h2>
+            {% else %}
+                <h2> There are {{ users | length }} Users </h2>
+            {% endif %}
+            <ul>
+                {% for user in users %}
+                <!-- Following line changed to add an HTML hyperlink -->
+                <li><a href="/game/battle/{{ user.user.username }}">{{user.user.username}}</a> - Wins:{{ user.wins }}
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h2> 0 results for search: {{query}}</h2>
+        {% endif %}
+    </div>
+</div>
+
+{% else %}
+    <meta http-equiv="refresh" content="0; url=/"/>
+{% endif %}
+
+{% endblock %}
