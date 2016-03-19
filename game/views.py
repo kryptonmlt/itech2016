@@ -34,7 +34,8 @@ def index(request):
             city_form = CityForm()
             return render(request, 'game/create_city.html', {'city_form': city_form, 'acc': acc, 'err_msg': err_msg})
 
-    userlist = Account.objects.exclude(user=request.user)
+
+    userlist = Account.objects.all().filter(~Q(alliance=acc.alliance),~Q(user=request.user))
     wall_price = cost.calc_wall_price(city.walls_level).split(",")
     farms_price = cost.calc_farms_price(city.farms).split(",")
     stone_caves_price = cost.calc_caves_price(city.stone_caves).split(",")
@@ -212,7 +213,7 @@ def battle(request, user_name):
     enemy_account = Account.objects.get(user=enemy_user)
     enemy_city = City.objects.get(account=enemy_account)
     city = City.objects.get(account=account)
-    context_dict = {'enemy_city': enemy_city, 'city': city}
+    context_dict = {'enemy_city': enemy_city, 'city': city, 'user': user}
     return render(request, 'game/battle.html', context_dict)
 
 @login_required

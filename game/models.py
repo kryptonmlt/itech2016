@@ -199,8 +199,21 @@ class Log(models.Model):
     date_occurred = models.DateTimeField('date occurred', default=timezone.now)
 
     def __str__(self):
-        return str(self.pk) + "||" + formats.date_format(self.date_occurred,
-                                                         "SHORT_DATETIME_FORMAT") + "||" + self.text + "$$"
+        dif = timezone.now() - self.date_occurred
+        if dif.days > 0:
+            dif = '{0} d'.format(dif.days)
+        else:
+            seconds = dif.total_seconds()
+            if seconds // 3600 > 0:
+                dif = '{:.0f} h'.format(seconds // 3600)
+            elif (seconds % 3600) // 60 > 0:
+                dif = '{:.0f} m'.format((seconds % 3600) // 60)
+            elif seconds % 60 > 1:
+                dif = '{:.0f} s'.format(seconds % 60)
+            else:
+                dif = 'now'
+                
+        return str(self.pk) + "||" + str(dif) + "||" + self.text + "$$"
 
 
 class Cost(models.Model):

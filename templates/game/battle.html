@@ -2,9 +2,14 @@
 
 {% load staticfiles %}
 {% block content %}
-<script src="{% static " js/battle.js" %}"></script>
+<script src="{% static "js/battle.js" %}"></script>
 <script>
+{% if user == enemy_city.account.user %}
+window.location.href = "/game";
+{% endif %}
+</script>
 {% endblock content %}
+
 {% block body_block %}
 
 {% if user.is_authenticated %}
@@ -17,7 +22,7 @@
             <div class="text-center">
                 <h1>{{enemy_city.account.user.username}}</h1>
                 <div class="row">
-                    <img src="{{ MEDIA_URL }}/media/{{enemy_city.account.picture}}" %}" width=90%
+                    <img src="{{ MEDIA_URL }}/{{enemy_city.account.picture}}" %}" width=90%
                     class="img-thumbnail"/>
                 </div>
                 <div class="row">
@@ -63,7 +68,7 @@
             <h1>{{city.account.user.username}}</h1>
 
             <div class="row">
-                <img src="{{ MEDIA_URL }}/media/{{city.account.picture}}" %}" width=90% class="img-thumbnail"/>
+                <img src="{{ MEDIA_URL }}/{{city.account.picture}}" %}" width=90% class="img-thumbnail"/>
             </div>
             <div class="row">
                 <li><strong>Supply Capacity: </strong><span
@@ -91,7 +96,7 @@
             <div class="text-center">
                 <h1>{{enemy_city.account.user.username}}</h1>
                 <div class="row">
-                    <img src="{{ MEDIA_URL }}/media/{{enemy_city.account.picture}}" %}" width=90%
+                    <img src="{{ MEDIA_URL }}/{{enemy_city.account.picture}}" %}" width=90%
                     class="img-thumbnail"/>
                 </div>
                 <div class="row">
