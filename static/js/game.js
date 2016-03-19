@@ -492,9 +492,20 @@
                     mapYPressed = tileYPressed - halfFitY + centreY;
                     console.log("Clicked tile: " + tileXPressed + " , " + tileYPressed);
                     console.log("Clicked Map: " + mapXPressed + " , " + mapYPressed);
+
+                    contents = rows[mapYPressed][mapXPressed];
+                    contents = contents.split("-");
+                    land_type = contents[0];
+                    level = contents[1];
+
+                    if(land_type == "5" || land_type == "6" || land_type == "2" || land_type == "3"){
+                        console.log("clicked on " + level);
+                        window.location.href = "/game/battle/"+level;
+                    }
                 };
 
                 this.onmouseup = function () {
+                    document.getElementById('canvas').style.cursor= 'url("http://www.arttime.ge/images/sc-graphics/openhand.png"), auto';
                     this.onmousemove = null;
                     oldMouseXTile = -1;
                     oldMouseYTile = -1;
