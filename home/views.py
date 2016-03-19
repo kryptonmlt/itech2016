@@ -1,7 +1,7 @@
 from django.shortcuts import render, render_to_response
 from django.contrib.auth import authenticate, login
 from django.template import RequestContext
-from game.forms import UserForm, AccountForm
+from game.forms import UserForm
 from django.http import HttpResponse, HttpResponseRedirect
 from game.models import Account, Alliance
 from django.db.models import F
@@ -20,10 +20,9 @@ def register(request):
         # Attempt to grab information from the raw form information.
         # Note that we make use of both UserForm and UserProfileForm.
         user_form = UserForm(data=request.POST)
-        profile_form = AccountForm(data=request.POST)
 
         # If the two forms are valid...
-        if user_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid():
             # Save the user's form data to the database.
             user = user_form.save()
 
@@ -32,19 +31,9 @@ def register(request):
             user.set_password(user.password)
             user.save()
 
-            # Now sort out the UserProfile instance.
-            # Since we need to set the user attribute ourselves, we set commit=False.
-            # This delays saving the model until we're ready to avoid integrity problems.
-            profile = profile_form.save(commit=False)
-            profile.user = user
-
-            # Did the user provide a profile picture?
-            # If so, we need to get it from the input form and put it in the UserProfile model.
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
-
-            # Now we save the UserProfile model instance.
-            profile.save()
+            # create account
+            a = Account.objects.get_or_create(user=user)[0]
+            a.save()
 
             # Update our variable to tell the template registration was successful.
             registered = True
@@ -53,18 +42,20 @@ def register(request):
         # Print problems to the terminal.
         # They'll also be shown to the user.
         else:
-            print user_form.errors, profile_form.errors
+            return render_to_response(
+                'home/index.html',
+                {'user_form': user_form, 'errors': user_form.errors},
+                context)
 
     # Not a HTTP POST, so we render our form using two ModelForm instances.
     # These forms will be blank, ready for user input.
     else:
         user_form = UserForm()
-        profile_form = AccountForm()
 
     # Render the template depending on the context.
     return render_to_response(
         'home/index.html',
-        {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},
+        {'user_form': user_form, 'registered': registered},
         context)
 
 
