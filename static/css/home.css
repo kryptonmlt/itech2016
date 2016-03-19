@@ -167,5 +167,22 @@ body {
 }
 
 .register-form{
-	 display: none;
+	display: none;
+}
+
+.form-style{
+	position: absolute;
+    right: 0px;
+}
+
+.input-labels{
+	padding-top: 5px;
+}
+
+.form-input-area{
+	padding-bottom: 10px;
+}
+
+.submit-button-margin{
+	margin-top: 15px;
 }
