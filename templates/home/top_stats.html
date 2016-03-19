@@ -36,7 +36,7 @@
 <ul>
     {% for alliance in alliance_score %}
     <!-- Following line changed to add an HTML hyperlink -->
-    <li><a href="/game/alliance/{{ alliance.name }}">{{alliance.name}}</a> - {{ alliance.all_time_score }}</li>
+    <li><a href="/game/alliance/{{ alliance.slug }}">{{alliance.name}}</a> - {{ alliance.all_time_score }}</li>
     {% endfor %}
 </ul>
 {% else %}

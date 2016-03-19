@@ -42,19 +42,25 @@
 
                 if (--timer < 0) {
                     clearInterval(ct);
-                    collectTimer();
+                    collectTimer("false");
                 }
             }, 1000);
         }
 
-        function collectTimer(){
+        function collectTimer(auto){
             display = document.querySelector('#timeSpan');
-            $.get('/game/collect', function(data){
+            $.get('/game/remaining_collect', function(data){
                 if(data != "-1"){
                     var res = data.split(",");
                     if(res[0] == "DONE"){
                         display.textContent="Ready! ";
                         document.getElementById("collectButton").disabled = false;
+                        if(auto == "true"){
+                            $.get('/game/collect', function(data){
+                                collectTimer("false")
+                                updateResources();
+                            });
+                        }
                     }else{
                         var wholeMin = res[1].split(".");
                         minutes = parseInt(wholeMin[0]);
@@ -68,7 +74,7 @@
 
 		$(document).ready(function(){
 
-            collectTimer();
+            collectTimer("false");
 		    document.getElementById("logs_text").readOnly = true;
 
             $('#housesButton,#cavesButton,#minesButton,#millsButton,#wallButton,#footmenButton,#knightsButton,#bowmenButton,#war_machinesButton,#farmsButton').click(function(){
@@ -97,6 +103,7 @@
                                 $('#farms_gold_cost').html(res[2]);
                                 $('#farms_lumber_cost').html(res[3]);
                                 $('#farms_stone_cost').html(res[4]);
+                                getMap();
                                 break;
                            case "wall":
                                 console.log(data);
@@ -105,6 +112,7 @@
                                 $('#walls_gold_cost').html(res[1]);
                                 $('#walls_lumber_cost').html(res[2]);
                                 $('#walls_stone_cost').html(res[3]);
+                                getMap();
                                 break;
                            case "stone_caves":
                                 var res = data.split(",");
@@ -112,6 +120,7 @@
                                 $('#stone_mine_gold_cost').html(res[1]);
                                 $('#stone_mine_lumber_cost').html(res[2]);
                                 $('#stone_mine_stone_cost').html(res[3]);
+                                getMap();
                                 break;
                            case "gold_mines":
                                 var res = data.split(",");
@@ -119,6 +128,7 @@
                                 $('#gold_mine_gold_cost').html(res[1]);
                                 $('#gold_mine_lumber_cost').html(res[2]);
                                 $('#gold_mine_stone_cost').html(res[3]);
+                                getMap();
                                 break;
                            case "lumber_mills":
                                 var res = data.split(",");
@@ -126,6 +136,7 @@
                                 $('#lumber_mill_gold_cost').html(res[1]);
                                 $('#lumber_mill_lumber_cost').html(res[2]);
                                 $('#lumber_mill_stone_cost').html(res[3]);
+                                getMap();
                                 break;
                            case "knights":
                                 $('#knights').html(data);
@@ -162,10 +173,12 @@
 
             $('#collectButton').click(function(){
                 document.getElementById("collectButton").disabled = true;
-                collectTimer();
-                updateResources();
+                collectTimer("true");
             });
 
+            $('#findMeButton').click(function(){
+                initializeMapWithPlayerLoc();
+            });
 
             // when alert close
             $('.alert .close').on('click', function(e) {
@@ -258,11 +271,15 @@
                         rows[i][j]=row_contents[j];
                     }
                 }
-                $.get('/game/get_map_details', function(data){
-                    xy = data.split(',');
-                    setInitialPlayerLoc( parseInt(xy[0]) , parseInt(xy[1]) );
-                    resizeCanvas();
-                });
+                initializeMapWithPlayerLoc();
+            });
+        }
+
+        function initializeMapWithPlayerLoc(){
+            $.get('/game/get_map_details', function(data){
+                xy = data.split(',');
+                setInitialPlayerLoc( parseInt(xy[0]) , parseInt(xy[1]) );
+                resizeCanvas();
             });
         }
 
@@ -492,9 +509,20 @@
                     mapYPressed = tileYPressed - halfFitY + centreY;
                     console.log("Clicked tile: " + tileXPressed + " , " + tileYPressed);
                     console.log("Clicked Map: " + mapXPressed + " , " + mapYPressed);
+
+                    contents = rows[mapYPressed][mapXPressed];
+                    contents = contents.split("-");
+                    land_type = contents[0];
+                    level = contents[1];
+
+                    if(land_type == "5" || land_type == "6" || land_type == "2" || land_type == "3"){
+                        console.log("clicked on " + level);
+                        window.location.href = "/game/battle/"+level;
+                    }
                 };
 
                 this.onmouseup = function () {
+                    document.getElementById('canvas').style.cursor= 'url("http://www.arttime.ge/images/sc-graphics/openhand.png"), auto';
                     this.onmousemove = null;
                     oldMouseXTile = -1;
                     oldMouseYTile = -1;

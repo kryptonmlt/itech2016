@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block content %}
-<script src="{% static "js/alliancesearch.js" %}"></script>
+<script src="{% static "js/usersearch.js" %}"></script>
 {% endblock content %}
 
 {% block body_block %}
@@ -11,7 +11,7 @@
 {% if user.is_authenticated %}
 <div class="container">
     <div class="row">
-        <h1>Search Alliances:</h1>
+        <h1>Search Users:</h1>
     </div>
     <div class="row">
         <div class="col-lg-6">
@@ -24,16 +24,16 @@
         </div>
     </div>
     <div class="row">
-        {% if similar_alliances %}
+        {% if users %}
             {% if query %}
-                <h2> {{ similar_alliances | length }} results for search: {{query}}</h2>
+                <h2> {{ users | length }} results for search: {{query}}</h2>
             {% else %}
-                <h2> There are {{ similar_alliances | length }} Alliances</h2>
+                <h2> There are {{ users | length }} Users </h2>
             {% endif %}
             <ul>
-                {% for alliance in similar_alliances %}
+                {% for user in users %}
                 <!-- Following line changed to add an HTML hyperlink -->
-                <li><a href="/game/alliance/{{ alliance.slug }}">{{alliance.name}}</a> - Score:{{ alliance.all_time_score }}
+                <li><a href="/game/battle/{{ user.user.username }}">{{user.user.username}}</a> - Wins:{{ user.wins }}
                 </li>
                 {% endfor %}
             </ul>

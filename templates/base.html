@@ -33,13 +33,13 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand nav-brand-container" href="/game/">
-                <img src="{% static "images/gold.png" %}" class="img-responsive brand-image" />
+                <img src="{% static "images/gold.png" %}" class="img-responsive brand-image" alt="gold icon"/>
             </a>
             <a class="navbar-brand nav-brand-container" href="/game/">
                 <img alt="Brand" src="{% static "images/banner.png" %}" class="img-responsive brand-image" />
             </a>
             <a class="navbar-brand nav-brand-container" href="/game/">
-                <img src="{% static "images/gold.png" %}" class="img-responsive brand-image" />
+                <img src="{% static "images/gold.png" %}" class="img-responsive brand-image" alt="gold icon"/>
             </a>
         </div>
 
@@ -51,6 +51,7 @@
                 {% else %}
                     <li><a href="/game/alliance_search/" class="navbar-link">Alliance</a></li>
                 {% endif %}
+                <li><a href="/game/user_search/" class="navbar-link">Users</a></li>
                 <li><a href="/stats/" class="navbar-link">Stats</a></li>
                 <li><a href="/game/logout/" class="navbar-link">Logout</a></li>
             {% endif %}

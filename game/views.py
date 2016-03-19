@@ -34,7 +34,8 @@ def index(request):
             city_form = CityForm()
             return render(request, 'game/create_city.html', {'city_form': city_form, 'acc': acc, 'err_msg': err_msg})
 
-    userlist = Account.objects.exclude(user=request.user)
+    cities = City.objects.all()
+    userlist = Account.objects.all().filter(~Q(alliance=acc.alliance), ~Q(user=request.user))
     wall_price = cost.calc_wall_price(city.walls_level).split(",")
     farms_price = cost.calc_farms_price(city.farms).split(",")
     stone_caves_price = cost.calc_caves_price(city.stone_caves).split(",")
@@ -72,7 +73,7 @@ def user_logout(request):
 
 @login_required
 def collect(request):
-    hours = 4
+    hours = 3
     seconds = hours * 60 * 60
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
@@ -101,8 +102,21 @@ def collect(request):
 
 
 @login_required
+def remaining_collect(request):
+    hours = 3
+    seconds = hours * 60 * 60
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
+    result = "DONE," + str(seconds)
+    time_left = acc.received_resources_in(hours)
+    if time_left > 0:
+        result = "WAIT," + str(time_left)
+    return HttpResponse(result)
+
+
+@login_required
 def last_attacked(request, enemy_acc_id):
-    hours = 4
+    hours = 2
     seconds = hours * 60 * 60
     enemy = Account.objects.get(pk=enemy_acc_id)
     result = "DONE," + str(seconds)
@@ -212,7 +226,7 @@ def battle(request, user_name):
     enemy_account = Account.objects.get(user=enemy_user)
     enemy_city = City.objects.get(account=enemy_account)
     city = City.objects.get(account=account)
-    context_dict = {'enemy_city': enemy_city, 'city': city}
+    context_dict = {'enemy_city': enemy_city, 'city': city, 'user': user}
     return render(request, 'game/battle.html', context_dict)
 
 
@@ -234,10 +248,10 @@ def change_orders(request):
 
 
 @login_required
-def alliance(request, alliance_name):
+def alliance(request, alliance_slug):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
-    alli = Alliance.objects.get(name=alliance_name)
+    alli = Alliance.objects.get(slug=alliance_slug)
     allies = Account.objects.all().filter(alliance=alli).order_by('-wins')
     owner = False
     try:
@@ -257,16 +271,16 @@ def alliance(request, alliance_name):
 
 
 @login_required
-def alliance_request(request, alliance_name):
+def alliance_request(request, alliance_slug):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
     if acc.alliance:
-        if acc.alliance.name == alliance_name:
+        if acc.alliance.slug == alliance_slug:
             return HttpResponse("You are already in this alliance!")
         else:
             return HttpResponse("Leave alliance first!")
 
-    alli = Alliance.objects.get(name=alliance_name)
+    alli = Alliance.objects.get(slug=alliance_slug)
 
     already_exists = AllianceRequest.objects.filter(from_account=acc, alliance=alli)
     if already_exists:
@@ -655,9 +669,23 @@ def alliance_search(request, query):
 
 @login_required
 def alliance_search_empty(request):
-    similar_alliances = Alliance.objects.order_by('-all_time_score')[:10]
+    similar_alliances = Alliance.objects.order_by('-all_time_score')
     context_dict = {'similar_alliances': similar_alliances, 'query': ""}
     return render(request, 'game/alliance_search.html', context_dict)
+
+
+@login_required
+def user_search(request, query):
+    users = Account.objects.filter(Q(user__username__icontains=query))
+    context_dict = {'users': users, 'query': query}
+    return render(request, 'game/user_search.html', context_dict)
+
+
+@login_required
+def user_search_empty(request):
+    users = Account.objects.order_by('-wins')
+    context_dict = {'users': users, 'query': ""}
+    return render(request, 'game/user_search.html', context_dict)
 
 
 def create_log(account, text):
@@ -683,15 +711,15 @@ def get_map(request):
                 if i == 1:
                     matrix[city_x][city_y] = str(i) + "-" + str(city.walls_level)
                 elif i == 2:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.walls_level)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)
                 elif i == 3:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.walls_level)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)
                 elif i == 4:
                     matrix[city_x][city_y] = str(i) + "-" + str(city.farms)
                 elif i == 5:
                     matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)
                 elif i == 6:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.walls_level)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)
                 elif i == 7:
                     matrix[city_x][city_y] = str(i) + "-" + str(city.lumber_mills)
                 elif i == 8:
