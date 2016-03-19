@@ -42,19 +42,25 @@
 
                 if (--timer < 0) {
                     clearInterval(ct);
-                    collectTimer();
+                    collectTimer("false");
                 }
             }, 1000);
         }
 
-        function collectTimer(){
+        function collectTimer(auto){
             display = document.querySelector('#timeSpan');
-            $.get('/game/collect', function(data){
+            $.get('/game/remaining_collect', function(data){
                 if(data != "-1"){
                     var res = data.split(",");
                     if(res[0] == "DONE"){
                         display.textContent="Ready! ";
                         document.getElementById("collectButton").disabled = false;
+                        if(auto == "true"){
+                            $.get('/game/collect', function(data){
+                                collectTimer("false")
+                                updateResources();
+                            });
+                        }
                     }else{
                         var wholeMin = res[1].split(".");
                         minutes = parseInt(wholeMin[0]);
@@ -68,7 +74,7 @@
 
 		$(document).ready(function(){
 
-            collectTimer();
+            collectTimer("false");
 		    document.getElementById("logs_text").readOnly = true;
 
             $('#housesButton,#cavesButton,#minesButton,#millsButton,#wallButton,#footmenButton,#knightsButton,#bowmenButton,#war_machinesButton,#farmsButton').click(function(){
@@ -167,8 +173,7 @@
 
             $('#collectButton').click(function(){
                 document.getElementById("collectButton").disabled = true;
-                collectTimer();
-                updateResources();
+                collectTimer("true");
             });
 
             $('#findMeButton').click(function(){

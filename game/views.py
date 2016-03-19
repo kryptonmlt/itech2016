@@ -34,8 +34,7 @@ def index(request):
             city_form = CityForm()
             return render(request, 'game/create_city.html', {'city_form': city_form, 'acc': acc, 'err_msg': err_msg})
 
-
-    userlist = Account.objects.all().filter(~Q(alliance=acc.alliance),~Q(user=request.user))
+    userlist = Account.objects.all().filter(~Q(alliance=acc.alliance), ~Q(user=request.user))
     wall_price = cost.calc_wall_price(city.walls_level).split(",")
     farms_price = cost.calc_farms_price(city.farms).split(",")
     stone_caves_price = cost.calc_caves_price(city.stone_caves).split(",")
@@ -73,7 +72,7 @@ def user_logout(request):
 
 @login_required
 def collect(request):
-    hours = 4
+    hours = 3
     seconds = hours * 60 * 60
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
@@ -102,8 +101,21 @@ def collect(request):
 
 
 @login_required
+def remaining_collect(request):
+    hours = 3
+    seconds = hours * 60 * 60
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
+    result = "DONE," + str(seconds)
+    time_left = acc.received_resources_in(hours)
+    if time_left > 0:
+        result = "WAIT," + str(time_left)
+    return HttpResponse(result)
+
+
+@login_required
 def last_attacked(request, enemy_acc_id):
-    hours = 4
+    hours = 2
     seconds = hours * 60 * 60
     enemy = Account.objects.get(pk=enemy_acc_id)
     result = "DONE," + str(seconds)
@@ -215,6 +227,7 @@ def battle(request, user_name):
     city = City.objects.get(account=account)
     context_dict = {'enemy_city': enemy_city, 'city': city, 'user': user}
     return render(request, 'game/battle.html', context_dict)
+
 
 @login_required
 def change_orders(request):
@@ -658,6 +671,7 @@ def alliance_search_empty(request):
     similar_alliances = Alliance.objects.order_by('-all_time_score')
     context_dict = {'similar_alliances': similar_alliances, 'query': ""}
     return render(request, 'game/alliance_search.html', context_dict)
+
 
 @login_required
 def user_search(request, query):
