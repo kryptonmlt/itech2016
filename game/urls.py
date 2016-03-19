@@ -36,6 +36,8 @@ urlpatterns = patterns('',
                        url(r'^alliance_search/(?P<query>[\w\-]+)/$', views.alliance_search, name='alliance_search'),
                        url(r'^alliance_search/$', views.alliance_search_empty, name='alliance_search_empty'),
                        url(r'^battle/(?P<user_name>[\w\-]+)/$', views.battle, name='battle'),
+                       url(r'^user_search/(?P<query>[\w\-]+)/$', views.user_search, name='user_search'),
+                       url(r'^user_search/$', views.user_search_empty, name='user_search_empty'),
                        )
 
 if settings.DEBUG is True:

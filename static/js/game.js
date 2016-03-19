@@ -97,6 +97,7 @@
                                 $('#farms_gold_cost').html(res[2]);
                                 $('#farms_lumber_cost').html(res[3]);
                                 $('#farms_stone_cost').html(res[4]);
+                                getMap();
                                 break;
                            case "wall":
                                 console.log(data);
@@ -105,6 +106,7 @@
                                 $('#walls_gold_cost').html(res[1]);
                                 $('#walls_lumber_cost').html(res[2]);
                                 $('#walls_stone_cost').html(res[3]);
+                                getMap();
                                 break;
                            case "stone_caves":
                                 var res = data.split(",");
@@ -112,6 +114,7 @@
                                 $('#stone_mine_gold_cost').html(res[1]);
                                 $('#stone_mine_lumber_cost').html(res[2]);
                                 $('#stone_mine_stone_cost').html(res[3]);
+                                getMap();
                                 break;
                            case "gold_mines":
                                 var res = data.split(",");
@@ -119,6 +122,7 @@
                                 $('#gold_mine_gold_cost').html(res[1]);
                                 $('#gold_mine_lumber_cost').html(res[2]);
                                 $('#gold_mine_stone_cost').html(res[3]);
+                                getMap();
                                 break;
                            case "lumber_mills":
                                 var res = data.split(",");
@@ -126,6 +130,7 @@
                                 $('#lumber_mill_gold_cost').html(res[1]);
                                 $('#lumber_mill_lumber_cost').html(res[2]);
                                 $('#lumber_mill_stone_cost').html(res[3]);
+                                getMap();
                                 break;
                            case "knights":
                                 $('#knights').html(data);
