@@ -29,6 +29,18 @@
             });
         }
 
+         function updateOpponentsList(){
+            $.get('/game/updateEnemies/', function(data){
+                users = data.split(',');
+                oppHtml="";
+                for(i=0; i<users.length;i++){
+                    oppHtml+="<a href=\"/game/battle/users[i]\" class=\"list-group-item\"><strong>users[i]</strong></a>";
+               }
+                $('#opponents_list').html(oppHtml);
+            });
+         }
+
+
         function startTimer(duration, display) {
             var timer = duration, minutes, seconds;
             var ct = setInterval(function () {

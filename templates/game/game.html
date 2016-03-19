@@ -264,8 +264,8 @@
                 <div class="list-group">
                     <a class="nav-header disabled"><p class="secondary-heading list-group-item active">Opponents</p></a>
                     <div id="opponents_list">
-                    {% for acc in userlist %}
-                    <a href="/game/battle/{{acc.user.username}}" class="list-group-item"><strong>{{acc.user.username}}</strong></a>
+                    {% for city in citieslist %}
+                    <a href="/game/battle/{{city.account.user.username}}" class="list-group-item"><strong>{{city.account.user.username}}</strong></a>
                     {% endfor %}
                     </div>
                 </div>

@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from game.forms import CityForm
 from django.utils import timezone
 from random import randint
-from django.db.models import Q
+from django.db.models import Q,F
 from django.utils.datastructures import MultiValueDictKeyError
 
 
@@ -34,8 +34,11 @@ def index(request):
             city_form = CityForm()
             return render(request, 'game/create_city.html', {'city_form': city_form, 'acc': acc, 'err_msg': err_msg})
 
-    cities = City.objects.all()
     userlist = Account.objects.all().filter(~Q(alliance=acc.alliance), ~Q(user=request.user))
+    max_farms = city.farms+1
+    min_farms = city.farms-1
+    citieslist = City.objects.filter(account=userlist , farms__gt=min_farms,farms__lt=max_farms)
+
     wall_price = cost.calc_wall_price(city.walls_level).split(",")
     farms_price = cost.calc_farms_price(city.farms).split(",")
     stone_caves_price = cost.calc_caves_price(city.stone_caves).split(",")
@@ -59,7 +62,7 @@ def index(request):
     war_machine_price = cost.calc_war_machines_price().split(",")
     cost.war_machines_gold_cost = war_machine_price[0]
     cost.war_machines_lumber_cost = war_machine_price[1]
-    context_dict = {'userlist': userlist, 'cost': cost, 'city': city, 'acc': acc}
+    context_dict = {'citieslist': citieslist, 'cost': cost, 'city': city, 'acc': acc}
     return render(request, 'game/game.html', context_dict)
 
 
@@ -376,6 +379,23 @@ def get_resources(request):
     city = City.objects.all().get(account=acc)
     return HttpResponse(
         str(city.get_total_troops()) + "," + str(city.gold) + "," + str(city.lumber) + "," + str(city.stones))
+
+def updateEnemies(request):
+    acc = Account.objects.get(user=request.user)
+    city = City.objects.get(account=acc)
+    userlist = Account.objects.all().filter(~Q(alliance=acc.alliance), ~Q(user=request.user))
+    max_farms = city.farms+1
+    min_farms = city.farms-1
+    citieslist = City.objects.filter(account=userlist , farms__gt=min_farms,farms__lt=max_farms)
+    userslist=""
+    c=0
+    for city in citieslist:
+        userslist+=city.account.user
+        if c!=len(citieslist):
+            userslist+=","
+            c+1
+    return HttpResponse(userslist)
+
 
 
 @login_required
