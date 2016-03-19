@@ -34,6 +34,7 @@ def index(request):
             city_form = CityForm()
             return render(request, 'game/create_city.html', {'city_form': city_form, 'acc': acc, 'err_msg': err_msg})
 
+    cities = City.objects.all()
     userlist = Account.objects.all().filter(~Q(alliance=acc.alliance), ~Q(user=request.user))
     wall_price = cost.calc_wall_price(city.walls_level).split(",")
     farms_price = cost.calc_farms_price(city.farms).split(",")

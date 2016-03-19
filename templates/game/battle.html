@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load staticfiles %}
+
 {% block content %}
 <script src="{% static "js/battle.js" %}"></script>
 <script>
@@ -14,8 +15,7 @@ window.location.href = "/game";
 
 {% if user.is_authenticated %}
 
-{% if city.account.alliance %}
-{% if city.account.alliance == enemy_city.account.alliance %}
+{% if city.account.alliance and city.account.alliance == enemy_city.account.alliance %}
 <div class="col-md-5">
 </div>
 <div class="col-md-2">
@@ -60,8 +60,8 @@ window.location.href = "/game";
 </div>
 <div class="col-md-5">
 </div>
+
 {% else %}
-{% block battle_block %}
 <div class="container">
     <div class="row">
         <div class="col-md-2 text-center">
@@ -141,10 +141,7 @@ window.location.href = "/game";
 </div>
 </body>
 </html>
-{% endblock battle_block %}
-{% endif %}
-{% else %}
-battle_block
+{% endblock %}
 {% endif %}
 {% else %}
     <meta http-equiv="refresh" content="0; url=/"/>
