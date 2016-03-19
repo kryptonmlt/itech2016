@@ -34,7 +34,7 @@
                 users = data.split(',');
                 oppHtml="";
                 for(i=0; i<users.length;i++){
-                    oppHtml+="<a href=\"/game/battle/users[i]\" class=\"list-group-item\"><strong>users[i]</strong></a>";
+                    oppHtml+="<a href=\"/game/battle/"+users[i]+"\" class=\"list-group-item\"><strong>"+users[i]+"</strong></a>";
                }
                 $('#opponents_list').html(oppHtml);
             });
@@ -116,6 +116,7 @@
                                 $('#farms_lumber_cost').html(res[3]);
                                 $('#farms_stone_cost').html(res[4]);
                                 getMap();
+                                updateOpponentsList();
                                 break;
                            case "wall":
                                 console.log(data);

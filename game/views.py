@@ -383,14 +383,14 @@ def get_resources(request):
 def updateEnemies(request):
     acc = Account.objects.get(user=request.user)
     city = City.objects.get(account=acc)
-    userlist = Account.objects.all().filter(~Q(alliance=acc.alliance), ~Q(user=request.user))
+    userslist = Account.objects.all().filter(~Q(alliance=acc.alliance), ~Q(user=request.user))
     max_farms = city.farms+1
     min_farms = city.farms-1
-    citieslist = City.objects.filter(account=userlist , farms__gt=min_farms,farms__lt=max_farms)
+    citieslist = City.objects.filter(account=userslist , farms__gte=min_farms,farms__lte=max_farms)
     userslist=""
     c=0
-    for city in citieslist:
-        userslist+=city.account.user
+    for ecity in citieslist:
+        userslist+=ecity.account.user
         if c!=len(citieslist):
             userslist+=","
             c+1
