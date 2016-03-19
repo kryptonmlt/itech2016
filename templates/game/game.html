@@ -209,13 +209,17 @@
 
         <div class="col-md-7 text-center" style="height:550px">
             <canvas id="canvas" ></canvas>
+
+            <div class="row">
+                <button id="findMeButton" class="btn btn-default" type="button">Find Me</button>
+            </div>
         </div>
 
         <div class="col-md-2 text-center">
 
             <div class="row accFrame">
                 <img class="accountPicture" src="{{ MEDIA_URL }}/media/{{acc.picture}}" %} alt="Account Picture" />
-                <img class="accPictureFrame" src="http://kurtportelli.com/kurtftp/resources/columnFrame.png" alt="Account Picture Frame"/>
+                <img class="accPictureFrame" src="{% static "images/columnFrame.png" %}" alt="Account Picture Frame"/>
             </div>
 
             <div class="row">

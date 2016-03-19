@@ -683,15 +683,15 @@ def get_map(request):
                 if i == 1:
                     matrix[city_x][city_y] = str(i) + "-" + str(city.walls_level)
                 elif i == 2:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.walls_level)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)
                 elif i == 3:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.walls_level)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)
                 elif i == 4:
                     matrix[city_x][city_y] = str(i) + "-" + str(city.farms)
                 elif i == 5:
                     matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)
                 elif i == 6:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.walls_level)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)
                 elif i == 7:
                     matrix[city_x][city_y] = str(i) + "-" + str(city.lumber_mills)
                 elif i == 8:
