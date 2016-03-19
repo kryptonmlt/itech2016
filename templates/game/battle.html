@@ -4,7 +4,7 @@
 {% block content %}
 <script src="{% static "js/battle.js" %}"></script>
 <script>
-{% if user == city.account.user %}
+{% if user == enemy_city.account.user %}
 window.location.href = "/game";
 {% endif %}
 </script>
@@ -22,7 +22,7 @@ window.location.href = "/game";
             <div class="text-center">
                 <h1>{{enemy_city.account.user.username}}</h1>
                 <div class="row">
-                    <img src="{{ MEDIA_URL }}/media/{{enemy_city.account.picture}}" %}" width=90%
+                    <img src="{{ MEDIA_URL }}/{{enemy_city.account.picture}}" %}" width=90%
                     class="img-thumbnail"/>
                 </div>
                 <div class="row">
@@ -68,7 +68,7 @@ window.location.href = "/game";
             <h1>{{city.account.user.username}}</h1>
 
             <div class="row">
-                <img src="{{ MEDIA_URL }}/media/{{city.account.picture}}" %}" width=90% class="img-thumbnail"/>
+                <img src="{{ MEDIA_URL }}/{{city.account.picture}}" %}" width=90% class="img-thumbnail"/>
             </div>
             <div class="row">
                 <li><strong>Supply Capacity: </strong><span
@@ -96,7 +96,7 @@ window.location.href = "/game";
             <div class="text-center">
                 <h1>{{enemy_city.account.user.username}}</h1>
                 <div class="row">
-                    <img src="{{ MEDIA_URL }}/media/{{enemy_city.account.picture}}" %}" width=90%
+                    <img src="{{ MEDIA_URL }}/{{enemy_city.account.picture}}" %}" width=90%
                     class="img-thumbnail"/>
                 </div>
                 <div class="row">
