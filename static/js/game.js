@@ -166,6 +166,9 @@
                 updateResources();
             });
 
+            $('#findMeButton').click(function(){
+                initializeMapWithPlayerLoc();
+            });
 
             // when alert close
             $('.alert .close').on('click', function(e) {
@@ -258,11 +261,15 @@
                         rows[i][j]=row_contents[j];
                     }
                 }
-                $.get('/game/get_map_details', function(data){
-                    xy = data.split(',');
-                    setInitialPlayerLoc( parseInt(xy[0]) , parseInt(xy[1]) );
-                    resizeCanvas();
-                });
+                initializeMapWithPlayerLoc();
+            });
+        }
+
+        function initializeMapWithPlayerLoc(){
+            $.get('/game/get_map_details', function(data){
+                xy = data.split(',');
+                setInitialPlayerLoc( parseInt(xy[0]) , parseInt(xy[1]) );
+                resizeCanvas();
             });
         }
 
