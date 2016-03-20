@@ -179,7 +179,13 @@
                     if(data ==1){
                         window.location.href = "/game/";
                     }else{
-                        console.log(data);
+                        if(data == "-1"){
+                            //show alert
+                            $("#noAllianceName").show();
+                        }else if (data=="-2"){
+                            //show alert
+                            $("#allianceAlreadyExists").show();
+                        }
                     }
                 });
             });
