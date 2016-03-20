@@ -47,7 +47,7 @@
             {% if user.is_authenticated %}
                 <li><a href="/game/" class="navbar-link">City</a></li>
                 {% if acc.alliance %}
-                    <li><a href="/game/alliance/{{acc.alliance.name}}" class="navbar-link">Alliance</a></li>
+                    <li><a href="/game/alliance/{{acc.alliance.slug}}" class="navbar-link">Alliance</a></li>
                 {% else %}
                     <li><a href="/game/alliance_search/" class="navbar-link">Alliance</a></li>
                 {% endif %}
