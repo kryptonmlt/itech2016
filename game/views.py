@@ -667,6 +667,13 @@ def create_alliance(request):
         # missing data exit
         return HttpResponse("-1")
 
+    if name == '':
+        # not enough data provided
+        return HttpResponse("-1")
+    # check if allicance already exists
+    if Alliance.objects.filter(name=name).first() is not None:
+        return HttpResponse("-2")
+
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
     # create alliance
