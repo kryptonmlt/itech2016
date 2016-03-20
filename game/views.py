@@ -182,6 +182,7 @@ def add_message(request):
         other_account = Account.objects.get(pk=to_account_id)
         m = Message.objects.create(from_account=acc, to_account=other_account, text=message)
         m.save()
+        create_log(other_account, "Message from " + acc.user.username + ": " + message)
     except MultiValueDictKeyError:
         return HttpResponse("-1")
     return HttpResponse("1")
