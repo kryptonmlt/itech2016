@@ -208,6 +208,13 @@
             populateLogBox();
             setInterval(function() {populateLogBox()}, 5000);
 
+            var im = document.getElementsByClassName('accountPicture')[0]; 
+            im.onerror = function(){
+
+              // image not found or change src like this as default image:
+               im.src = '/media/portraits/1.png';
+            };
+            
         });
 
         var canvasX = 800;
