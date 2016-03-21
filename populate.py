@@ -8,7 +8,7 @@ import django
 django.setup()
 
 from django.contrib.auth.models import User
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from game.models import Alliance, Account, City, AllianceRequest, Message, Badge, Log, Cost, MapInfo
 
@@ -76,7 +76,7 @@ def add_user(name, email, password):
 
 def add_account(user, wins, defeats, alliance_owner, alliance, picture=None):
     a = Account.objects.get_or_create(user=user)[0]
-    a.last_attacked = datetime.now()
+    a.last_attacked = datetime.now()  - timedelta(days=1)
     a.last_received_gold = datetime.now()
     a.wins = wins
     a.defeats = defeats
