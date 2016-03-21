@@ -1,4 +1,5 @@
 import os
+import random
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'itech2016.settings')
 
@@ -56,7 +57,7 @@ def populate():
 
 def add_user_account_city_log_badge(username, email, password, alliance, alliance_owner):
     u = add_user(username, email, password)
-    a = add_account(u, 10, 10, alliance_owner, alliance, username)
+    a = add_account(u, 10, 10, alliance_owner, alliance)
     add_city(a, username + ' Kingdom', 10000, 1, 1, 1, 0, 0, 0, 0)
     add_log(a, 'Welcome to the game !')
     add_log(a, 'Your citizens awarded you with 10,000 gold to start building the city!')
@@ -73,7 +74,7 @@ def add_user(name, email, password):
     return u
 
 
-def add_account(user, wins, defeats, alliance_owner, alliance, picture):
+def add_account(user, wins, defeats, alliance_owner, alliance, picture=None):
     a = Account.objects.get_or_create(user=user)[0]
     a.last_attacked = datetime.now()
     a.last_received_gold = datetime.now()
@@ -81,7 +82,12 @@ def add_account(user, wins, defeats, alliance_owner, alliance, picture):
     a.defeats = defeats
     a.alliance_owner = alliance_owner
     a.alliance = alliance
-    a.picture = 'media/' + picture
+    if picture is None:
+        #pick random default picture
+        pic_id = random.randrange(1,5,1)
+        a.picture = 'media/portraits/' + str(pic_id) + '.png'
+    else:
+        a.picture = picture
     a.save()
     return a
 

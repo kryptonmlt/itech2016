@@ -25,7 +25,7 @@ class Alliance(models.Model):
 
 class Account(models.Model):
     user = models.OneToOneField(User, default=None)
-    picture = models.ImageField(upload_to='portraits', blank=True)
+    picture = models.ImageField(upload_to='account_pics', blank=True)
     last_attacked = models.DateTimeField('date attacked', default=None, null=True, blank=True)
     last_received_gold = models.DateTimeField('date received gold', default=timezone.now)
     wins = models.IntegerField(default=0)
