@@ -198,6 +198,10 @@ def add_alliance_message(request):
         other_alliance = Alliance.objects.get(pk=to_alliance_id)
         am = AllianceMessage.objects.create(from_account=acc, to_alliance=other_alliance, text=message)
         am.save()
+        allies = Account.objects.all().filter(alliance=other_alliance)
+        for ally in allies:
+            if ally != acc:
+                create_log(ally, "Message from " + acc.user.username + " @ " + other_alliance.name + ": " + message)
     except MultiValueDictKeyError:
         return HttpResponse("-1")
     return HttpResponse("1")
