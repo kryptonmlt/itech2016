@@ -40,6 +40,7 @@ urlpatterns = patterns('',
                        url(r'^battle/(?P<user_name>[\w\-]+)/$', views.battle, name='battle'),
                        url(r'^user_search/(?P<query>[\w\-]+)/$', views.user_search, name='user_search'),
                        url(r'^user_search/$', views.user_search_empty, name='user_search_empty'),
+                       url(r'^upload_user_pic/$', views.upload_user_pic, name='upload_user_pic'),
                        )
 
 if settings.DEBUG is True:

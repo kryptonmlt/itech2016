@@ -9,7 +9,9 @@ from django.utils import timezone
 from random import randint
 from django.db.models import Q,F
 from django.utils.datastructures import MultiValueDictKeyError
-
+from django.conf import settings
+import tempfile
+import shutil
 
 # Create your views here.
 @login_required()
@@ -689,6 +691,19 @@ def create_alliance(request):
     acc.alliance_owner = True
     acc.save()
     create_log(acc, "Let it be known, " + acc.user.username + " just founded the alliance " + acc.alliance.name)
+    return HttpResponse("1")
+
+@login_required
+def upload_user_pic(request):
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
+    source = request.FILES['account_picture']
+    #store the file somehow
+    # this could be useful:
+    # http://stackoverflow.com/questions/5871730/need-a-minimal-django-file-upload-example
+    # https://docs.djangoproject.com/en/dev/topics/http/file-uploads/
+    #acc.picture = 
+    #acc.save()
     return HttpResponse("1")
 
 
