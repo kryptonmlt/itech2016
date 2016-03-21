@@ -219,14 +219,19 @@
         var sizeY = parseInt(canvasY / fitY);
 
         var grass = new Image();
-        var castle = new Image();
+        all_castle_levels=11
+        var castle = [all_castle_levels];
+        for	(index = 0; index < all_castle_levels; index++) {
+            castle[index] = new Image();
+            castle[index].src = "/static/images/castle/castle"+(index+1)+".png";
+        }
+
         var farm = new Image();
         var lumbermill = new Image();
         var stoneMine = new Image();
         var goldMine = new Image();
         var house = new Image();
         grass.src = "http://kurtportelli.com/kurtftp/resources/forest1.jpg";
-        castle.src = "http://kurtportelli.com/kurtftp/resources/castle1_merged.png";
         farm.src = "http://kurtportelli.com/kurtftp/resources/farm_merged.png";
         lumbermill.src = "http://kurtportelli.com/kurtftp/resources/lumbermill_merged.png";
         stoneMine.src = "http://kurtportelli.com/kurtftp/resources/stone_mine_merged.png";
@@ -414,7 +419,8 @@
                     contents = rows[i][j];
                     contents = contents.split("-");
                     land_type = contents[0];
-                    level = contents[1];
+                    level = contents[2];
+                    context.drawImage(grass, posX, posY, sizeX, sizeY);
                     switch (parseInt(land_type)) {
                         case 0:
                             context.drawImage(grass, posX, posY, sizeX, sizeY);
@@ -423,19 +429,23 @@
                             context.drawImage(house, posX, posY, sizeX, sizeY);
                             break;
                         case 2:
-                            context.drawImage(castle, posX, posY, sizeX, sizeY);
+                            level -=1;
+                            context.drawImage(castle[level],0,0, castle[level].width/2 , castle[level].height/2 , posX, posY, sizeX, sizeY);
                             break;
                         case 3:
-                            context.drawImage(castle, posX, posY, sizeX, sizeY);
+                            level -=1;
+                            context.drawImage(castle[level], castle[level].width/2 ,0, castle[level].width/2 , castle[level].height/2 , posX, posY, sizeX, sizeY);
                             break;
                         case 4:
                             context.drawImage(farm, posX, posY, sizeX, sizeY);
                             break;
                         case 5:
-                            context.drawImage(castle, posX, posY, sizeX, sizeY);
+                            level -=1;
+                            context.drawImage(castle[level],0,castle[level].height/2 , castle[level].width/2 , castle[level].height/2, posX, posY, sizeX, sizeY);
                             break;
                         case 6:
-                            context.drawImage(castle, posX, posY, sizeX, sizeY);
+                            level -=1;
+                            context.drawImage(castle[level], castle[level].width/2 , castle[level].height/2 , castle[level].width/2 , castle[level].height/2 , posX, posY, sizeX, sizeY);
                             break;
                         case 7:
                             context.drawImage(lumbermill, posX, posY, sizeX, sizeY);
@@ -464,12 +474,13 @@
                     contents = rows[i][j];
                     contents = contents.split("-");
                     land_type = contents[0];
-                    level = contents[1];
+                    username = contents[1];
+                    level = contents[2];
                     if (land_type == "1"||land_type == "4"||land_type == "7"||land_type == "8"||land_type == "9") {
                         drawTextBG(context,level,posX+(sizeX*0.8), posY+(sizeY*0.8));
                     }
                     if (land_type == "5") {
-                        drawTextBG(context,level,posX+(sizeX*0.8), posY+(sizeY*0.8));
+                        drawTextBG(context,username,posX+(sizeX*0.8), posY+(sizeY*0.8));
                     }
                     posX += sizeX;
                 }

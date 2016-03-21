@@ -741,23 +741,23 @@ def get_map(request):
         for city_y in range(city.y - 1, city.y + 2):
             for city_x in range(city.x - 1, city.x + 2):
                 if i == 1:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.walls_level)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)+ "-" +str(city.walls_level)
                 elif i == 2:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)+ "-" + str(city.walls_level)
                 elif i == 3:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)+ "-" + str(city.walls_level)
                 elif i == 4:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.farms)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)+ "-" +str(city.farms)
                 elif i == 5:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)+ "-" + str(city.walls_level)
                 elif i == 6:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)+ "-" + str(city.walls_level)
                 elif i == 7:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.lumber_mills)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)+ "-" +str(city.lumber_mills)
                 elif i == 8:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.stone_caves)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)+ "-" +str(city.stone_caves)
                 elif i == 9:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.gold_mines)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)+ "-" +str(city.gold_mines)
 
                 i += 1
     tile_map = ""
