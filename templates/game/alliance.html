@@ -10,72 +10,77 @@
 {% if user.is_authenticated %}
 <div class="container">
     <div class="row">
-        <h1>Alliance {{ alliance.name}}</a></h1>
-        <h2>Leader <a href="/game/battle/{{leader}}">{{leader}}</a></h2>
+        <div class="col-sm-4">
+            <div class="row">
+                <h1>Alliance {{ alliance.name}}</a></h1>
+                {% if acc.description != '' %}
+                    <strong>Description:</strong> {{ alliance.description}} <br>
+                {% endif %} 
+                <strong>Score:</strong> {{ alliance.all_time_score}}
+                <h2>Leader <a href="/game/battle/{{leader}}">{{leader}}</a></h2>
+            </div>
+
+            <div class="row">
+                {% if acc.alliance != alliance %}
+                <strong>Alliance Request:</strong><input type="text" id="msg">
+                <button onclick="sendAllianceRequest();" id="alliance_request_button" class="btn btn-primary" type="button">
+                    Request
+                </button>
+                {% endif %}
+                {% if acc.alliance == alliance %}
+                <button onclick="leaveAlliance();" id="leave_button" class="btn btn-primary" type="button">Leave</button>
+                {% endif %}
+            </div>           
+        </div>
+
+        <div class="col-sm-8">
+            <div class=" pull-right">
+                {% if acc.alliance == alliance %}
+                    <div class="row">                        
+                        <h2>Alliance Chat</h2>
+                    </div>
+                    <div class="row">
+                            <textarea id="alliance_text_area"
+                                      style="min-width: 100%; height: 100px; max-height: 100px;"></textarea>
+                    </div>
+                    <div class="row">
+                            <input type="text" id="user_msg">
+                            <button id="sendButton" class="btn btn-default" type="button">Send</button>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
     </div>
 
-    <div class="row">
-        {% if acc.alliance != alliance %}
-        <strong>Alliance Request:</strong><input type="text" id="msg">
-        <button onclick="sendAllianceRequest();" id="alliance_request_button" class="btn btn-primary" type="button">
-            Request
-        </button>
-        {% endif %}
-        {% if acc.alliance == alliance %}
-        <button onclick="leaveAlliance();" id="leave_button" class="btn btn-primary" type="button">Leave</button>
-        {% endif %}
-    </div>
-    <div class="row">
+
+    {% if acc.alliance == alliance %}
         <div class="row">
-            <strong>Alliance score:</strong> {{ alliance.all_time_score}}
+            <h3>Orders:</h3>
         </div>
-        <div class="row">
-            <strong>Description:</strong> {{ alliance.description}}
-        </div>
-        {% if acc.alliance == alliance %}
-        <div class="row">
-            <strong>Orders:</strong>
-        </div>
+
         <div class="row">
                     <textarea id="orders_text_area"
                               style="min-width: 100%; height: 100px; max-height: 100px;">{{ alliance.orders}}</textarea>
         </div>
         {% if request.user.username == leader %}
-        <div class="row">
-            <button onclick="changeOrders();" id="change_orders_button" class="btn btn-primary" type="button">Change
-            </button>
-        </div>
+            <div class="row">
+                <button onclick="changeOrders();" id="change_orders_button" class="btn btn-primary" type="button">Change
+                </button>
+            </div>
         {% endif %}
-        {% endif %}
-    </div>
+    {% endif %}
+
     <div class="row">
         <div class="alert fade in alert-success" id="leaveNotifAlert" style="display:none;">
             <button type="button" class="close">Back</button>
             <strong><span id="requestResult"></span></strong>
         </div>
     </div>
+    
 
     <div class="row">
-        {% if acc.user.username == leader %}
-        <h3>Alliance Requests ({{ requests | length }})</h3>
-        <ol>
-            {% for req in requests %}
-            <li>{{req.from_account.user.username}} - {{req.date_occurred}}, Message: {{req.text}} , Wins:
-                {{ req.from_account.wins }}
-                <button reqAcc="{{req.from_account.user.username}}" type="button"
-                        class="btn btn-success btn-xs acceptButton">Y
-                </button>
-                <button reqAcc="{{req.from_account.user.username}}" type="button"
-                        class="btn btn-danger btn-xs declineButton">N
-                </button>
-            </li>
-            {% endfor %}
-        </ol>
-        {% endif %}
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <h3>Members ({{ allies | length }} / 50)</h3>
             <ol>
                 {% for ally in allies %}
@@ -90,22 +95,28 @@
                 </li>
                 {% endfor %}
             </ol>
+        </div>       
+
+        <div class="col-md-8">
+            <div class=" pull-right">
+                {% if acc.user.username == leader %}
+                <h3>Alliance Requests ({{ requests | length }})</h3>
+                <ol>
+                    {% for req in requests %}
+                    <li>{{req.from_account.user.username}} - {{req.date_occurred}}, Message: {{req.text}} , Wins:
+                        {{ req.from_account.wins }}
+                        <button reqAcc="{{req.from_account.user.username}}" type="button"
+                                class="btn btn-success btn-xs acceptButton">Y
+                        </button>
+                        <button reqAcc="{{req.from_account.user.username}}" type="button"
+                                class="btn btn-danger btn-xs declineButton">N
+                        </button>
+                    </li>
+                    {% endfor %}
+                </ol>
+                {% endif %}
+            </div>
         </div>
-        {% if acc.alliance == alliance %}
-        <div class="col-md-6">
-            <div class="row">
-                <label for="alliance_text_area" id="alliance_chat_heading">Alliance Chat</label>
-            </div>
-            <div class="row">
-                    <textarea id="alliance_text_area"
-                              style="min-width: 100%; height: 100px; max-height: 100px;"></textarea>
-            </div>
-            <div class="row">
-                    <input type="text" id="user_msg">
-                    <button id="sendButton" class="btn btn-default" type="button">Send</button>
-            </div>
-        </div>
-        {% endif %}
     </div>
 </div>
 
