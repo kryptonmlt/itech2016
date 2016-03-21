@@ -211,16 +211,19 @@
             var im = document.getElementsByClassName('accountPicture')[0]; 
             im.onerror = function(){
 
-              // image not found or change src like this as default image:
-               im.src = '/media/portraits/1.png';
+                // image not found, change src as default image:
+                im.src = 'http://www.dazzlepanel.com/projects/kurt/images/acc.png';
             };
 
             $('#uploadButton').click(function() {
                 $('input[type=file]').trigger('click');
             });
 
+
             $('input[type=file]').change(function() {
                 $('#uploadButton').val($(this).val());
+                var filePath = $(this).val();
+                console.log(filePath);
             });
             
         });

@@ -221,7 +221,7 @@
                 <img class="accountPicture" src="{{ MEDIA_URL }}/{{acc.picture}}" %} alt="Account Picture" />                               
                 <img class="accPictureFrame" src="{% static "images/columnFrame.png" %}" alt="Account Picture Frame"/>                
                 <button id="uploadButton" class="btn btn-default" type="button"> <span class="glyphicon glyphicon-camera"></span></button>
-                <input type="file" />
+                <input type="file" name="account_picture" accept="image/*" />
             </div>
 
             <div class="row">
