@@ -207,6 +207,7 @@
             //polling that gets the logs
             populateLogBox();
             setInterval(function() {populateLogBox()}, 5000);
+
         });
 
         var canvasX = 800;
