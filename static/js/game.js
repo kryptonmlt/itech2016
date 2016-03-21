@@ -435,45 +435,51 @@
             for (var i = mapY; i < mapY + fitY; i++) {
                 //console.log(rows[i]);
                 for (var j = mapX; j < mapX + fitX; j++) {
+                    endOfRowCompensation=0
+                    if( j == mapX + fitX -1){
+                        endOfRowCompensation= canvas.width - (sizeX*fitX);
+                        if(endOfRowCompensation < 0){
+                            endOfRowCompensation=0;
+                        }
+                    }
                     contents = rows[i][j];
                     contents = contents.split("-");
                     land_type = contents[0];
                     level = contents[2];
-                    context.drawImage(grass, posX, posY, sizeX, sizeY);
+                    context.drawImage(grass, posX, posY, sizeX+endOfRowCompensation, sizeY);
                     switch (parseInt(land_type)) {
                         case 0:
-                            context.drawImage(grass, posX, posY, sizeX, sizeY);
                             break;
                         case 1:
-                            context.drawImage(house, posX, posY, sizeX, sizeY);
+                            context.drawImage(house, posX, posY, sizeX+endOfRowCompensation, sizeY);
                             break;
                         case 2:
                             level -=1;
-                            context.drawImage(castle[level],0,0, castle[level].width/2 , castle[level].height/2 , posX, posY, sizeX, sizeY);
+                            context.drawImage(castle[level],0,0, castle[level].width/2 , castle[level].height/2 , posX, posY, sizeX+endOfRowCompensation, sizeY);
                             break;
                         case 3:
                             level -=1;
-                            context.drawImage(castle[level], castle[level].width/2 ,0, castle[level].width/2 , castle[level].height/2 , posX, posY, sizeX, sizeY);
+                            context.drawImage(castle[level], castle[level].width/2 ,0, castle[level].width/2 , castle[level].height/2 , posX, posY, sizeX+endOfRowCompensation, sizeY);
                             break;
                         case 4:
-                            context.drawImage(farm, posX, posY, sizeX, sizeY);
+                            context.drawImage(farm, posX, posY, sizeX+endOfRowCompensation, sizeY);
                             break;
                         case 5:
                             level -=1;
-                            context.drawImage(castle[level],0,castle[level].height/2 , castle[level].width/2 , castle[level].height/2, posX, posY, sizeX, sizeY);
+                            context.drawImage(castle[level],0,castle[level].height/2 , castle[level].width/2 , castle[level].height/2, posX, posY, sizeX+endOfRowCompensation, sizeY);
                             break;
                         case 6:
                             level -=1;
-                            context.drawImage(castle[level], castle[level].width/2 , castle[level].height/2 , castle[level].width/2 , castle[level].height/2 , posX, posY, sizeX, sizeY);
+                            context.drawImage(castle[level], castle[level].width/2 , castle[level].height/2 , castle[level].width/2 , castle[level].height/2 , posX, posY, sizeX+endOfRowCompensation, sizeY);
                             break;
                         case 7:
-                            context.drawImage(lumbermill, posX, posY, sizeX, sizeY);
+                            context.drawImage(lumbermill, posX, posY, sizeX+endOfRowCompensation, sizeY);
                             break;
                         case 8:
-                            context.drawImage(stoneMine, posX, posY, sizeX, sizeY);
+                            context.drawImage(stoneMine, posX, posY, sizeX+endOfRowCompensation, sizeY);
                             break;
                         case 9:
-                            context.drawImage(goldMine, posX, posY, sizeX, sizeY);
+                            context.drawImage(goldMine, posX, posY, sizeX+endOfRowCompensation, sizeY);
                             break;
                         default:
                             break;
