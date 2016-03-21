@@ -18,6 +18,11 @@
     left: 0;
     top: 0;
 }
+#uploadButton{
+    position:relative;
+    bottom:40px;
+    opacity: 0.6;
+}
 
 /* ADDED BY CHRIS */
 .table {
