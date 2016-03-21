@@ -214,6 +214,14 @@
               // image not found or change src like this as default image:
                im.src = '/media/portraits/1.png';
             };
+
+            $('#uploadButton').click(function() {
+                $('input[type=file]').trigger('click');
+            });
+
+            $('input[type=file]').change(function() {
+                $('#uploadButton').val($(this).val());
+            });
             
         });
 

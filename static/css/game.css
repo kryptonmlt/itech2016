@@ -23,6 +23,11 @@
     bottom:40px;
     opacity: 0.6;
 }
+input[type=file] {
+    display:block;
+    height:0;
+    width:0;
+}
 
 /* ADDED BY CHRIS */
 .table {
