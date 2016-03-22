@@ -70,7 +70,7 @@ class City(models.Model):
     lumber = models.IntegerField(default=1000)
     stones = models.IntegerField(default=1000)
     farms = models.IntegerField(default=1)
-    walls_level = models.IntegerField(default=0)
+    walls_level = models.IntegerField(default=1)
     lumber_mills = models.IntegerField(default=1)
     stone_caves = models.IntegerField(default=1)
     gold_mines = models.IntegerField(default=1)
