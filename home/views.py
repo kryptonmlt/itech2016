@@ -5,6 +5,8 @@ from game.forms import UserForm
 from django.http import HttpResponse, HttpResponseRedirect
 from game.models import Account, Alliance
 from django.db.models import F
+from datetime import datetime, timedelta
+import random
 
 
 def register(request):
@@ -33,6 +35,8 @@ def register(request):
 
             # create account
             a = Account.objects.get_or_create(user=user)[0]
+            pic_id = random.randrange(1,5,1)
+            a.picture = 'media/portraits/' + str(pic_id) + '.png'
             a.save()
 
             # Update our variable to tell the template registration was successful.
