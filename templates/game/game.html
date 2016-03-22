@@ -55,16 +55,6 @@
 
 <div class="container">
     <div class="row">
-        <h3 class="lord-name">Lord <strong>{{acc.user}}</strong> of <strong>{{city.name}}, </strong>
-            {% if acc.alliance %}
-                {% if acc.alliance_owner %}
-                    Leader of
-                {% else %}
-                    Member of
-                {% endif %}
-                <a href="/game/alliance/{{acc.alliance.slug}}">{{acc.alliance.name}}</a><br/>
-            {% endif %}
-        </h3>
         <ul id="supplyViewer">
             <li class="supply">
                 <img alt="house icon" src="{% static "images/structures/house.png" %}" class="img-responsive"/>
@@ -278,6 +268,16 @@
         </div>
 
         <div class="col-md-2 text-center">
+            <h3 class="lord-name">Lord <strong>{{acc.user}}</strong> of <strong>{{city.name}}</strong>
+                {% if acc.alliance %}
+                    {% if acc.alliance_owner %}
+                        <br />Leader of
+                    {% else %}
+                        <br />Member of
+                    {% endif %}
+                    <a href="/game/alliance/{{acc.alliance.slug}}"><strong>{{acc.alliance.name}}</strong></a><br/>
+                {% endif %}
+            </h3>
 
             <div class="row accFrame">
                 <img class="accountPicture" src="{{ MEDIA_URL }}/{{acc.picture}}" alt="Account Picture" />
@@ -288,7 +288,7 @@
             </div>
 
             <div class="row" style='margin-bottom:5px;'>
-                <span id="timeSpan"></span>
+                <span id="resources_in">Resources in: </span><span id="timeSpan"></span>
                 <ul id="PageFunctions">
                     <li><button id="findMeButton" class="btn btn-default pending" type="button">Find Me</button></li>
                     <li><button id="collectButton" class="btn btn-default takeAction" type="button">Collect</button></li>

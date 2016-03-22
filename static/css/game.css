@@ -371,7 +371,9 @@ input[type=file] {
     position: relative;
     top: 1px;
 }
-
+.secondary-heading{
+    background-color: rgba(69, 59, 47, 0.5);
+}
 #opponents_list{
 		overflow: scroll;
         overflow-x:hidden;
@@ -402,7 +404,7 @@ input[type=file] {
   }
 
   #PageFunctions li button.takeAction {
-    background-color:#D5357C;
+    background-color:#DF543F;
     color:#fff;
     font-weight:bold;
   }
@@ -417,9 +419,20 @@ input[type=file] {
 
 #timeSpan {
     font-weight:bold;
-    color:#D5357C;
+    color:#DF543F;
     font-size:18px;
     font-family:'Lobster', cursive;
+}
+#resources_in {
+    font-weight:bold;
+    color:#AC8866;
+    font-size:18px;
+    font-family:'Slabo', cursive;
+}
+
+h3 {
+    color:#453B2F;
+    font-family:'Slabo', cursive;
 }
 
 #canvas {
@@ -457,7 +470,7 @@ background-color:#FCD06A;
 }
 
 #leaderData li.red {
-background-color:#EA9ABD;
+background-color:#EFA99F;
 }
 
 .modal_content {
