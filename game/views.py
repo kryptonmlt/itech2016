@@ -579,14 +579,14 @@ def attack(request, opponent):
                 (10 + ecity.walls_level) / 10):
         rnggold = randint(10, 15)
         tempgold = ecity.gold / rnggold
-        result = lose_army(city, ecity, False, True, tempgold)
+        result = "True"+"#"+lose_army(city, ecity, False, True, tempgold)
         lose_army(ecity, city, True, False, tempgold)
         acc.wins += 1
         enemyaccount.defeats += 1
     else:
         rnggold = randint(5, 10)
         tempgold = city.gold / rnggold
-        result = lose_army(city, ecity, False, False, tempgold)
+        result = "False"+"#"+lose_army(city, ecity, False, False, tempgold)
         lose_army(ecity, city, True, True, tempgold)
         acc.defeats += 1
         enemyaccount.wins += 1

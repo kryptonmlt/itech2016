@@ -17,20 +17,9 @@ window.location.href = "/game";
 
 {% if user.is_authenticated %}
 <div class="modal_overlay">
-    <div class="modal_content modal_content_aliance">
-        <div id="createAllianceStep" class="alert">
-            <button type="button" class="close closeModal">×</button>
-            <div class="input-group">
-                <input id="createAllianceName" type="text" class="form-control" placeholder="Alliance Name...">
-                <input id="createDescName" type="text" class="form-control" placeholder="Description...">
-                <button id="createAllianceButton" class="btn btn-default" type="button">Create!</button>
-            </div>
-        </div>
-    </div>
-
     <div class="modal_content modal_content_attack">
         <button type="button" class="close closeModal">×</button>
-        <div class='text_alert'>Attacked</div>
+        <div class='text_alert'><span id="result"></span></div>
     </div>
 </div>
 

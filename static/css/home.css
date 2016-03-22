@@ -243,8 +243,6 @@ body {
     overflow:auto;
   }
 
-
-
 .modal_overlay {
     position:fixed;
     z-index:999;
@@ -264,7 +262,7 @@ body {
     right:0;
     width:400px;
     height:200px;
-    background-color:#FCD06A;
+    background-image: url(http://3.bp.blogspot.com/_jFM-Fd8NDFE/TLhmRK1h8AI/AAAAAAAAKcU/NKNPe051PbA/s1600/OldCanvas-5.jpg);
     border-radius:4px;
     border:3px solid #fff;
     margin:auto;
