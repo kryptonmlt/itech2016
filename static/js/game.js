@@ -515,6 +515,9 @@
                     land_type = contents[0];
                     level = contents[2];
                     show_level = level -1;
+                    if(show_level > 10){
+                        show_level = 10;
+                    }
                     context.drawImage(grass[0], posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                     switch (parseInt(land_type)) {
                         case 0:
