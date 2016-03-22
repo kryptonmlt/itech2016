@@ -4,15 +4,45 @@
 
 {% block content %}
 <script src="{% static "js/game.js" %}"></script>
+<script src="{% static "js/jquery.qtip.min.js" %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static "css/jquery.qtip.min.css" %}">
 <link rel="stylesheet" type="text/css" href="{% static "css/game.css" %}">
 {% endblock content %}
 
 {% block body_block %}
 
 {% if user.is_authenticated %}
+
+<div class="modal_overlay">
+    <div class="modal_content modal_content_aliance">
+        <div id="createAllianceStep" class="alert">
+            <button type="button" class="close closeModal">×</button>
+            <div class="input-group">
+                <input id="createAllianceName" type="text" class="form-control" placeholder="Alliance Name...">
+                <input id="createDescName" type="text" class="form-control" placeholder="Description...">
+                <button id="createAllianceButton" class="btn btn-default" type="button">Create!</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal_content modal_content_lumber">
+            <button type="button" class="close closeModal">×</button>
+        <div class='text_alert'>Not enough lumber!</div>
+    </div>
+</div>
+
 <div class="container">
     <div class="row">
-        <h3 class="lord-name">Lord <strong>{{acc.user}}</strong> of <strong>{{city.name}}</strong></h3>
+        <h3 class="lord-name">Lord <strong>{{acc.user}}</strong> of <strong>{{city.name}}, </strong>
+            {% if acc.alliance %}
+                {% if acc.alliance_owner %}
+                    Leader of
+                {% else %}
+                    Member of
+                {% endif %}
+                <a href="/game/alliance/{{acc.alliance.slug}}">{{acc.alliance.name}}</a><br/>
+            {% endif %}
+        </h3>
         <ul id="supplyViewer">
             <li class="supply">
                 <img alt="house icon" src="{% static "images/structures/house.png" %}" class="img-responsive"/>
@@ -34,7 +64,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-3 text-center">
+        <div class="col-md-3 text-center" id="table-supply">
             <div class="row backgroundRow">
                 <table class="table table-bordered" id="structureShop">
                     <thead>
@@ -46,7 +76,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><img alt="Walls" src="{% static "images/structures/walls.png" %}" class="img-responsive" /></td>
+                            <td><img alt="Walls" title="Walls" src="{% static "images/structures/walls.png" %}" class="img-responsive" /></td>
                             <td><span id="wallLevel">{{city.walls_level}}</span></td>
                             <td>
                                 <div class="noti_Container">
@@ -207,60 +237,42 @@
             </div>
         </div>
 
-        <div class="col-md-7 text-center" style="height:550px">
+        <div class="col-md-7 text-center" style="min-height:550px">
             <canvas id="canvas" ></canvas>
-
             <div class="row">
-                <button id="findMeButton" class="btn btn-default" type="button">Find Me</button>
+                <ul id="leaderData">
+
+                    {% if acc.alliance %}
+                    {% else %}
+                        <li><strong><a href="javascript:$('.modal_overlay,.modal_content_aliance').fadeIn('fast');">Create</a> or <a
+                                href="/game/alliance_search/">Join</a> an alliance</strong></li>
+                    {% endif %}
+
+                    <li class='yellow'>{{acc.get_win_percentage}}%</li>
+                    <li class='green'>Wins: {{acc.wins}}</li>
+                    <li class='red'>Defeats: {{acc.defeats}}</li>
+                </ul>
             </div>
         </div>
 
         <div class="col-md-2 text-center">
 
-            <div class="row accFrame">                
-                <img class="accountPicture" src="{{ MEDIA_URL }}/{{acc.picture}}" %} alt="Account Picture" />                               
-                <img class="accPictureFrame" src="{% static "images/columnFrame.png" %}" alt="Account Picture Frame"/>                
+            <div class="row accFrame">
+                <img class="accountPicture" src="{{ MEDIA_URL }}/{{acc.picture}}" alt="Account Picture" />
+                <img class="accPictureFrame" src="{% static "images/columnFrame.png" %}" alt="Account Picture Frame"/>
+
                 <button id="uploadButton" class="btn btn-default" type="button"> <span class="glyphicon glyphicon-camera"></span></button>
                 <input type="file" name="account_picture" accept="image/*" />
             </div>
 
-            <div class="row">
+            <div class="row" style='margin-bottom:5px;'>
                 <span id="timeSpan"></span>
-                <button id="collectButton" class="btn btn-default" type="button">Collect</button>
-            </div>
-
-            <div class="row">
-                {% if acc.alliance %}
-                {% if acc.alliance_owner %}
-                <strong>Leader of: </strong>
-                {% else %}
-                <strong>Member of: </strong>
-                {% endif %}
-                <a href="/game/alliance/{{acc.alliance.slug}}">{{acc.alliance.name}}</a><br/>
-                {% else %}
-                <strong><a href="javascript:$('#createAllianceStep').show();">Create</a> or <a
-                        href="/game/alliance_search/">Join</a> an alliance</strong>
-                {% endif %}
-            </div>
-
-            <div class="row">
-                <div class="alert fade in alert-success" id="createAllianceStep" style="display:none;">
-                    <button type="button" class="close">×</button>
-                    <div class="input-group">
-                        <input id="createAllianceName" type="text" class="form-control" placeholder="Alliance Name...">
-                        <input id="createDescName" type="text" class="form-control" placeholder="Description...">
-                        <button id="createAllianceButton" class="btn btn-default" type="button">Create!</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <ul>
-                <li>Win Percentage: {{acc.get_win_percentage}}%</li>
-                <li>Wins: {{acc.wins}}</li>
-                <li>Defeats: {{acc.defeats}}</li>
+                <ul id="PageFunctions">
+                    <li><button id="findMeButton" class="btn btn-default pending" type="button">Find Me</button></li>
+                    <li><button id="collectButton" class="btn btn-default takeAction" type="button">Collect</button></li>
                 </ul>
             </div>
+
 
             <div class="row">
                 <div class="list-group">
@@ -307,12 +319,10 @@
     </div>
 
     <div class="row">
-        <div class="row">
+        <div class="row accountLog open">
             <label for="logs_text" id="LogsHeading">Account Logs</label>
-        </div>
-        <div class="row">
                     <textarea id="logs_text"
-                              style="min-width: 100%; height: 100px; max-height: 100px;"></textarea>
+                              ></textarea>
         </div>
     </div>
 </div>

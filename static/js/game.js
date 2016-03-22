@@ -97,7 +97,8 @@
                         $("#alertNoGold").show();
                     }else if (data=="-2"){
                     	//show alert
-                        $("#alertNoLumber").show();
+                        $(".modal_overlay").fadeIn("fast");
+                        $(".modal_content_lumber").fadeIn("fast");
                     }else if (data=="-3"){
                     	//show alert
                         $("#alertNoStones").show();
@@ -200,8 +201,30 @@
             });
 
             // when alert close
-            $('.alert .close').on('click', function(e) {
+            $('.alert .close:not(.closeModal').on('click', function(e) {
                 $(this).parent().hide();
+            });
+
+            // when alert close
+            $('.close.closeModal').on('click', function(e) {
+                $(this).closest('.modal_overlay').hide();
+                $(this).closest('.modal_content').hide();
+            });
+
+            $(".modal_content").on('click', function(e){
+                e.preventDefault();
+                return false;
+            });
+
+            $(".modal_overlay").on('click', function(e){
+                $(this).closest('.modal_overlay').hide();
+                $(this).closest('.modal_content').hide();
+                e.preventDefault();
+                return false;
+            });
+
+            $(".accountLog").on('click', function(e) {
+                //$('.accountLog').toggleClass('open');
             });
 
             //polling that gets the logs
@@ -250,12 +273,12 @@
         var stoneMine = new Image();
         var goldMine = new Image();
         var house = new Image();
-        grass.src = "http://kurtportelli.com/kurtftp/resources/forest1.jpg";
-        farm.src = "http://kurtportelli.com/kurtftp/resources/farm_merged.png";
-        lumbermill.src = "http://kurtportelli.com/kurtftp/resources/lumbermill_merged.png";
-        stoneMine.src = "http://kurtportelli.com/kurtftp/resources/stone_mine_merged.png";
-        goldMine.src = "http://kurtportelli.com/kurtftp/resources/gold_mine_merged.png";
-        house.src = "http://kurtportelli.com/kurtftp/resources/house_merged.png";
+        grass.src = "/static/images/structures/forest1.jpg";
+        farm.src = "/static/images/structures/farm.png";
+        lumbermill.src = "/static/images/structures/lumbermill.png";
+        stoneMine.src = "/static/images/structures/stone_mine.png";
+        goldMine.src = "/static/images/structures/gold_mine.png";
+        house.src = "/static/images/structures/house.png";
 
         var centreX = 5;
         var centreY = 5;
@@ -323,6 +346,13 @@
                 xy = data.split(',');
                 setInitialPlayerLoc( parseInt(xy[0]) , parseInt(xy[1]) );
                 resizeCanvas();
+
+                $(window).off('resize');
+                $(window).resize(function(e) {
+                    resizeCanvas();
+                });
+
+                //window.addEventListener('resize', resizeCanvas, false);
             });
         }
 
@@ -434,6 +464,13 @@
             // draw map
             for (var i = mapY; i < mapY + fitY; i++) {
                 //console.log(rows[i]);
+                endOfColumnCompensation=0
+                if( j == mapY + fitY -1){
+                    endOfColumnCompensation= canvas.height - (sizeY*fitY);
+                    if(endOfColumnCompensation < 0){
+                        endOfColumnCompensation=0;
+                    }
+                }
                 for (var j = mapX; j < mapX + fitX; j++) {
                     endOfRowCompensation=0
                     if( j == mapX + fitX -1){
@@ -446,40 +483,40 @@
                     contents = contents.split("-");
                     land_type = contents[0];
                     level = contents[2];
-                    context.drawImage(grass, posX, posY, sizeX+endOfRowCompensation, sizeY);
+                    context.drawImage(grass, posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                     switch (parseInt(land_type)) {
                         case 0:
                             break;
                         case 1:
-                            context.drawImage(house, posX, posY, sizeX+endOfRowCompensation, sizeY);
+                            context.drawImage(house, posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         case 2:
                             level -=1;
-                            context.drawImage(castle[level],0,0, castle[level].width/2 , castle[level].height/2 , posX, posY, sizeX+endOfRowCompensation, sizeY);
+                            context.drawImage(castle[level],0,0, castle[level].width/2 , castle[level].height/2 , posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         case 3:
                             level -=1;
-                            context.drawImage(castle[level], castle[level].width/2 ,0, castle[level].width/2 , castle[level].height/2 , posX, posY, sizeX+endOfRowCompensation, sizeY);
+                            context.drawImage(castle[level], castle[level].width/2 ,0, castle[level].width/2 , castle[level].height/2 , posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         case 4:
-                            context.drawImage(farm, posX, posY, sizeX+endOfRowCompensation, sizeY);
+                            context.drawImage(farm, posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         case 5:
                             level -=1;
-                            context.drawImage(castle[level],0,castle[level].height/2 , castle[level].width/2 , castle[level].height/2, posX, posY, sizeX+endOfRowCompensation, sizeY);
+                            context.drawImage(castle[level],0,castle[level].height/2 , castle[level].width/2 , castle[level].height/2, posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         case 6:
                             level -=1;
-                            context.drawImage(castle[level], castle[level].width/2 , castle[level].height/2 , castle[level].width/2 , castle[level].height/2 , posX, posY, sizeX+endOfRowCompensation, sizeY);
+                            context.drawImage(castle[level], castle[level].width/2 , castle[level].height/2 , castle[level].width/2 , castle[level].height/2 , posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         case 7:
-                            context.drawImage(lumbermill, posX, posY, sizeX+endOfRowCompensation, sizeY);
+                            context.drawImage(lumbermill, posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         case 8:
-                            context.drawImage(stoneMine, posX, posY, sizeX+endOfRowCompensation, sizeY);
+                            context.drawImage(stoneMine, posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         case 9:
-                            context.drawImage(goldMine, posX, posY, sizeX+endOfRowCompensation, sizeY);
+                            context.drawImage(goldMine, posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         default:
                             break;
@@ -517,6 +554,8 @@
         }
 
         window.onload = function () {
+
+             $('[title!=""]').qtip();
             getMap();
             document.getElementById('canvas').style.cursor= 'url("http://www.arttime.ge/images/sc-graphics/openhand.png"), auto';
             document.getElementById('canvas').onmousedown = function () {
@@ -596,13 +635,16 @@
             };
         };
 
-        window.addEventListener('resize', resizeCanvas, false);
-
         function resizeCanvas() {
+
+            //$("#table-supply").height($(document).height()-120-150);
 
             var canvas = document.getElementById('canvas');
             canvas.width = $("#canvas").parent().width();
-            canvas.height = $("#canvas").parent().height();
+
+            canvas.height = $("#table-supply").outerHeight();
+
+            //canvas.height = $("#canvas").parent().height();
             canvasX = canvas.width;
             canvasY = canvas.height;
             sizeX = parseInt(canvasX / fitX);

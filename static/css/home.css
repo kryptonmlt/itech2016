@@ -2,6 +2,11 @@
 @import url(https://fonts.googleapis.com/css?family=Lobster);
 @import url(https://fonts.googleapis.com/css?family=Poiret+One);
 
+* {
+padding:0;
+margin:0;
+}
+
 body {
     padding-top: 60px;
     background-color: rgba(205, 196, 167, 0.4);
