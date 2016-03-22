@@ -56,6 +56,18 @@
 <div class="container">
     <div class="row">
         <ul id="supplyViewer">
+            <span id="lord_info">
+                Lord <strong>{{acc.user}}</strong>, of <strong>{{city.name}}</strong>
+                {% if acc.alliance %}
+                    ,
+                    {% if acc.alliance_owner %}
+                        Leader of
+                    {% else %}
+                        Member of
+                    {% endif %}
+                    <a href="/game/alliance/{{acc.alliance.slug}}"><strong>{{acc.alliance.name}}</strong></a>
+                {% endif %}
+            </span>
             <li class="supply">
                 <img alt="house icon" src="{% static "images/structures/house.png" %}" class="img-responsive"/>
                 <span id="totalTroops">{{city.get_total_troops}}</span> / <span id="maximumTroops">{{city.get_maximum_troops}}</span>
@@ -268,16 +280,6 @@
         </div>
 
         <div class="col-md-2 text-center">
-            <h3 class="lord-name">Lord <strong>{{acc.user}}</strong> of <strong>{{city.name}}</strong>
-                {% if acc.alliance %}
-                    {% if acc.alliance_owner %}
-                        <br />Leader of
-                    {% else %}
-                        <br />Member of
-                    {% endif %}
-                    <a href="/game/alliance/{{acc.alliance.slug}}"><strong>{{acc.alliance.name}}</strong></a><br/>
-                {% endif %}
-            </h3>
 
             <div class="row accFrame">
                 <img class="accountPicture" src="{{ MEDIA_URL }}/{{acc.picture}}" alt="Account Picture" />
