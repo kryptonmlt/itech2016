@@ -231,6 +231,7 @@
             populateLogBox();
             setInterval(function() {populateLogBox()}, 5000);
 
+            
             var im = document.getElementsByClassName('accountPicture')[0]; 
             im.onerror = function(){
 
@@ -244,9 +245,15 @@
 
 
             $('input[type=file]').change(function() {
-                $('#uploadButton').val($(this).val());
-                var filePath = $(this).val();
-                console.log(filePath);
+                var file = $(this).val();
+                $.get('/game/upload_user_pic', {'file': file}, function(data){
+                    if(data == 1){                        
+                        window.location.href = "/game/";
+                        // maybe do some ajax to just reload the picture
+                    }else{
+                        alert("The picture you provided could not be used");
+                    }
+                });
             });
             
         });

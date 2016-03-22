@@ -8,7 +8,7 @@ import django
 django.setup()
 
 from django.contrib.auth.models import User
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from game.models import Alliance, Account, City, AllianceRequest, Message, Badge, Log, Cost, MapInfo
 
@@ -58,7 +58,7 @@ def populate():
 def add_user_account_city_log_badge(username, email, password, alliance, alliance_owner):
     u = add_user(username, email, password)
     a = add_account(u, 10, 10, alliance_owner, alliance)
-    add_city(a, username + ' Kingdom', 10000, 1, 1, 1, 0, 0, 0, 0)
+    add_city(a, username + ' Kingdom', 10000, 1, random.randrange(1,5,1), random.randrange(1,5,1), random.randrange(1,10,1), random.randrange(1,10,1), random.randrange(1,10,1), random.randrange(1,10,1))
     add_log(a, 'Welcome to the game !')
     add_log(a, 'Your citizens awarded you with 10,000 gold to start building the city!')
     add_log(a, 'The rest is up to you .. upgrade city structures, recruit troops, make alliances, invade ..')
@@ -76,7 +76,7 @@ def add_user(name, email, password):
 
 def add_account(user, wins, defeats, alliance_owner, alliance, picture=None):
     a = Account.objects.get_or_create(user=user)[0]
-    a.last_attacked = datetime.now()
+    a.last_attacked = datetime.now()  - timedelta(days=1)
     a.last_received_gold = datetime.now()
     a.wins = wins
     a.defeats = defeats

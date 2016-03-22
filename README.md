@@ -1,4 +1,12 @@
 # itech2016
 internet technologies assignment
 
-# Using the following colour scheme: http://paletton.com/#uid=30H0u0kcyrS43KJ80y3hyn2m4iP
+setup the application by running the populate script 
+
+pip packages are listed in requirements.txt
+
+Users are (amoung others):
+-leifos 
+-laura
+-david
+(pw is the name)
