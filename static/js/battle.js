@@ -69,9 +69,9 @@
             });
         }
 
-        $(document).ready(function(){
+        $(document).ready(function(){            
             attackTimer();
-        	logs_text_area = document.getElementById("logs_text");
+        	logs_text_area = document.getElementById("logs_text");           
 
             $('#attackButton').click(function(){
                 document.getElementById("attackButton").disabled = true;
@@ -101,4 +101,12 @@
             //polling that gets the messages
             get_messages();
             setInterval(function() {get_messages()}, 1000);
+
+             
+            $('.profilePicture').error(function(){
+                $(this).attr('src', 'http://www.dazzlepanel.com/projects/kurt/images/acc.png');
+            });
+            
+
+
         });

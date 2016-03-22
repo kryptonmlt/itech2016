@@ -196,3 +196,49 @@ body {
 	 margin: auto !important;
 	 width: 66% !important;
 }
+
+/* log bars */
+
+.accountLog {
+    background-image: url(http://3.bp.blogspot.com/_jFM-Fd8NDFE/TLhmRK1h8AI/AAAAAAAAKcU/NKNPe051PbA/s1600/OldCanvas-5.jpg);
+    background-size: 100% auto;
+    background-position: center center;
+    box-sizing:border-box;
+    border-radius:4px;
+    overflow:hidden;
+    font-size:18px;
+    font-weight:bold;
+    color:#000;
+    /*position:fixed;*/
+    bottom:0;
+    left:0;
+    right:0;
+    height:30px;
+    line-height:30px;
+    text-align:center;
+    margin-top:20px;
+    padding-bottom:10px;
+}
+
+.accountLog.open {
+    height:170px;
+}
+
+#logs_text {
+    display:block;
+    border:0;
+    width:90%;
+    height:100px;
+    margin:auto;
+    padding:10px;
+    box-sizing:border-box;
+    background:transparent;
+    outline:0;
+
+    color:#000;
+    font-weight:bold;
+    font-size:18px;
+    font-family: 'Slabo 27px', serif;
+    border-radius:4px;
+    overflow:auto;
+  }

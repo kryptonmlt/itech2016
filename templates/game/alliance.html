@@ -87,7 +87,7 @@
                 <li><a href="/game/battle/{{ally.user.username}}">{{ally.user.username}}</a> {{ ally.wins }}
                     {% if ally.user.username != leader %}
                     {% if request.user.username == leader %}
-                    <button reqAcc="{{acc.user.username}}" type="button"
+                    <button reqAcc="{{ally.user.username}}" type="button"
                             class="btn btn-danger btn-xs kickButton">Kick
                     </button>
                     {% endif %}

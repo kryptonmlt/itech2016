@@ -9,6 +9,8 @@
 window.location.href = "/game";
 {% endif %}
 </script>
+<link rel="stylesheet" type="text/css" href="{% static "css/home.css" %}">
+
 {% endblock content %}
 
 {% block body_block %}
@@ -23,7 +25,7 @@ window.location.href = "/game";
                 <h1>{{enemy_city.account.user.username}}</h1>
                 <div class="row">
                     <img src="{{ MEDIA_URL }}/{{enemy_city.account.picture}}" %}" width=90%
-                    class="img-thumbnail"/>
+                    class="img-thumbnail profilePicture"/>
                 </div>
                 <div class="row">
                     <li><strong>Supply Capacity: </strong><span
@@ -68,7 +70,7 @@ window.location.href = "/game";
             <h1>{{city.account.user.username}}</h1>
 
             <div class="row">
-                <img src="{{ MEDIA_URL }}/{{city.account.picture}}" %}" width=90% class="img-thumbnail"/>
+                <img src="{{ MEDIA_URL }}/{{city.account.picture}}" %}" width=90% class="img-thumbnail profilePicture"/>
             </div>
             <div class="row">
                 <li><strong>Supply Capacity: </strong><span
@@ -133,9 +135,13 @@ window.location.href = "/game";
                 <button id="attackButton" class="btn btn-default" type="button">Attack</button>
             </div>
             <div class="row">
+                <div class="row accountLog open">
                 <label for="logs_text" id="LogsHeading">Battle Results</label>
                 <textarea id="logs_text" style="min-width: 100%; height: 160px; max-height: 160px;"></textarea>
+                </div>
             </div>
+        </div>
+    </div>
         </div>
     </div>
 </div>
