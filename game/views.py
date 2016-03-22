@@ -638,8 +638,8 @@ def lose_army(city, ecity, defender, winner, tempgold):
     else:
         result = "You suffered a defeat from " + ecity.account.user.username + " losing " + str(
             tempgold) + " gold coins along with:\n"
-    return result + str(footmenlost) + " Footmen \n" + str(bowmenlost) + " Bowmen \n" + str(
-        knightslost) + " Knights \n" + str(war_machineslost) + " War Machines\n"
+    return result + str(footmenlost) + " Footmen, \n" + str(bowmenlost) + " Bowmen, \n" + str(
+        knightslost) + " Knights, \n" + str(war_machineslost) + " War Machines\n"
 
 
 def create_win_log(account, enemy_account, casualties, defender, tempgold):
