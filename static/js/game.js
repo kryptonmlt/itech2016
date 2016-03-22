@@ -241,7 +241,7 @@
             im.onerror = function(){
 
                 // image not found, change src as default image:
-                im.src = 'http://www.dazzlepanel.com/projects/kurt/images/acc.png';
+                im.src = '/media/portraits/1.png';
             };
 
             $('#uploadButton').click(function() {
@@ -585,13 +585,29 @@
             context.fillText("X:" + parseInt(centreX) + ", Y: " + parseInt(centreY), fitX*sizeX*0.81, fitY*sizeY*0.97);
         }
 
-        window.onload = function () {
+        function showLoadingScreen() {
 
-             $('[title!=""]').qtip();
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext('2d');
+            txt = "Loading.. ";
+            context.save();
+            context.font = "40px Arial";
+            context.textBaseline = 'top';
+            context.fillStyle = '#3ca03c';
+            var width = context.measureText(txt).width+10;
+            context.fillRect(canvas.width/4, canvas.height/2, width, 45);
+            context.fillStyle = '#000';
+            context.fillText(txt, canvas.width/4, canvas.height/2);
+            context.restore();
+        }
+
+        window.onload = function () {
+            showLoadingScreen();
+            $('[title!=""]').qtip();
             getMap();
-            document.getElementById('canvas').style.cursor= 'url("http://www.arttime.ge/images/sc-graphics/openhand.png"), auto';
+            document.getElementById('canvas').style.cursor= 'url("/static/images/openhand.png"), auto';
             document.getElementById('canvas').onmousedown = function () {
-                document.getElementById('canvas').style.cursor= 'url("http://www.arttime.ge/images/sc-graphics/closedhand.png"), auto';
+                document.getElementById('canvas').style.cursor= 'url("/static/images/closedhand.png"), auto';
                 this.style.position = 'relative';
                 this.onmousemove = function (e) {
                     e = e || event;
@@ -648,14 +664,14 @@
                 };
 
                 this.onmouseup = function () {
-                    document.getElementById('canvas').style.cursor= 'url("http://www.arttime.ge/images/sc-graphics/openhand.png"), auto';
+                    document.getElementById('canvas').style.cursor= 'url("/static/images/openhand.png"), auto';
                     this.onmousemove = null;
                     oldMouseXTile = -1;
                     oldMouseYTile = -1;
                 };
 
                 document.onmouseup = function () {
-                    document.getElementById('canvas').style.cursor= 'url("http://www.arttime.ge/images/sc-graphics/openhand.png"), auto';
+                    document.getElementById('canvas').style.cursor= 'url("/static/images/openhand.png"), auto';
                     document.getElementById('canvas').onmousemove = null;
                     oldMouseXTile = -1;
                     oldMouseYTile = -1;

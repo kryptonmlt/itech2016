@@ -51,7 +51,7 @@ input[type=file] {
 }
 
 .backgroundRow {
-    background: url(http://www.pageresource.com/wallpapers/wallpaper/crumpled-brown-paper-texture-high-resolution-pixels_3511836.jpg);
+    background: url(/static/images/crumpled-brown-paper-texture.jpg);
     background-size:100%;
     background-position:center;
     border:0;
@@ -486,7 +486,7 @@ background-color:#EFA99F;
     right:0;
     width:300px;
     height:200px;
-    background-image: url(http://3.bp.blogspot.com/_jFM-Fd8NDFE/TLhmRK1h8AI/AAAAAAAAKcU/NKNPe051PbA/s1600/OldCanvas-5.jpg);
+    background-image: url(/static/images/OldCanvas.jpg);
     border-radius:4px;
     border:3px solid #fff;
     margin:auto;
