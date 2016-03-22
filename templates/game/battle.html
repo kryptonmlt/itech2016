@@ -9,6 +9,8 @@
 window.location.href = "/game";
 {% endif %}
 </script>
+<link rel="stylesheet" type="text/css" href="{% static "css/home.css" %}">
+
 {% endblock content %}
 
 {% block body_block %}
@@ -133,9 +135,13 @@ window.location.href = "/game";
                 <button id="attackButton" class="btn btn-default" type="button">Attack</button>
             </div>
             <div class="row">
+                <div class="row accountLog open">
                 <label for="logs_text" id="LogsHeading">Battle Results</label>
                 <textarea id="logs_text" style="min-width: 100%; height: 160px; max-height: 160px;"></textarea>
+                </div>
             </div>
+        </div>
+    </div>
         </div>
     </div>
 </div>
