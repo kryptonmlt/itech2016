@@ -260,8 +260,8 @@
 
         var canvasX = 800;
         var canvasY = 600;
-        var fitX = 9;
-        var fitY = 9;
+        var fitX = 6;
+        var fitY = 6;
         var halfFitX = Math.floor(fitX / 2);
         var halfFitY = Math.floor(fitY / 2);
         var sizeX = parseInt(canvasX / fitX);
@@ -274,18 +274,33 @@
             castle[index] = new Image();
             castle[index].src = "/static/images/castle/castle"+(index+1)+".png";
         }
-
-        var farm = new Image();
-        var lumbermill = new Image();
-        var stoneMine = new Image();
-        var goldMine = new Image();
-        var house = new Image();
+        all_castle_levels=11
+        var farm = [all_castle_levels];
+        for	(index = 0; index < all_castle_levels; index++) {
+            farm[index] = new Image();
+            farm[index].src = "/static/images/farm/farm"+(index+1)+".png";
+        }
+        var house = [all_castle_levels];
+        for	(index = 0; index < all_castle_levels; index++) {
+            house[index] = new Image();
+            house[index].src = "/static/images/house/house"+(index+1)+".png";
+        }
+        var lumbermill = [all_castle_levels];
+        for	(index = 0; index < all_castle_levels; index++) {
+            lumbermill[index] = new Image();
+            lumbermill[index].src = "/static/images/lumbermill/lumbermill"+(index+1)+".png";
+        }
+        var stoneMine = [all_castle_levels];
+        for	(index = 0; index < all_castle_levels; index++) {
+            stoneMine[index] = new Image();
+            stoneMine[index].src = "/static/images/stone_mine/stone_mine"+(index+1)+".png";
+        }
+        var goldMine = [all_castle_levels];
+        for	(index = 0; index < all_castle_levels; index++) {
+            goldMine[index] = new Image();
+            goldMine[index].src = "/static/images/gold_mine/gold_mine"+(index+1)+".png";
+        }
         grass.src = "/static/images/structures/forest1.jpg";
-        farm.src = "/static/images/structures/farm.png";
-        lumbermill.src = "/static/images/structures/lumbermill.png";
-        stoneMine.src = "/static/images/structures/stone_mine.png";
-        goldMine.src = "/static/images/structures/gold_mine.png";
-        house.src = "/static/images/structures/house.png";
 
         var centreX = 5;
         var centreY = 5;
@@ -490,40 +505,37 @@
                     contents = contents.split("-");
                     land_type = contents[0];
                     level = contents[2];
+                    show_level = level -1;
                     context.drawImage(grass, posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                     switch (parseInt(land_type)) {
                         case 0:
                             break;
                         case 1:
-                            context.drawImage(house, posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
+                            context.drawImage(house[show_level], posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         case 2:
-                            level -=1;
-                            context.drawImage(castle[level],0,0, castle[level].width/2 , castle[level].height/2 , posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
+                            context.drawImage(castle[show_level],0,0, castle[show_level].width/2 , castle[show_level].height/2 , posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         case 3:
-                            level -=1;
-                            context.drawImage(castle[level], castle[level].width/2 ,0, castle[level].width/2 , castle[level].height/2 , posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
+                            context.drawImage(castle[show_level], castle[show_level].width/2 ,0, castle[show_level].width/2 , castle[show_level].height/2 , posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         case 4:
-                            context.drawImage(farm, posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
+                            context.drawImage(farm[show_level], posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         case 5:
-                            level -=1;
-                            context.drawImage(castle[level],0,castle[level].height/2 , castle[level].width/2 , castle[level].height/2, posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
+                            context.drawImage(castle[show_level],0,castle[show_level].height/2 , castle[show_level].width/2 , castle[show_level].height/2, posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         case 6:
-                            level -=1;
-                            context.drawImage(castle[level], castle[level].width/2 , castle[level].height/2 , castle[level].width/2 , castle[level].height/2 , posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
+                            context.drawImage(castle[show_level], castle[show_level].width/2 , castle[show_level].height/2 , castle[show_level].width/2 , castle[show_level].height/2 , posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         case 7:
-                            context.drawImage(lumbermill, posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
+                            context.drawImage(lumbermill[show_level], posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         case 8:
-                            context.drawImage(stoneMine, posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
+                            context.drawImage(stoneMine[show_level], posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         case 9:
-                            context.drawImage(goldMine, posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
+                            context.drawImage(goldMine[show_level], posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         default:
                             break;
