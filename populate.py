@@ -72,7 +72,7 @@ def generateMap():
 def add_user_account_city_log_badge(username, email, password, alliance, alliance_owner):
     u = add_user(username, email, password)
     a = add_account(u, 10, 10, alliance_owner, alliance)
-    add_city(a, username + ' Kingdom', 10000, 1, random.randrange(1, 5, 1), random.randrange(1, 5, 1),
+    add_city(a, username + ' Kingdom', 10000, random.randrange(1, 11, 1), random.randrange(1, 11, 1), random.randrange(1, 11, 1), random.randrange(1, 11, 1), random.randrange(1, 11, 1),
              random.randrange(1, 10, 1), random.randrange(1, 10, 1), random.randrange(1, 10, 1),
              random.randrange(1, 10, 1))
     add_log(a, 'Welcome to the game !')
@@ -116,11 +116,13 @@ def add_alliance(name, description, all_time_score):
     return a
 
 
-def add_city(account, name, gold, farms, walls_level, stone_caves, footmen, bowmen, knights, war_machines):
+def add_city(account, name, gold, farms, gold_mines, lumber_mills, walls_level, stone_caves, footmen, bowmen, knights, war_machines):
     c = City.objects.get_or_create(account=account)[0]
     c.name = name
     c.gold = gold
     c.farms = farms
+    c.gold_mines = gold_mines
+    c.lumber_mills = lumber_mills
     c.stone_caves = stone_caves
     c.walls_level = walls_level
     c.footmen = footmen
