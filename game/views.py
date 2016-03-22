@@ -2,16 +2,17 @@ from django.shortcuts import render
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
-from game.models import Account, Alliance, AllianceRequest, City, Badge, Log, Message, Cost, AllianceMessage
+from game.models import Account, Alliance, AllianceRequest, City, Badge, Log, Message, Cost, AllianceMessage, Map
 from django.contrib.auth.models import User
 from game.forms import CityForm
 from django.utils import timezone
 from random import randint
-from django.db.models import Q,F
+from django.db.models import Q, F
 from django.utils.datastructures import MultiValueDictKeyError
 from django.conf import settings
 import tempfile
 import shutil
+
 
 # Create your views here.
 @login_required()
@@ -37,9 +38,9 @@ def index(request):
             return render(request, 'game/create_city.html', {'city_form': city_form, 'acc': acc, 'err_msg': err_msg})
 
     userlist = Account.objects.all().filter(~Q(alliance=acc.alliance), ~Q(user=request.user))
-    max_farms = city.farms+1
-    min_farms = city.farms-1
-    citieslist = City.objects.filter(account=userlist , farms__gt=min_farms,farms__lt=max_farms)
+    max_farms = city.farms + 1
+    min_farms = city.farms - 1
+    citieslist = City.objects.filter(account=userlist, farms__gt=min_farms, farms__lt=max_farms)
 
     wall_price = cost.calc_wall_price(city.walls_level).split(",")
     farms_price = cost.calc_farms_price(city.farms).split(",")
@@ -236,7 +237,7 @@ def battle(request, user_name):
     enemy_account = Account.objects.get(user=enemy_user)
     enemy_city = City.objects.get(account=enemy_account)
     city = City.objects.get(account=account)
-    context_dict = {'enemy_city': enemy_city, 'city': city, 'user': user, 'acc':account}
+    context_dict = {'enemy_city': enemy_city, 'city': city, 'user': user, 'acc': account}
     return render(request, 'game/battle.html', context_dict)
 
 
@@ -387,22 +388,22 @@ def get_resources(request):
     return HttpResponse(
         str(city.get_total_troops()) + "," + str(city.gold) + "," + str(city.lumber) + "," + str(city.stones))
 
+
 def updateEnemies(request):
     acc = Account.objects.get(user=request.user)
     city = City.objects.get(account=acc)
     userslist = Account.objects.all().filter(~Q(alliance=acc.alliance), ~Q(user=request.user))
-    max_farms = city.farms+1
-    min_farms = city.farms-1
-    citieslist = City.objects.filter(account=userslist , farms__gte=min_farms,farms__lte=max_farms)
-    userslist=""
-    c=0
+    max_farms = city.farms + 1
+    min_farms = city.farms - 1
+    citieslist = City.objects.filter(account=userslist, farms__gte=min_farms, farms__lte=max_farms)
+    userslist = ""
+    c = 0
     for ecity in citieslist:
-        userslist+=ecity.account.user
-        if c!=len(citieslist):
-            userslist+=","
-            c+1
+        userslist += ecity.account.user
+        if c != len(citieslist):
+            userslist += ","
+            c + 1
     return HttpResponse(userslist)
-
 
 
 @login_required
@@ -693,17 +694,18 @@ def create_alliance(request):
     create_log(acc, "Let it be known, " + acc.user.username + " just founded the alliance " + acc.alliance.name)
     return HttpResponse("1")
 
+
 @login_required
 def upload_user_pic(request):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
     source = request.FILES['account_picture']
-    #store the file somehow
+    # store the file somehow
     # this could be useful:
     # http://stackoverflow.com/questions/5871730/need-a-minimal-django-file-upload-example
     # https://docs.djangoproject.com/en/dev/topics/http/file-uploads/
-    #acc.picture = 
-    #acc.save()
+    # acc.picture =
+    # acc.save()
     return HttpResponse("1")
 
 
@@ -712,7 +714,7 @@ def alliance_search(request, query):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
     similar_alliances = Alliance.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
-    context_dict = {'similar_alliances': similar_alliances, 'query': query,'acc':acc}
+    context_dict = {'similar_alliances': similar_alliances, 'query': query, 'acc': acc}
     return render(request, 'game/alliance_search.html', context_dict)
 
 
@@ -721,7 +723,7 @@ def alliance_search_empty(request):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
     similar_alliances = Alliance.objects.order_by('-all_time_score')
-    context_dict = {'similar_alliances': similar_alliances, 'query': "",'acc':acc}
+    context_dict = {'similar_alliances': similar_alliances, 'query': "", 'acc': acc}
     return render(request, 'game/alliance_search.html', context_dict)
 
 
@@ -730,7 +732,7 @@ def user_search(request, query):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
     users = Account.objects.filter(Q(user__username__icontains=query))
-    context_dict = {'users': users, 'query': query,'acc':acc}
+    context_dict = {'users': users, 'query': query, 'acc': acc}
     return render(request, 'game/user_search.html', context_dict)
 
 
@@ -739,7 +741,7 @@ def user_search_empty(request):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
     users = Account.objects.order_by('-wins')
-    context_dict = {'users': users, 'query': "",'acc':acc}
+    context_dict = {'users': users, 'query': "", 'acc': acc}
     return render(request, 'game/user_search.html', context_dict)
 
 
@@ -757,6 +759,13 @@ def get_map(request):
     map_max_y = ((max_y / map_size_interval) * map_size_interval) + map_size_interval
 
     matrix = [[0 for y in range(map_max_y)] for x in range(map_max_x)]
+    for cur_y in range(0, map_max_y, 1):
+        coords = Map.objects.all().filter(y=cur_y)
+        for c in coords:
+            i = 0
+            for v in c.value:
+                matrix[i][c.y] = "0-"+str(v)
+                i += 1
 
     cities = City.objects.all()
     for city in cities:
@@ -764,33 +773,37 @@ def get_map(request):
         for city_y in range(city.y - 1, city.y + 2):
             for city_x in range(city.x - 1, city.x + 2):
                 if i == 1:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)+ "-" +str(city.walls_level)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username) + "-" + str(
+                        city.farms)
                 elif i == 2:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)+ "-" + str(city.walls_level)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username) + "-" + str(
+                        city.walls_level)
                 elif i == 3:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)+ "-" + str(city.walls_level)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username) + "-" + str(
+                        city.walls_level)
                 elif i == 4:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)+ "-" +str(city.farms)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username) + "-" + str(city.farms)
                 elif i == 5:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)+ "-" + str(city.walls_level)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username) + "-" + str(
+                        city.walls_level)
                 elif i == 6:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)+ "-" + str(city.walls_level)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username) + "-" + str(
+                        city.walls_level)
                 elif i == 7:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)+ "-" +str(city.lumber_mills)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username) + "-" + str(
+                        city.lumber_mills)
                 elif i == 8:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)+ "-" +str(city.stone_caves)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username) + "-" + str(
+                        city.stone_caves)
                 elif i == 9:
-                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username)+ "-" +str(city.gold_mines)
+                    matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username) + "-" + str(city.gold_mines)
 
                 i += 1
     tile_map = ""
     for y in range(map_max_y):
         for x in range(map_max_x):
             contents = str(matrix[x][y])
-            if contents == "0":
-                tile_map += "0-0"
-            else:
-                tile_map += contents
+            tile_map += contents
             if x + 1 != map_max_x:
                 tile_map += ","
         if y + 1 != map_max_y:

@@ -2,7 +2,7 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
-from django.utils import formats
+import random
 from django.contrib.auth.models import User
 from random import randint
 from django.template.defaultfilters import slugify
@@ -129,6 +129,19 @@ class City(models.Model):
                     map_info.current_x_in_row += dist_x
                     map_info.current_y_row = row_separator
 
+                    next_max = (map_proportion + 1) * map_size_interval
+                    ready_max = map_proportion * map_size_interval
+                    for y in range(0, next_max):
+                        coord = Map.objects.get(y=y)
+                        v = ""
+                        min_create = 0
+                        if y < ready_max:
+                            min_create = ready_max
+                        for x in range(min_create, next_max):
+                            v += str(random.randrange(0, 5, 1))
+                        coord.value = v
+                        coord.save()
+
             map_info.save()
             self.x = chosen_x
             self.y = chosen_y
@@ -153,6 +166,14 @@ class MapInfo(models.Model):
 
     def __str__(self):
         return "(" + str(self.current_x_in_row) + "," + str(self.current_y_row) + ")"
+
+
+class Map(models.Model):
+    y = models.IntegerField(default=0)
+    value = models.CharField(max_length=5000)
+
+    def __str__(self):
+        return "(" + str(self.y) + "=" + self.value + ")"
 
 
 class AllianceRequest(models.Model):
@@ -212,7 +233,7 @@ class Log(models.Model):
                 dif = '{:.0f} s'.format(seconds % 60)
             else:
                 dif = 'now'
-                
+
         return str(self.pk) + "||" + str(dif) + "||" + self.text + "$$"
 
 

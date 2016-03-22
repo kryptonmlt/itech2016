@@ -521,8 +521,7 @@
                     context.drawImage(grass[0], posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                     switch (parseInt(land_type)) {
                         case 0:
-                            r = Math.floor(Math.random()*all_grass_levels)
-                            context.drawImage(grass[r], posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
+                            context.drawImage(grass[contents[1]], posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         case 1:
                             context.drawImage(house[show_level], posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
