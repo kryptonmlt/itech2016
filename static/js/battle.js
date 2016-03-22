@@ -80,6 +80,8 @@
                     logs_text_area.value +=data
                     logs_text_area.scrollTop = logs_text_area.scrollHeight;
                     attackTimer();
+                    $(".modal_overlay").fadeIn("fast");
+                    $(".modal_content_attack").fadeIn("fast");
                 });
             });
 
@@ -94,8 +96,27 @@
                 }
             });
 
-            $('.alert .close').on('click', function(e) {
+            // when alert close
+            $('.alert .close:not(.closeModal').on('click', function(e) {
                 $(this).parent().hide();
+            });
+
+            // when alert close
+            $('.close.closeModal').on('click', function(e) {
+                $(this).closest('.modal_overlay').hide();
+                $(this).closest('.modal_content').hide();
+            });
+
+            $(".modal_content").on('click', function(e){
+                e.preventDefault();
+                return false;
+            });
+
+            $(".modal_overlay").on('click', function(e){
+                $(this).closest('.modal_overlay').hide();
+                $(this).closest('.modal_content').hide();
+                e.preventDefault();
+                return false;
             });
 
             //polling that gets the messages

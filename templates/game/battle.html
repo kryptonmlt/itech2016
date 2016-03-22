@@ -16,7 +16,25 @@ window.location.href = "/game";
 {% block body_block %}
 
 {% if user.is_authenticated %}
+<div class="modal_overlay">
+    <div class="modal_content modal_content_aliance">
+        <div id="createAllianceStep" class="alert">
+            <button type="button" class="close closeModal">×</button>
+            <div class="input-group">
+                <input id="createAllianceName" type="text" class="form-control" placeholder="Alliance Name...">
+                <input id="createDescName" type="text" class="form-control" placeholder="Description...">
+                <button id="createAllianceButton" class="btn btn-default" type="button">Create!</button>
+            </div>
+        </div>
+    </div>
 
+    <div class="modal_content modal_content_attack">
+        <button type="button" class="close closeModal">×</button>
+        <div class='text_alert'>Attacked</div>
+    </div>
+</div>
+
+<div class="container">
 {% if city.account.alliance and city.account.alliance == enemy_city.account.alliance %}
 <div class="col-md-5">
 </div>
@@ -62,7 +80,7 @@ window.location.href = "/game";
 </div>
 <div class="col-md-5">
 </div>
-
+</div>
 {% else %}
 <div class="container">
     <div class="row">
@@ -134,6 +152,8 @@ window.location.href = "/game";
                 <span id="attackTimerSpan"></span>
                 <button id="attackButton" class="btn btn-default" type="button">Attack</button>
             </div>
+        </div>
+    </div>
             <div class="row">
                 <div class="row accountLog open">
                 <label for="logs_text" id="LogsHeading">Battle Results</label>
