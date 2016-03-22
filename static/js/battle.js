@@ -76,15 +76,9 @@
             $('#attackButton').click(function(){
                 document.getElementById("attackButton").disabled = true;
           	    $.get('/game/attack/'+enemyUsername, function(data){
-          	        var res = data.split("#");
-                    console.log(res[1]);
-                    logs_text_area.value +=data
-                    logs_text_area.scrollTop = logs_text_area.scrollHeight;
+                    console.log(data);
                     attackTimer();
-                    if (res[0]=="True")
-                        $('#result').html("You Won");
-                    else
-                        $('#result').html("You Lost");
+                    $('#result').html(data);
                     $(".modal_overlay").fadeIn("fast");
                     $(".modal_content_attack").fadeIn("fast");
                 });

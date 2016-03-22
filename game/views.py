@@ -579,14 +579,14 @@ def attack(request, opponent):
                 (10 + ecity.walls_level) / 10):
         rnggold = randint(10, 15)
         tempgold = ecity.gold / rnggold
-        result = "True"+"#"+lose_army(city, ecity, False, True, tempgold)
+        result = lose_army(city, ecity, False, True, tempgold)
         lose_army(ecity, city, True, False, tempgold)
         acc.wins += 1
         enemyaccount.defeats += 1
     else:
         rnggold = randint(5, 10)
         tempgold = city.gold / rnggold
-        result = "False"+"#"+lose_army(city, ecity, False, False, tempgold)
+        result = lose_army(city, ecity, False, False, tempgold)
         lose_army(ecity, city, True, True, tempgold)
         acc.defeats += 1
         enemyaccount.wins += 1
@@ -637,8 +637,8 @@ def lose_army(city, ecity, defender, winner, tempgold):
     else:
         result = "You suffered a defeat from " + ecity.account.user.username + " losing " + str(
             tempgold) + " gold coins along with:\n"
-    return result + str(footmenlost) + " Footmen \n" + str(bowmenlost) + " Bowmen \n" + str(
-        knightslost) + " Knights \n" + str(war_machineslost) + " War Machines\n"
+    return result + str(footmenlost) + " Footmen, \n" + str(bowmenlost) + " Bowmen, \n" + str(
+        knightslost) + " Knights, \n" + str(war_machineslost) + " War Machines\n"
 
 
 def create_win_log(account, enemy_account, casualties, defender, tempgold):
