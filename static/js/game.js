@@ -472,7 +472,7 @@
             for (var i = mapY; i < mapY + fitY; i++) {
                 //console.log(rows[i]);
                 endOfColumnCompensation=0
-                if( j == mapY + fitY -1){
+                if( i == mapY + fitY -1){
                     endOfColumnCompensation= canvas.height - (sizeY*fitY);
                     if(endOfColumnCompensation < 0){
                         endOfColumnCompensation=0;
