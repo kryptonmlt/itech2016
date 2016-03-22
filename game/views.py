@@ -236,7 +236,7 @@ def battle(request, user_name):
     enemy_account = Account.objects.get(user=enemy_user)
     enemy_city = City.objects.get(account=enemy_account)
     city = City.objects.get(account=account)
-    context_dict = {'enemy_city': enemy_city, 'city': city, 'user': user}
+    context_dict = {'enemy_city': enemy_city, 'city': city, 'user': user, 'acc':account}
     return render(request, 'game/battle.html', context_dict)
 
 
@@ -709,29 +709,37 @@ def upload_user_pic(request):
 
 @login_required
 def alliance_search(request, query):
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
     similar_alliances = Alliance.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
-    context_dict = {'similar_alliances': similar_alliances, 'query': query}
+    context_dict = {'similar_alliances': similar_alliances, 'query': query,'acc':acc}
     return render(request, 'game/alliance_search.html', context_dict)
 
 
 @login_required
 def alliance_search_empty(request):
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
     similar_alliances = Alliance.objects.order_by('-all_time_score')
-    context_dict = {'similar_alliances': similar_alliances, 'query': ""}
+    context_dict = {'similar_alliances': similar_alliances, 'query': "",'acc':acc}
     return render(request, 'game/alliance_search.html', context_dict)
 
 
 @login_required
 def user_search(request, query):
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
     users = Account.objects.filter(Q(user__username__icontains=query))
-    context_dict = {'users': users, 'query': query}
+    context_dict = {'users': users, 'query': query,'acc':acc}
     return render(request, 'game/user_search.html', context_dict)
 
 
 @login_required
 def user_search_empty(request):
+    user = User.objects.get(pk=request.user.pk)
+    acc = Account.objects.get(user=user)
     users = Account.objects.order_by('-wins')
-    context_dict = {'users': users, 'query': ""}
+    context_dict = {'users': users, 'query': "",'acc':acc}
     return render(request, 'game/user_search.html', context_dict)
 
 
