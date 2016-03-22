@@ -34,7 +34,7 @@ last_message_id = -1;
 
         function sendAllianceRequest() {
             var x = document.getElementById("msg").value;
-            $.get('/game/alliance_request/'+allianceName, {msg: x}, function(data){
+            $.get('/game/alliance_request/'+allianceSlug, {msg: x}, function(data){
                 $('#requestResult').html(data);
                 if(data != -1){
                     $("#leaveNotifAlert").show();
@@ -68,7 +68,7 @@ last_message_id = -1;
 
 		$(document).ready(function(){
 
-            if(accAllianceName == allianceName){
+            if(accAllianceSlug == allianceSlug){
                 if( requestUsername != leaderUsername){
                     document.getElementById("orders_text_area").readOnly = true;
                 }
