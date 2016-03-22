@@ -3,6 +3,15 @@
 {% load staticfiles %}
 
 {% block body_block %}
+        <style>
+            html {
+            background: url("{% static "images/scenery.jpg" %}") no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        </style>
 
 {% if user.is_authenticated %}
         <meta http-equiv="refresh" content="0; url=/game"/>
