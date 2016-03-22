@@ -272,7 +272,12 @@
         var sizeX = parseInt(canvasX / fitX);
         var sizeY = parseInt(canvasY / fitY);
 
-        var grass = new Image();
+        all_grass_levels=5
+        var grass = [all_grass_levels];
+        for	(index = 0; index < all_grass_levels; index++) {
+            grass[index] = new Image();
+            grass[index].src = "/static/images/forest/forest"+index+".png";
+        }
         all_castle_levels=11
         var castle = [all_castle_levels];
         for	(index = 0; index < all_castle_levels; index++) {
@@ -305,7 +310,6 @@
             goldMine[index] = new Image();
             goldMine[index].src = "/static/images/gold_mine/gold_mine"+(index+1)+".png";
         }
-        grass.src = "/static/images/structures/forest1.jpg";
 
         var centreX = 5;
         var centreY = 5;
@@ -511,9 +515,11 @@
                     land_type = contents[0];
                     level = contents[2];
                     show_level = level -1;
-                    context.drawImage(grass, posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
+                    context.drawImage(grass[0], posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                     switch (parseInt(land_type)) {
                         case 0:
+                            r = Math.floor(Math.random()*all_grass_levels)
+                            context.drawImage(grass[r], posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
                             break;
                         case 1:
                             context.drawImage(house[show_level], posX, posY, sizeX+endOfRowCompensation, sizeY+endOfColumnCompensation);
