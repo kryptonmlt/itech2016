@@ -94,17 +94,20 @@
                 $.get('/game/buy', {element_type: et}, function(data){
                     if(data == "-1"){
                         //show alert
-                        $("#alertNoGold").show();
+                        $(".modal_overlay").fadeIn("fast");
+                        $(".modal_content_gold").fadeIn("fast");
                     }else if (data=="-2"){
                     	//show alert
                         $(".modal_overlay").fadeIn("fast");
                         $(".modal_content_lumber").fadeIn("fast");
                     }else if (data=="-3"){
                     	//show alert
-                        $("#alertNoStones").show();
+                        $(".modal_overlay").fadeIn("fast");
+                        $(".modal_content_stone").fadeIn("fast");
                     }else if (data=="-4"){
                     	//show alert
-                        $("#alertInsufficientMaxTroops").show();
+                        $(".modal_overlay").fadeIn("fast");
+                        $(".modal_content_supply").fadeIn("fast");
                     }else {
                        //increments stuff
                        switch(et){
@@ -182,10 +185,12 @@
                     }else{
                         if(data == "-1"){
                             //show alert
-                            $("#noAllianceName").show();
+                            $(".modal_overlay").fadeIn("fast");
+                            $(".modal_content_noalliname").fadeIn("fast");
                         }else if (data=="-2"){
                             //show alert
-                            $("#allianceAlreadyExists").show();
+                            $(".modal_overlay").fadeIn("fast");
+                            $(".modal_content_allinameexists").fadeIn("fast");
                         }
                     }
                 });
