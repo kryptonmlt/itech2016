@@ -11,7 +11,6 @@ from django.db.models import Q, F
 from django.utils.datastructures import MultiValueDictKeyError
 from django.conf import settings
 
-
 # Create your views here.
 @login_required()
 def index(request):
@@ -783,6 +782,7 @@ def get_map(request):
                     matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username) + "-" + str(city.gold_mines)
 
                 i += 1
+
     tile_map = ""
     for y in range(map_max_y):
         for x in range(map_max_x):
