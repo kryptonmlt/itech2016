@@ -30,15 +30,7 @@ window.location.href = "/game";
 </div>
 <div class="col-md-2">
             <div class="text-center">
-                <h3><strong>Lord {{enemy_city.account.user.username}}</strong> of {{enemy_city.name}}
-                {% if enemy_city.account.alliance %}
-                    <br /><a href="/game/alliance/{{enemy_city.account.alliance.slug}}"><strong>{{enemy_city.account.alliance.name}}</strong></a>
-                    {% if enemy_city.account.alliance_owner %}
-                        (Leader)
-                    {% else %}
-                        (Member)
-                    {% endif %}
-                {% endif %}
+                <h3><strong>Lord {{enemy_city.account.user.username}}</strong>
                 </h3>
                 <div class="row">
                     <img src="{{ MEDIA_URL }}/{{enemy_city.account.picture}}" %}" width=90%
@@ -84,15 +76,7 @@ window.location.href = "/game";
 <div class="container">
     <div class="row">
         <div class="col-md-2 text-center">
-            <h3><strong>Lord {{city.account.user.username}}</strong> of {{city.name}}
-            {% if city.account.alliance %}
-                <br /><a href="/game/alliance/{{city.account.alliance.slug}}"><strong>{{city.account.alliance.name}}</strong></a>
-                {% if city.account.alliance_owner %}
-                    (Leader)
-                {% else %}
-                    (Member)
-                {% endif %}
-            {% endif %}
+            <h3><strong>Lord {{city.account.user.username}}</strong>
             </h3>
             <div class="row">
                 <img src="{{ MEDIA_URL }}/{{city.account.picture}}" %}" width=90% class="img-thumbnail profilePicture"/>
@@ -121,15 +105,7 @@ window.location.href = "/game";
 
         <div class="col-md-2">
             <div class="text-center">
-                <h3><strong>Lord {{enemy_city.account.user.username}}</strong> of {{enemy_city.name}}
-                {% if enemy_city.account.alliance %}
-                    <br /><a href="/game/alliance/{{enemy_city.account.alliance.slug}}"><strong>{{enemy_city.account.alliance.name}}</strong></a>
-                    {% if enemy_city.account.alliance_owner %}
-                        (Leader)
-                    {% else %}
-                        (Member)
-                    {% endif %}
-                {% endif %}
+                <h3><strong>Lord {{enemy_city.account.user.username}}</strong>
                 </h3>
                 <div class="row">
                     <img src="{{ MEDIA_URL }}/{{enemy_city.account.picture}}" %}" width=90%

@@ -12,9 +12,9 @@
                         message_id = parseInt(real_message[0]);
                         if(message_id>last_message_id){
                             last_message_id=message_id;
+                            message_text_area.value += real_message[1]+': '+real_message[2]+'\n'
+                            message_text_area.scrollTop = message_text_area.scrollHeight;
                         }
-                        message_text_area.value += real_message[1]+': '+real_message[2]+'\n'
-                        message_text_area.scrollTop = message_text_area.scrollHeight;
                     }
                 }
             });
@@ -71,7 +71,7 @@
 
         $(document).ready(function(){            
             attackTimer();
-        	logs_text_area = document.getElementById("logs_text");           
+        	logs_text_area = document.getElementById("logs_text");
 
             $('#attackButton').click(function(){
                 document.getElementById("attackButton").disabled = true;

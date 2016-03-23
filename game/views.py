@@ -742,13 +742,13 @@ def get_map(request):
     map_max_y = ((max_y / map_size_interval) * map_size_interval) + map_size_interval
 
     matrix = [[0 for y in range(map_max_y)] for x in range(map_max_x)]
-    for cur_y in range(0, map_max_y, 1):
-        coords = Map.objects.all().filter(y=cur_y)
-        for c in coords:
-            i = 0
-            for v in c.value:
-                matrix[i][c.y] = "0-" + str(v)
-                i += 1
+
+    coords = Map.objects.all().order_by("y")
+    for c in coords:
+        i = 0
+        for v in c.value:
+            matrix[i][c.y] = "0-" + str(v)
+            i += 1
 
     cities = City.objects.all()
     for city in cities:
@@ -757,7 +757,7 @@ def get_map(request):
             for city_x in range(city.x - 1, city.x + 2):
                 if i == 1:
                     matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username) + "-" + str(
-                        city.farms)
+                        city.get_maximum_troops())
                 elif i == 2:
                     matrix[city_x][city_y] = str(i) + "-" + str(city.account.user.username) + "-" + str(
                         city.walls_level)

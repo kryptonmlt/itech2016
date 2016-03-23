@@ -11,9 +11,9 @@ last_message_id = -1;
                         message_id = parseInt(real_message[0]);
                         if(message_id>last_message_id){
                             last_message_id=message_id;
+                            alliance_text_area.value += real_message[1]+': '+real_message[2]+'\n'
+                            alliance_text_area.scrollTop = alliance_text_area.scrollHeight;
                         }
-                        alliance_text_area.value += real_message[1]+': '+real_message[2]+'\n'
-                        alliance_text_area.scrollTop = alliance_text_area.scrollHeight;
                     }
                 }
             });
