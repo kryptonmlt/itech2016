@@ -35,16 +35,6 @@ body {
     top: 0;
     margin:auto;
 }
-#uploadButton{
-    position:relative;
-    bottom:40px;
-    opacity: 0.6;
-}
-input[type=file] {
-    display:block;
-    height:0;
-    width:0;
-}
 
 .table {
     border:0;
