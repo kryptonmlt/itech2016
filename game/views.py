@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from game.models import Account, Alliance, AllianceRequest, City, Badge, Log, Message, Cost, AllianceMessage, Map
 from django.contrib.auth.models import User
-from game.forms import CityForm, AccountForm
+from game.forms import CityForm
 from django.utils import timezone
 from random import randint
 from django.db.models import Q, F
@@ -694,18 +694,6 @@ def create_alliance(request):
 
 
 @login_required
-def upload_user_pic(request):
-    if request.method == 'POST':
-        form = AccountForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('1')
-    else:
-        form = AccountForm()
-    return render(request, 'game/game.html', {'form': form})
-
-
-@login_required
 def alliance_search(request, query):
     user = User.objects.get(pk=request.user.pk)
     acc = Account.objects.get(user=user)
@@ -760,7 +748,7 @@ def get_map(request):
         for c in coords:
             i = 0
             for v in c.value:
-                matrix[i][c.y] = "0-"+str(v)
+                matrix[i][c.y] = "0-" + str(v)
                 i += 1
 
     cities = City.objects.all()
